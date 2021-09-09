@@ -1,2 +1,6 @@
 *.pyc
 PegboardApp/settings.py
+pegboard/__pycache__
+pegboard/migrations
+pegboard/migrations/__pycache__
+PegboardApp/__pycache__
