@@ -5,12 +5,28 @@ from django.db import models
 
 from django.template.defaultfilters import slugify
 
+from django.utils import timezone
+
 # Create your models here.
 
 class Card ( models.Model ):
 
+    list = models.ForeignKey(
+        'List',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+
+    board = models.ForeignKey(
+        'Board',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+
     name = models.CharField(max_length=128)
-    content = models.TextField(null=True)
+    content = models.TextField(blank=True)
 
     display = models.CharField(max_length=36)
     url = models.SlugField()
@@ -22,8 +38,8 @@ class Card ( models.Model ):
     date_due = models.CharField(max_length=256, blank=True)
     date_todo = models.CharField(max_length=256, blank=True)
 
-    date_created = models.DateTimeField('date created')
-    date_updated = models.DateTimeField('date updated')
+    date_created = models.DateTimeField('date created', default=timezone.now())
+    date_updated = models.DateTimeField('date updated', default=timezone.now())
 
     # Shows the name of the object within the admin
     def __str__ ( self ):
@@ -32,8 +48,41 @@ class Card ( models.Model ):
     def create_slug ( self ):
         return slugify(self.name)
 
-# class List ( models.Model ):
-    #
+class List ( models.Model ):
 
-# class Board ( models.Model ):
-    #
+    board = models.ForeignKey(
+        'Board',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    
+    name = models.CharField(max_length=128)
+    description = models.TextField(blank=True)
+    url = models.SlugField()
+
+    order = models.IntField(default=0)
+
+    date_created = models.DateTimeField(default=timezone.now())
+
+    def __str__ ( self ):
+        return self.name
+
+    def create_slug ( self ):
+        return slugify(self.name)
+
+class Board ( models.Model ):
+    
+    name = models.CharField(max_length=128)
+    description = models.TextField(blank=True)
+    url = models.SlugField()
+
+    order = models.IntField(default=0)
+
+    date_created = models.DateTimeField(default=timezone.now())
+
+    def __str__ ( self ):
+        return self.name
+
+    def create_slug ( self ):
+        return slugify(self.name)
