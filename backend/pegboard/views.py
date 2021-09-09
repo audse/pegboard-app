@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from .models import Card
 
-# Create your views here.
+# Pages
 
 def home_page ( request ):
-    return render( request, 'pegboard/home_page.html' )
-
-def view_card ( request, card_id, card_slug ):
-    current_card = Card.objects.get(pk=card_id)
-    return HttpResponse('You are viewing your card: '+current_card.url)
+    return render( request, 'pegboard/Home.page.html' )
 
 def add_card ( request ):
-    return HttpResponse('You are adding a card.')
+    return render( request, 'pegboard/AddCard.page.html' )
+
+# API
+
+def view_card ( request, card_id, card_slug ):
+    current_card = get_object_or_404(Card, pk=card_id)
+    return render( request, { 'card': current_card } )
