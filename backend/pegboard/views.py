@@ -9,13 +9,13 @@ from .models import Card, List, Board
 def home_page ( request ):
     return render( request, 'pegboard/Home.page.html' )
 
-def add_card ( request ):
+def add_card_page ( request ):
     return render( request, 'pegboard/AddCard.page.html' )
 
-def add_list ( request ):
+def add_list_page ( request ):
     return render( request, 'pegboard/AddList.page.html' )
 
-def add_board ( request ):
+def add_board_page ( request ):
     return render( request, 'pegboard/AddBoard.page.html' )
 
 # API

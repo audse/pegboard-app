@@ -38,8 +38,8 @@ class Card ( models.Model ):
     date_due = models.CharField(max_length=256, blank=True)
     date_todo = models.CharField(max_length=256, blank=True)
 
-    date_created = models.DateTimeField('date created', default=timezone.now())
-    date_updated = models.DateTimeField('date updated', default=timezone.now())
+    date_created = models.DateTimeField('date created', default=timezone.now)
+    date_updated = models.DateTimeField('date updated', default=timezone.now)
 
     # Shows the name of the object within the admin
     def __str__ ( self ):
@@ -61,9 +61,9 @@ class List ( models.Model ):
     description = models.TextField(blank=True)
     url = models.SlugField()
 
-    order = models.IntField(default=0)
+    order = models.IntegerField(default=0)
 
-    date_created = models.DateTimeField(default=timezone.now())
+    date_created = models.DateTimeField(default=timezone.now)
 
     def __str__ ( self ):
         return self.name
@@ -77,9 +77,9 @@ class Board ( models.Model ):
     description = models.TextField(blank=True)
     url = models.SlugField()
 
-    order = models.IntField(default=0)
+    order = models.IntegerField(default=0)
 
-    date_created = models.DateTimeField(default=timezone.now())
+    date_created = models.DateTimeField(default=timezone.now)
 
     def __str__ ( self ):
         return self.name
