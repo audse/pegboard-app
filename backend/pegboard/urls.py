@@ -13,4 +13,6 @@ urlpatterns = [
 
     # API
     path('card/<int:card_id>/<slug:card_slug>/', views.view_card, name='view_card'),
+    path('list/<int:list_id>/<slug:list_slug>/', views.view_card, name='view_list'),
+    path('board/<int:board_id>/<slug:board_slug>/', views.view_card, name='view_board'),
 ]
