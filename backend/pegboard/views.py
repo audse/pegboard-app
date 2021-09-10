@@ -1,9 +1,24 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.shortcuts import render, get_object_or_404
+from rest_framework import viewsets
+
+from .serializers import CardSerializer, ListSerializer, BoardSerializer
 
 from .models import Card, List, Board
 from .forms import CardForm, ListForm, BoardForm
+
+class CardViewSet ( viewsets.ModelViewSet ):
+    queryset = Card.objects.all()
+    serializer_class = CardSerializer
+
+class ListViewSet ( viewsets.ModelViewSet ):
+    queryset = List.objects.all()
+    serializer_class = ListSerializer
+
+class BoardViewSet ( viewsets.ModelViewSet ):
+    queryset = Board.objects.all()
+    serializer_class = BoardSerializer
 
 # Pages
 

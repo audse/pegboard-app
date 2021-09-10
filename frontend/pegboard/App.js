@@ -7,7 +7,8 @@
  */
 
 import React from 'react';
-import type {Node} from 'react';
+import {Node} from 'react';
+
 import {
   SafeAreaView,
   ScrollView,
@@ -25,6 +26,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+
 
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -71,6 +73,8 @@ const App: () => Node = () => {
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
           <Section title="Step One">
+
+
             Edit <Text style={styles.highlight}>App.js</Text> to change this
             screen and then come back to see your edits.
           </Section>
