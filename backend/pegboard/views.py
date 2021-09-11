@@ -31,6 +31,18 @@ class ListViewSet ( viewsets.ModelViewSet ):
     queryset = List.objects.all()
     serializer_class = ListSerializer
 
+    @action( methods=['get'], detail=True, url_path='board', name='get_by_board' )
+    def get_by_board ( self, request, pk ):
+
+        lists = List.objects.all().filter(list__pk = pk)
+        serialized_lists = []
+
+        for each_list in lists:
+            serializer = ListSerializer(each_list, context={'request':request})
+            serialized_lists.append(serializer.data)
+
+        return Response(serialized_lists)
+
 class BoardViewSet ( viewsets.ModelViewSet ):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer

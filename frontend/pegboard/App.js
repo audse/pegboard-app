@@ -8,7 +8,7 @@ import {
 
 import Sheet from './components/elements/sheet.element'
 import Heading from './components/elements/heading.element'
-import { CardService } from './services'
+import CardService from './services/card.service'
 import CardSheet from './components/sheets/card.sheet'
 
 let card = {
