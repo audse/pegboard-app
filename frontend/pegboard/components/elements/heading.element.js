@@ -9,22 +9,25 @@ import TextBlock from './textblock.element'
 const styles = {
 
     heading: {
-        color: '#fefefe',
         fontFamily: bold,
         letterSpacing: 0.25,
     },
 
     subheading: {
-        color: '#cccccc',
         fontFamily: regular,
         marginTop: 10,
     },
 
     overline: {
-        color: 'hotpink',
         fontFamily: semibold,
         textTransform: 'uppercase',
         letterSpacing: 0.5,
+    },
+
+    empty: {
+        position: 'absolute',
+        height: 0,
+        width: 0,
     }
 }
 
@@ -40,17 +43,28 @@ const Heading = props => {
         fontSize: headingFontSize.fontSize * 0.8
     }
 
+    const overline = props.overline ? 
+        <TextBlock style={[ styles.overline, overlineFontSize, props.style ]}>
+            { props.overline }
+        </TextBlock> : <Text style={ styles.empty } />
+
+    const heading = props.heading ? 
+        <TextBlock style={[ styles.heading, headingFontSize, props.style ]}>
+            { props.heading }
+        </TextBlock> : <Text style={ styles.empty } />
+
+    const subheading = props.subheading ? 
+        <TextBlock style={[ styles.subheading, subheadingFontSize, props.style ]}>
+            { props.subheading }
+        </TextBlock> : <Text style={ styles.empty } />
+
     return (
         <View>
-            <TextBlock style={[ styles.overline, overlineFontSize ]}>
-                { props.overline }
-            </TextBlock>
-            <TextBlock style={[ styles.heading, headingFontSize ]}>
-                { props.heading }
-            </TextBlock>
-            <TextBlock style={[ styles.subheading, subheadingFontSize ]}>
-                { props.subheading }
-            </TextBlock>
+            
+            { overline }
+            { heading }
+            { subheading }
+
         </View>
     )
 }

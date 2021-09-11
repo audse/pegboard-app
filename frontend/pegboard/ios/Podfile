@@ -12,6 +12,8 @@ target 'pegboard' do
     :hermes_enabled => false
   )
 
+  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
+
   target 'pegboardTests' do
     inherit! :complete
     # Pods for testing

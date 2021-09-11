@@ -1,34 +1,19 @@
 import React from 'react'
+import { SafeAreaView, View } from 'react-native'
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import {
-    SafeAreaView,
-    View,
-    Text,
-} from 'react-native'
-
-import Sheet from './components/elements/sheet.element'
-import Heading from './components/elements/heading.element'
-import CardService from './services/card.service'
-import CardSheet from './components/sheets/card.sheet'
-
-let card = {
-    name: null,
-    content: null,
-}
-
-CardService.getById('1').then( result => {
-    card = Object.assign({}, result)
-}).catch( e => { throw e })
+import BoardAddForm from './components/forms/board.add.form'
 
 const App = () => {
 
-
     return (
-        <SafeAreaView style={ {flex: 1, flexDirection: 'column'} }>
-            <View style={ {flex: 1, flexDirection: 'column'} }>
-                <CardSheet card={card} />
-            </View>
-        </SafeAreaView>
+        <SafeAreaProvider>
+            <SafeAreaView style={ {flex: 1, flexDirection: 'column'} }>
+                <View style={ {flex: 1, flexDirection: 'column'} }>
+                    <BoardAddForm />
+                </View>
+            </SafeAreaView>
+        </SafeAreaProvider>
     )
 }
 
