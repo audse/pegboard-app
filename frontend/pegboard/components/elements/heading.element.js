@@ -31,42 +31,45 @@ const styles = {
     }
 }
 
-const Heading = props => {
+class Heading extends React.Component {
 
-    const headingFontSize = fontSize(props.size ? props.size : 6)
+    constructor ( props ) {
+        super(props)
 
-    const overlineFontSize = {
-        fontSize: headingFontSize.fontSize * 0.6
+        this.state = {
+
+            headingStyle: Object.assign( {}, styles.heading, fontSize(props.size ? props.size : 6) ),
+
+            overlineStyle: Object.assign( {}, styles.overline, fontSize(props.size ? props.size : 6) * 0.6 ),
+
+            subheadingStyle: Object.assign( {}, styles.subheading, fontSize(props.size ? props.size : 6) * 0.6 ),
+        }
     }
 
-    const subheadingFontSize = {
-        fontSize: headingFontSize.fontSize * 0.8
+    render () {
+        return (
+            <View>
+
+                { this.props.overline && this.props.overline.length > 0 &&
+                    <TextBlock style={[ this.state.overlineStyle, this.props.overlineStyle ]}>
+                        { this.props.overline }
+                    </TextBlock>
+                }
+
+                { this.props.heading && this.props.heading.length > 0 && 
+                    <TextBlock style={[ this.state.headingStyle, this.props.headingStyle ]}>
+                        { this.props.heading }
+                    </TextBlock>
+                }
+
+                { this.props.subheading && this.props.subheading.length > 0 && 
+                    <TextBlock style={[ this.state.subheadingStyle, this.props.subheadingStyle ]}>
+                        { this.props.subheading }
+                    </TextBlock>
+                }
+            </View>
+        )
     }
-
-    const overline = props.overline ? 
-        <TextBlock style={[ styles.overline, overlineFontSize, props.style ]}>
-            { props.overline }
-        </TextBlock> : <Text style={ styles.empty } />
-
-    const heading = props.heading ? 
-        <TextBlock style={[ styles.heading, headingFontSize, props.style ]}>
-            { props.heading }
-        </TextBlock> : <Text style={ styles.empty } />
-
-    const subheading = props.subheading ? 
-        <TextBlock style={[ styles.subheading, subheadingFontSize, props.style ]}>
-            { props.subheading }
-        </TextBlock> : <Text style={ styles.empty } />
-
-    return (
-        <View>
-            
-            { overline }
-            { heading }
-            { subheading }
-
-        </View>
-    )
 }
 
 export default Heading

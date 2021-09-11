@@ -17,7 +17,7 @@ const BoardAddForm = props => {
     return (
         <View>
 
-            <Input label='Name' placeholder='Great Ideas' />
+            <Input label='Name' placeholder='Great Ideas' filled={true} />
             <Input label='Description' placeholder='A place for all my best ideas.' />
 
             <Button style={ styles.button } title="Add Board" />
