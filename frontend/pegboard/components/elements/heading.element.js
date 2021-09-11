@@ -1,10 +1,10 @@
 
-import React from 'react';
-import { View, Text } from 'react-native';
+import React from 'react'
+import { View, Text } from 'react-native'
 
 import { bold, semibold, regular, fontSize } from './../../styles/text.styles'
 
-import TextBlock from './textblock.element';
+import TextBlock from './textblock.element'
 
 const styles = {
 

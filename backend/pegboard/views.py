@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.shortcuts import render, get_object_or_404
+
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from .serializers import CardSerializer, ListSerializer, BoardSerializer
 
@@ -11,6 +14,18 @@ from .forms import CardForm, ListForm, BoardForm
 class CardViewSet ( viewsets.ModelViewSet ):
     queryset = Card.objects.all()
     serializer_class = CardSerializer
+
+    @action( methods=['get'], detail=True, url_path='list', name='get_by_list' )
+    def get_by_list ( self, request, pk ):
+
+        cards = Card.objects.all().filter(list__pk = pk)
+        serialized_cards = []
+
+        for card in cards:
+            serializer = CardSerializer(card, context={'request':request})
+            serialized_cards.append(serializer.data)
+
+        return Response(serialized_cards)
 
 class ListViewSet ( viewsets.ModelViewSet ):
     queryset = List.objects.all()

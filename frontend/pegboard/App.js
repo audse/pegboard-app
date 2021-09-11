@@ -11,18 +11,25 @@ import Heading from './components/elements/heading.element'
 import { CardService } from './services'
 import CardSheet from './components/sheets/card.sheet'
 
+let card = {
+    name: null,
+    content: null,
+}
+
+CardService.getById('1').then( result => {
+    card = Object.assign({}, result)
+}).catch( e => { throw e })
+
 const App = () => {
 
-    const card = CardService.getById(1)
 
     return (
         <SafeAreaView style={ {flex: 1, flexDirection: 'column'} }>
             <View style={ {flex: 1, flexDirection: 'column'} }>
-                <CardSheet name={card.name} content={card.content} />
-
+                <CardSheet card={card} />
             </View>
         </SafeAreaView>
     )
 }
 
-export default App;
+export default App

@@ -5,14 +5,14 @@ from .models import Card, List, Board
 class CardSerializer ( serializers.ModelSerializer ):
     class Meta:
         model = Card
-        fields = ['list', 'board', 'name', 'content', 'display', 'url', 'order', 'date_due', 'date_todo', 'date_created', 'date_updated']
+        fields = '__all__'
 
 class ListSerializer ( serializers.ModelSerializer ):
     class Meta:
         model = List
-        fields = ['board', 'name', 'description', 'url', 'order', 'date_created']
+        fields = '__all__'
     
 class BoardSerializer ( serializers.ModelSerializer ):
     class Meta:
         model = Board
-        fields = ['name', 'description', 'url', 'order', 'date_created']
+        fields = '__all__'
