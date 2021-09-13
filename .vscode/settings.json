@@ -8,5 +8,7 @@
     ],
     "python.testing.pytestEnabled": false,
     "python.testing.unittestEnabled": true,
-    "todo.colors.comment": "#697098"
+    "todo.colors.comment": "#697098",
+    "todo-tree.tree.showBadges": false,
+    "todo-tree.tree.disableCompactFolders": false
 }

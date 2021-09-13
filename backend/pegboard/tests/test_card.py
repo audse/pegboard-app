@@ -58,7 +58,7 @@ class CardTests ( TestCase ):
 
 
 # TODO test_card.py
-# .. test__empty_card
-# .. test__card_archived
-# .. test__get_by_list_with_no_list
+# @ test__empty_card
+# @ test__card_archived
+# @ test__get_by_list_with_no_list
 

@@ -44,12 +44,9 @@ class Card ( models.Model ):
     def __str__ ( self ):
         return self.name
 
+# TODO Add Fields
+# @ attachment
+# @ shared with
 
-# TO DO:
-
-# FIELDS TO ADD
-#  -attachments
-#  -shared with ( ArrayField of User ForeignKeys )
-
-# THINGS TO DO:
-#  -automatic url slugify
+# TODO Add Methods
+# @ automatic url slugify
