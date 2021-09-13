@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.db import models
-
-from django.template.defaultfilters import slugify
-
+from django.contrib.auth.models import User
 from django.utils import timezone
 
 class Board ( models.Model ):
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
     
     name = models.CharField(max_length=128)
     description = models.TextField(blank=True)
@@ -19,6 +21,3 @@ class Board ( models.Model ):
 
     def __str__ ( self ):
         return self.name
-
-    def create_slug ( self ):
-        return slugify(self.name)

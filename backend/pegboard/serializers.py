@@ -1,6 +1,14 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
+from django.contrib.auth.models import User
+
 from .models import Card, List, Board, Theme
+
+class ProfileSerializer ( serializers.ModelSerializer ):
+    class Meta:
+        model = User
+        fields = '__all__'
 
 class CardSerializer ( serializers.ModelSerializer ):
     class Meta:

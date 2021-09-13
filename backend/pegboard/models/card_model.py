@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.db import models
-
-from django.template.defaultfilters import slugify
-
+from django.contrib.auth.models import User
 from django.utils import timezone
 
 class Card ( models.Model ):
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
 
     list = models.ForeignKey(
         'List',
@@ -42,6 +44,3 @@ class Card ( models.Model ):
     # Shows the name of the object within the admin
     def __str__ ( self ):
         return self.name
-    
-    def create_slug ( self ):
-        return slugify(self.name)
