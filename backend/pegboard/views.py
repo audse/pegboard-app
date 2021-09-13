@@ -19,10 +19,13 @@ from .models import Card, List, Board, Theme
 #
 
 def handle_response ( data ):
-    response = Response( data )
-
-    if response is not None and type(data) is dict and 'status_code' in data.keys():
+    response = None
+    
+    if type(data) is dict and 'status_code' in data.keys() and 'message' in data.keys():
+        response = Response( data['message'] )
         response.status_code = data['status_code']
+    else:
+        response = Response( data )
 
     return response
 
@@ -69,7 +72,7 @@ class CardViewSet ( viewsets.ModelViewSet ):
     serializer_class = CardSerializer
 
     def list ( self, request ):
-        return handle_response(serialize_query_list(
+        return handle_response( serialize_query_list(
             queryset = self.queryset.filter(user=request.user), 
             serializer = self.serializer_class, 
             request = request,
@@ -77,7 +80,7 @@ class CardViewSet ( viewsets.ModelViewSet ):
         ))
 
     def retrieve ( self, request, pk=None ):
-        return handle_response(serialize_query(
+        return handle_response( serialize_query(
             model = Card, 
             pk = pk, 
             serializer = self.serializer_class, 
@@ -87,7 +90,7 @@ class CardViewSet ( viewsets.ModelViewSet ):
 
     @action( methods=['get'], detail=True, url_path='list' )
     def get_by_list ( self, request, pk ):
-        return Response(serialize_query_list(
+        return Response( serialize_query_list(
             queryset = self.queryset.filter(user=request.user, list__pk=pk),
             serializer = self.serializer_class,
             request = request,

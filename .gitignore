@@ -40,3 +40,5 @@ frontend/pegboard/.idea
 *.ntvs*
 *.njsproj
 *.sln
+
+*.todo

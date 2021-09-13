@@ -1,1 +1,1 @@
-from .card_tests import CardTests
+from .test_card import CardTests
