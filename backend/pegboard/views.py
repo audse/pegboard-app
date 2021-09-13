@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.db.models import query
+from django.http.response import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 
-from rest_framework import serializers, viewsets
+from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .serializers import ProfileSerializer, CardSerializer, ListSerializer, BoardSerializer, ThemeSerializer
 
+from django.contrib.auth.models import User
 from .models import Card, List, Board, Theme
 
 
@@ -16,44 +18,80 @@ from .models import Card, List, Board, Theme
 # METHODS
 #
 
-def serialize_query ( query_class, pk, serializer, request, requires_auth=True ):
+def handle_response ( data ):
+    response = Response( data )
+
+    if response is not None and type(data) is dict and 'status_code' in data.keys():
+        response.status_code = data['status_code']
+
+    return response
+
+def serialize_query ( model, pk, serializer, request, identifier='item', requires_auth=True ):
     query_item = None
-    if requires_auth: query_item = get_object_or_404(query_class, pk=pk, user=request.user)
-    else: query_item = get_object_or_404(query_class, pk=pk)
+    try:
+        if requires_auth: query_item = get_object_or_404(model, pk=pk, user=request.user)
+        else: query_item = get_object_or_404(model, pk=pk)
+    except:
+        return { 'status_code': 404, 'message': 'The '+identifier+' is not available.' }
     return serializer(query_item, context={'request':request}).data
 
-def serialize_query_list ( query_items, serializer, request ):
+def serialize_query_list ( queryset, serializer, request, identifier='items' ):
     serialized_items = []
-    for item in query_items:
+    for item in queryset:
         serializer_data = serializer(item, context={'request':request})
         serialized_items.append(serializer_data.data)
+
+    if len(serialized_items)== 0: return { 'status_code': 404, 'message': 'No '+identifier+' are available.' }
     return serialized_items
 
 
 #
 # VIEWSETS
-# 
+#
+
+class ProfileViewSet ( viewsets.ModelViewSet ):
+    queryset = User.objects.all()
+    serializer_class = ProfileSerializer
+
+    def list ( self, request ):
+        return Response(serialize_query_list(
+            queryset=self.queryset, 
+            serializer=self.serializer_class, 
+            request=request,
+            identifier='profiles'
+        ))
+
+    def retrieve ( self, request, pk=None ):
+        return Response( serialize_query(User, pk, self.serializer_class, request, requires_auth=False) )
 
 class CardViewSet ( viewsets.ModelViewSet ):
     queryset = Card.objects.all()
     serializer_class = CardSerializer
 
     def list ( self, request ):
-        return Response(serialize_query_list(
-            self.queryset.filter(user=request.user), 
-            self.serializer_class, 
-            request
+        return handle_response(serialize_query_list(
+            queryset = self.queryset.filter(user=request.user), 
+            serializer = self.serializer_class, 
+            request = request,
+            identifier = 'cards'
         ))
 
     def retrieve ( self, request, pk=None ):
-        return Response( serialize_query(Card, pk, self.serializer_class, request) )
+        return handle_response(serialize_query(
+            model = Card, 
+            pk = pk, 
+            serializer = self.serializer_class, 
+            request = request,
+            identifier = 'card'
+        ))
 
     @action( methods=['get'], detail=True, url_path='list' )
     def get_by_list ( self, request, pk ):
         return Response(serialize_query_list(
-            self.queryset.filter(user=request.user, list__pk=pk),
-            self.serializer_class,
-            request
+            queryset = self.queryset.filter(user=request.user, list__pk=pk),
+            serializer = self.serializer_class,
+            request = request,
+            identifier = 'cards'
         ))
 
 class ListViewSet ( viewsets.ModelViewSet ):
@@ -62,9 +100,10 @@ class ListViewSet ( viewsets.ModelViewSet ):
 
     def list ( self, request ):
         return Response( serialize_query_list(
-            self.queryset.filter(user=request.user),
-            self.serializer_class,
-            request
+            queryset = self.queryset.filter(user=request.user),
+            serializer = self.serializer_class,
+            request = request,
+            identifier = 'lists'
         ))
 
     def retrieve ( self, request, pk=None ):
@@ -73,9 +112,10 @@ class ListViewSet ( viewsets.ModelViewSet ):
     @action( methods=['get'], detail=True, url_path='board' )
     def get_by_board ( self, request, pk ):
         return Response( serialize_query_list(
-            self.queryset.filter(user=request.user, list__pk=pk), 
-            self.serializer_class, 
-            request
+            queryset = self.queryset.filter(user=request.user, list__pk=pk), 
+            serializer = self.serializer_class, 
+            request = request,
+            identifier = 'lists'
         ))
 
 class BoardViewSet ( viewsets.ModelViewSet ):
@@ -84,9 +124,10 @@ class BoardViewSet ( viewsets.ModelViewSet ):
 
     def list ( self, request ):
         return Response( serialize_query_list(
-            self.queryset.filter(user=request.user), 
-            self.serializer_class, 
-            request
+            queryset = self.queryset.filter(user=request.user), 
+            serializer = self.serializer_class, 
+            request = request,
+            identifier = 'boards'
         ))
 
     def retrieve ( self, request, pk=None ):
@@ -98,9 +139,10 @@ class ThemeViewSet ( viewsets.ModelViewSet ):
 
     def list ( self, request ):
         return Response( serialize_query_list(
-            self.queryset.filter(user=request.user), 
-            self.serializer_class, 
-            request
+            queryset = self.queryset.filter(user=request.user), 
+            serializer = self.serializer_class, 
+            request = request,
+            identifier = 'themes'
         ))
 
     def retrieve ( self, request, pk=None ):
