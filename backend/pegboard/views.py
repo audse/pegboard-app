@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from django.db.models import query
 from django.shortcuts import render, get_object_or_404
 
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .serializers import CardSerializer, ListSerializer, BoardSerializer
+from .serializers import CardSerializer, ListSerializer, BoardSerializer, ThemeSerializer
 
-from .models import Card, List, Board
-from .forms import CardForm, ListForm, BoardForm
+from .models import Card, List, Board, Theme
 
 class CardViewSet ( viewsets.ModelViewSet ):
     queryset = Card.objects.all()
@@ -46,6 +46,10 @@ class ListViewSet ( viewsets.ModelViewSet ):
 class BoardViewSet ( viewsets.ModelViewSet ):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
+
+class ThemeViewSet ( viewsets.ModelViewSet ):
+    queryset = Theme.objects.all()
+    serializer_class = ThemeSerializer
 
 # Pages
 

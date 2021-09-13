@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Card, List, Board
+from .models import Card, List, Board, Theme
 
 class CardSerializer ( serializers.ModelSerializer ):
     class Meta:
@@ -15,4 +15,9 @@ class ListSerializer ( serializers.ModelSerializer ):
 class BoardSerializer ( serializers.ModelSerializer ):
     class Meta:
         model = Board
+        fields = '__all__'
+
+class ThemeSerializer ( serializers.ModelSerializer ):
+    class Meta:
+        model = Theme
         fields = '__all__'

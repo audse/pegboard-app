@@ -4,3 +4,39 @@ backend/pegboard/__pycache__
 backend/pegboard/migrations
 backend/pegboard/migrations/__pycache__
 backend/PegboardApp/__pycache__
+backend/pegboard/models/__pycache__
+
+frontend/pegboard/.DS_Store
+frontend/pegboard/.thumbs.db
+frontend/pegboard/node_modules
+frontend/pegboard/.vscode
+
+# Quasar core related directories
+frontend/pegboard/.quasar
+frontend/pegboard/dist
+
+# Cordova related directories and files
+frontend/pegboard/src-cordova/node_modules
+frontend/pegboard/src-cordova/platforms
+frontend/pegboard/src-cordova/plugins
+/frontend/pegboardsrc-cordova/www
+
+# Capacitor related directories and files
+frontend/pegboard/src-capacitor/www
+frontend/pegboard/src-capacitor/node_modules
+
+# BEX related directories and files
+frontend/pegboard/src-bex/www
+frontend/pegboard/src-bex/js/core
+
+# Log files
+frontend/pegboard/npm-debug.log*
+frontend/pegboard/yarn-debug.log*
+frontend/pegboard/yarn-error.log*
+
+# Editor directories and files
+frontend/pegboard/.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
