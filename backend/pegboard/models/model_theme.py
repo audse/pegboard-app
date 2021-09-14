@@ -14,6 +14,7 @@ class Theme ( models.Model ):
     )
 
     name = models.CharField(max_length=128)
+    models.SlugField(blank=True)
     
     order = models.IntegerField(default=0)
 

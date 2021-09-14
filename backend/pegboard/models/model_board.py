@@ -15,8 +15,8 @@ class Board ( models.Model ):
     )
     
     name = models.CharField(max_length=128)
-    description = models.sTextField(blank=True)
-    url = models.SlugField()
+    description = models.TextField(blank=True)
+    url = models.SlugField(blank=True)
 
     order = models.IntegerField(default=0)
 
