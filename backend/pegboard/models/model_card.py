@@ -8,21 +8,24 @@ class Card ( models.Model ):
 
     user = models.ForeignKey(
         User,
-        on_delete=models.CASCADE,
+        on_delete = models.CASCADE,
+        related_name = 'cards'
     )
 
     list = models.ForeignKey(
         'List',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
+        on_delete = models.SET_NULL,
+        null = True,
+        blank = True,
+        related_name = 'cards'
     )
 
     board = models.ForeignKey(
         'Board',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
+        on_delete = models.SET_NULL,
+        null = True,
+        blank = True,
+        related_name = 'cards'
     )
 
     name = models.CharField(max_length=128)
@@ -45,9 +48,8 @@ class Card ( models.Model ):
     def __str__ ( self ):
         return self.name
 
-# TODO Add Fields
+# TODO model_card.py
 # @ attachment
 # @ shared with
-
-# TODO Add Methods
+# @ implement children, parents
 # @ automatic url slugify

@@ -12,7 +12,7 @@ class Profile ( models.Model ):
         null=True,
     )
 
-    display_name = models.CharField(max_length=256, blank=True, null=True,)
+    display_name = models.CharField(max_length=256, blank=True)
 
     theme = models.ForeignKey( 
         'Theme', 
@@ -20,3 +20,6 @@ class Profile ( models.Model ):
         null=True,
         blank=True,
     )
+
+# TODO model_profile.py
+# @ accessibility settings: high contrast, simplified layout, etc.

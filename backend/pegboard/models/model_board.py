@@ -4,15 +4,18 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+# TODO consider renaming board
+
 class Board ( models.Model ):
 
     user = models.ForeignKey(
         User,
-        on_delete=models.CASCADE,
+        on_delete = models.CASCADE,
+        related_name = 'boards'
     )
     
     name = models.CharField(max_length=128)
-    description = models.TextField(blank=True)
+    description = models.sTextField(blank=True)
     url = models.SlugField()
 
     order = models.IntegerField(default=0)

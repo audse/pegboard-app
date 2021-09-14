@@ -9,7 +9,8 @@ class Theme ( models.Model ):
 
     user = models.ForeignKey(
         User,
-        on_delete=models.CASCADE,
+        on_delete = models.CASCADE,
+        related_name = 'themes'
     )
 
     name = models.CharField(max_length=128)
