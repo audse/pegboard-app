@@ -39,6 +39,7 @@ class Card ( models.Model ):
 
     date_created = models.DateTimeField('date created', default=timezone.now)
     date_updated = models.DateTimeField('date updated', default=timezone.now)
+    date_archived = models.DateTimeField('date archived', blank=True, null=True)
 
     # Shows the name of the object within the admin
     def __str__ ( self ):

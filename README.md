@@ -4,7 +4,7 @@ The core principle of Pegboard is to organize the way you would in real life- an
 ## Technologies
 
 ### Backend
-* Python with Django
+* Python with Django and Django REST Framework
 * PostgreSQL
 
 ### Frontend
