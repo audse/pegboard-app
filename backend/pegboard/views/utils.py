@@ -19,25 +19,24 @@ USE   : call Error(status_code, identifier).exception to return:
           'message' : <a message from status_code> }
 '''
 class Error:
+
     def __init__ ( self, status_code, identifier='item' ):
         self.status_code = status_code
         self.identifier = identifier
-        self.exception = self.create_exception()
-    
-    def create_exception ( self ):
-        exception = {
+        self.exception = {
             'status_code': self.status_code,
-            'message': 'An internal error occurred, please try again later.'
-        },
+            'message': self.create_message(status_code)
+        }
+    
+    def create_message ( self, status_code ):
 
-        if self.status_code is 404:
-            exception['message'] = 'This {identifier} could not be found.'
-        elif self.status_code is 403:
-            exception['message'] = 'You do not have permission to view this {identifier}.'
-        elif self.status_code is 401:
-            exception['message'] = 'You must log in to view this {identifier}.'
-
-        return exception
+        if status_code is 404:
+            return 'This {identifier} could not be found.'
+        elif status_code is 403:
+            return 'You do not have permission to view this {identifier}.'
+        elif status_code is 401:
+            return 'You must log in to view this {identifier}.'
+        else: return 'An internal error occurred, please try again later.'
 
 ''' handle_response
 RETURNS   : an API response containing the serialized data (or an exception)
@@ -52,7 +51,6 @@ def handle_response ( data ):
         response.status_code = data['status_code']
     else:
         response = Response( data )
-
     return response
 
 
@@ -86,20 +84,21 @@ def serialize_query ( model, pk, serializer, request, identifier='item', require
         return { 'status_code': 404, 'message': 'This '+identifier+' is not available.' }
     return serializer(query_item, context={'request':request}).data
 
-def serialize_query_with_args ( serializer, request, identifier, **filter ):
+def serialize_query_with_args ( serializer, request, identifier, query={} ):
     query_item = None
     try:
-        query_item = get_object_or_404(serializer.model, **filter)
+        query_item = get_object_or_404(serializer.model, **query)
     except Exception as exception:
         exception_name = type(exception).__name__
-        if exception_name is 'ObjectDoesNotExist':
-            return Error(404, identifier).exception
+        # if exception_name is 'ObjectDoesNotExist':
+            # return handle_response( Error(404, identifier).exception )
+        return handle_response( Error(404, identifier).exception )
     
         # TODO create exception cases 
         # e.g. 403 permission denied
         # they all show up as 404
     
-    return serializer(query_item, context={'request':request}).data
+    return handle_response( serializer(query_item, context={'request':request}).data )
 
 
 
@@ -117,12 +116,13 @@ def serialize_queryset ( queryset, serializer, request, identifier='items' ):
     if len(serialized_items) == 0: return { 'status_code': 404, 'message': 'No '+identifier+' are available.' }
     return serialized_items
 
-def serialize_queryset_with_args ( serializer, request, identifier='items', **filter ):
-    queryset = serializer.model.objects.all().filter(**filter)
+def serialize_queryset_with_args ( serializer, request, identifier='items', query={} ):
+    queryset = serializer.model.objects.all().filter(**query)
     serialized_queryset = []
     for item in queryset:
         serializer_data = serializer(item, context={'request':request})
         serialized_queryset.append(serializer_data.data)
 
-    if len(serialized_queryset) == 0: return Error(404, identifier)
-    else: return serialized_queryset
+    print( len(serialized_queryset) )
+    if len(serialized_queryset) is 0: return handle_response( Error(404, identifier).exception )
+    else: return handle_response( serialized_queryset )

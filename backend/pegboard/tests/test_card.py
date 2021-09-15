@@ -9,10 +9,6 @@ from django.contrib.auth.models import User
 from ..models import Card, List
 from ..views import CardViewSet
 
-
-#  FIXME test_card.py
-#! fix serializer + view utils
-
 # TODO test_card.py
 # [ ] integration test ?
 # [ ] end-to-end test ?
@@ -72,15 +68,13 @@ class CardTests ( TestCase ):
     # ASSERTS   : should return only <Card> objects that have not been archived
     # FUNCTION : `list`
     def test__no_archived_in_list_all ( self ):
-        card_a, card_b = Card.objects.create(
+        Card.objects.create(
             date_archived = self.field_archived,
             **self.current_user_test_card
         ), Card.objects.create(**self.current_user_test_card)
 
-        print('\nCARDS\n', card_a, card_b)
-
         response = self.view.list(self.request)
-        self.assertTrue(len(response) is 1)
+        self.assertTrue(len(response.data) is 1)
 
     # only_has_permission_in_list_all
     # ASSERTS   : should return only the <User:current_user> <Card> objects
@@ -88,9 +82,9 @@ class CardTests ( TestCase ):
     def test__only_has_permission_in_list_all ( self ):
         Card.objects.create(**self.current_user_test_card)
         Card.objects.create(**self.user_a_test_card)
-
+        
         response = self.view.list(self.request)
-        self.assertTrue(len(response) is 1)
+        self.assertTrue(len(response.data) is 1)
 
 
     '''    
@@ -106,7 +100,6 @@ class CardTests ( TestCase ):
         test_card = Card.objects.create(**self.user_a_test_card)
 
         response = self.view.retrieve(self.request, test_card.id)
-        print(response, response.data)
         self.assertEqual(response.status_code, 404)
 
     # no_archived
@@ -186,6 +179,7 @@ class CardTests ( TestCase ):
         )
 
         response = self.view.get_by_list(self.request, 1)
+ 
         self.assertEqual(response.status_code, 404)
     
 

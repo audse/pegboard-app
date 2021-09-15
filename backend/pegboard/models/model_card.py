@@ -49,7 +49,10 @@ class Card ( models.Model ):
         return self.name
 
 # TODO model_card.py
-# @ attachment
-# @ shared with
-# @ implement children, parents
-# @ automatic url slugify
+# [ ] attachment
+# [ ] shared with
+#     original user should be automatically added
+# [ ] implement children, parents
+# [ ] automatic url slugify
+# [ ] board foreignkey
+#     for unorganized cards

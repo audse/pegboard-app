@@ -12,15 +12,15 @@ class CardViewSet ( viewsets.ModelViewSet ):
     serializer_class = CardSerializer
 
     def list ( self, request ):
-        return handle_response( serialize_queryset_with_args(
+        return serialize_queryset_with_args(
             serializer = self.serializer_class, 
             request = request,
             identifier = 'cards',
-            filter = dict(
-                user = request.user,
-                archived__is_null = True
-            )
-        ))
+            query = {
+                'user': request.user,
+                'date_archived__isnull': True
+            }
+        )
     
     def create ( self, request ):
         serialized_request = self.serializer_class(data=request.data)
@@ -30,36 +30,43 @@ class CardViewSet ( viewsets.ModelViewSet ):
         else:
             return handle_response({
                 'status_code': 500,
-                'message': 'A board could not be created at this time.'
+                'message': 'A card could not be created at this time.'
             })
 
     def retrieve ( self, request, pk=None ):
-        return handle_response( serialize_query_with_args(
+        return serialize_query_with_args(
             serializer = self.serializer_class, 
             request = request,
             identifier = 'card',
-            filter = dict(
-                pk = pk,
-                user = request.user, # @ replace `user` query with `shared_with`
-                archived__is_null = True
-            )
-        ))
+            query = {
+                'pk': pk,
+                'user': request.user, # TODO replace `user` query with `shared_with`
+                'date_archived__isnull': True
+            }
+        )
 
     @action( methods=['get'], detail=True, url_path='list' )
     def get_by_list ( self, request, pk ):
         current_list = None
-        try: current_list = List.objects.get(pk=pk, user=request.user)
+        try: current_list = List.objects.get(pk=pk, user=request.user, date_archived__isnull=True)
         except: return handle_response( Error(404, 'list').exception )
 
-        return handle_response( serialize_queryset(
-            queryset = self.queryset.filter(user=request.user, list=current_list),
+        return serialize_queryset_with_args(
             serializer = self.serializer_class,
             request = request,
-            identifier = 'cards'
-        ))
+            identifier = 'cards',
+            query = {
+                'user': request.user,
+                'list': current_list,
+                'date_archived__isnull': True,
+            }
+        )
     
     # TODO CardViewSet
-    # @ def create
-    # @ def update
-    # @ def partial_update
-    # @ def archive @action
+    # [ ] def create
+    # [ ] def update
+    # [ ] def partial_update
+    # [ ] def @action archive
+    # [ ] def @action get_unorganized
+    #     no list specified
+    # [ ] def @action get_archived
