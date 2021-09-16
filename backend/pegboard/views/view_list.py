@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from ..models import List
 from ..serializers import ListSerializer
 
-from .utils import handle_response, serialize_queryset, serialize_query
+from .utils import serialize_queryset, serialize_query
 
 class ListViewSet ( viewsets.ModelViewSet ):
     queryset = List.objects.all()

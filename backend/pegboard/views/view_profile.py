@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from django.contrib.auth.models import User
 from ..serializers import ProfileSerializer
 
-from .utils import handle_response, serialize_queryset, serialize_query
+from .utils import serialize_queryset, serialize_query
 
 class ProfileViewSet ( viewsets.ModelViewSet ):
     queryset = User.objects.all()

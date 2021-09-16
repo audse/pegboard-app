@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from ..models import Board
 from ..serializers import BoardSerializer
 
-from .utils import handle_response, serialize_queryset, serialize_query
+from .utils import serialize_queryset, serialize_query
 
 class BoardViewSet ( viewsets.ModelViewSet ):
     queryset = Board.objects.all()

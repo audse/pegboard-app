@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from ..models import Theme
 from ..serializers import ThemeSerializer
 
-from .utils import handle_response, serialize_queryset, serialize_query
+from .utils import serialize_queryset, serialize_query
 
 class ThemeViewSet ( viewsets.ModelViewSet ):
     queryset = Theme.objects.all()

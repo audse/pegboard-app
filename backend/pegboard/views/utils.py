@@ -13,57 +13,32 @@ from rest_framework.response import Response
 # [ ] update views to use new serialize method
 # [x] reformat function comments
 
-# class HttpException
-# PROPS : <status_code:Number>,
-#         <identifier:String> a semantic name to be used in the error code
-# USE   : call HttpException(status_code, identifier).exception to return:
-#        { 'status_code' : status_code,
-#           'message' : <a message from status_code> }
-class HttpException:
+def get_exception_message ( status_code, identifier ):
+    if status_code is 404:
+        return 'This {identifier} could not be found.'
+    elif status_code is 403:
+        return 'You do not have permission to view this {identifier}.'
+    elif status_code is 401:
+        return 'You must log in to view this {identifier}.'
+    elif status_code is 400:
+        return 'There was a problem with the {identifier} data. Please fix any issues and try again.'
+    else: return 'An internal error occurred, please try again later.'
 
-    def __init__ ( self, status_code, identifier='item' ):
-        self.status_code = status_code
-        self.identifier = identifier
-        self.exception = {
-            'status_code': self.status_code,
-            'message': self.create_message(status_code)
-        }
-    
-    def create_message ( self, status_code ):
-
-        if status_code is 404:
-            return 'This {identifier} could not be found.'
-        elif status_code is 403:
-            return 'You do not have permission to view this {identifier}.'
-        elif status_code is 401:
-            return 'You must log in to view this {identifier}.'
-        else: return 'An internal error occurred, please try again later.'
-
-# handle_response
-# RETURNS   : an API response containing the serialized data (or an exception)
-# ARGUMENTS : <data:Object||List> a serialized object or list of objects
-def handle_response ( data ):
-    response = None
-    
-    keys = data.keys() if type(data) is dict else []
-    if type(data) is dict and 'status_code' in keys and 'message' in keys:
-        response = Response( data['message'] )
-        response.status_code = data['status_code']
-    else:
-        response = Response( data )
-    return response
 
 # serialize_and_create
 # RETURNS    : a singular serialized object or <500:BadRequest>
 # ARGUMENTS : <serializer:SerializerClass>, <request:Object> with <request.data>,
 #            <identifier:String> for use in error message
 def serialize_and_create ( serializer, request, identifier ):
-    serialized_request = serializer.model.create(data=request.data)
+    serialized_request = serializer(data=request.data)
     if serialized_request.is_valid():
-        serialized_request.save(user=request.user)
-        return serialized_request.validated_data
+        serialized_request.save()
+        return Response(data=serialized_request.data)
     else:
-        return HttpException(500, identifier).exception
+        return Response(
+            data=get_exception_message(400, identifier),
+            status=400
+        )
 
 # serialize_query
 # RETURNS   : a singular serialized object or 404
@@ -78,13 +53,16 @@ def serialize_query ( serializer, request, identifier, query={} ):
         exception_name = type(exception).__name__
         # if exception_name is 'ObjectDoesNotExist':
             # return handle_response( HttpException(404, identifier).exception )
-        return HttpException(404, identifier).exception
+        return Response(
+            data=get_exception_message(404, identifier),
+            status=404
+        )
     
         # TODO create exception cases 
         # e.g. 403 permission denied
         # they all show up as 404
     
-    return serializer(query_item, context={'request':request}).data
+    return Response(data=serializer(query_item, context={'request':request}).data)
 
 # serialize_queryset
 # RETURNS   : a list of serialized objects (or 404)
@@ -98,5 +76,10 @@ def serialize_queryset ( serializer, request, identifier='items', query={} ):
         serializer_data = serializer(item, context={'request':request})
         serialized_queryset.append(serializer_data.data)
 
-    if len(serialized_queryset) is 0: return HttpException(404, identifier).exception
-    else: return serialized_queryset
+    if len(serialized_queryset) is 0:
+        return Response(
+            data=get_exception_message(404, identifier),
+            status=404
+        )
+    else:
+        return Response(data=serialized_queryset)
