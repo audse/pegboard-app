@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from ..models import Card, List
 from ..views import CardViewSet
 
-# TODO test_card.py
+# TESTME test_card.py
 # [ ] integration test ?
 # [ ] end-to-end test ?
 
@@ -194,7 +194,7 @@ class CardTests ( TestCase ):
     #     response = self.view.create(self.request, **self.current_user_test_card)
     #     self.assertTrue(response.id == 1)
 
-    # TODO test_card `create` FUNCTION
+    # TESTME <CardViewSet> `create`
     # [ ] test__create_card_list_doesnt_exist
     # [ ] test__create_card_in_no_permission_list
     # [ ] test__create_empty_card

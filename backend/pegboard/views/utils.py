@@ -7,18 +7,19 @@ from rest_framework.response import Response
 # HELPER FUNCTIONS
 # To assist with Django REST Framework ViewSets
 # 
-# TODO views.py
-# @ def create_response
-#
 
-''' class Error
-PROPS : <status_code:Number>,
-        <identifier:String> a semantic name to be used in the error code
-USE   : call Error(status_code, identifier).exception to return:
-        { 'status_code' : status_code,
-          'message' : <a message from status_code> }
-'''
-class Error:
+#FIXME
+# [x] merge serialize_x and serialize_x_with_args
+# [ ] update views to use new serialize method
+# [x] reformat function comments
+
+# class HttpException
+# PROPS : <status_code:Number>,
+#         <identifier:String> a semantic name to be used in the error code
+# USE   : call HttpException(status_code, identifier).exception to return:
+#        { 'status_code' : status_code,
+#           'message' : <a message from status_code> }
+class HttpException:
 
     def __init__ ( self, status_code, identifier='item' ):
         self.status_code = status_code
@@ -38,10 +39,9 @@ class Error:
             return 'You must log in to view this {identifier}.'
         else: return 'An internal error occurred, please try again later.'
 
-''' handle_response
-RETURNS   : an API response containing the serialized data (or an exception)
-ARGUMENTS : <data:Object||List> a serialized object or list of objects
-'''
+# handle_response
+# RETURNS   : an API response containing the serialized data (or an exception)
+# ARGUMENTS : <data:Object||List> a serialized object or list of objects
 def handle_response ( data ):
     response = None
     
@@ -53,7 +53,6 @@ def handle_response ( data ):
         response = Response( data )
     return response
 
-
 # serialize_and_create
 # RETURNS    : a singular serialized object or <500:BadRequest>
 # ARGUMENTS : <serializer:SerializerClass>, <request:Object> with <request.data>,
@@ -62,67 +61,42 @@ def serialize_and_create ( serializer, request, identifier ):
     serialized_request = serializer.model.create(data=request.data)
     if serialized_request.is_valid():
         serialized_request.save(user=request.user)
-        return handle_response(serialized_request.validated_data)
+        return serialized_request.validated_data
     else:
-        return handle_response({
-            'status_code': 500,
-            'message': 'A board could not be created at this time.'
-        })
+        return HttpException(500, identifier).exception
 
-''' serialize_query
-RETURNS   : a singular serialized object or 404
-ARGUMENTS : <model:ModelClass>, <pk:Number>, <serializer:SerializerClass>,
-            <request:Object>, <requires_auth:Boolean>,
-            <identifier:String> for use in error message
-'''
-def serialize_query ( model, pk, serializer, request, identifier='item', requires_auth=True ):
-    query_item = None
-    try:
-        if requires_auth: query_item = get_object_or_404(model, pk=pk, user=request.user)
-        else: query_item = get_object_or_404(model, pk=pk)
-    except:
-        return { 'status_code': 404, 'message': 'This '+identifier+' is not available.' }
-    return serializer(query_item, context={'request':request}).data
-
-def serialize_query_with_args ( serializer, request, identifier, query={} ):
+# serialize_query
+# RETURNS   : a singular serialized object or 404
+# ARGUMENTS : <serializer:SerializerClass>, <request:Object>,
+#             <identifier:String> for use in error message,
+#             <query:Dict> optional filters to add to the db query e.g. { 'user': request.user }
+def serialize_query ( serializer, request, identifier, query={} ):
     query_item = None
     try:
         query_item = get_object_or_404(serializer.model, **query)
     except Exception as exception:
         exception_name = type(exception).__name__
         # if exception_name is 'ObjectDoesNotExist':
-            # return handle_response( Error(404, identifier).exception )
-        return handle_response( Error(404, identifier).exception )
+            # return handle_response( HttpException(404, identifier).exception )
+        return HttpException(404, identifier).exception
     
         # TODO create exception cases 
         # e.g. 403 permission denied
         # they all show up as 404
     
-    return handle_response( serializer(query_item, context={'request':request}).data )
+    return serializer(query_item, context={'request':request}).data
 
-
-
-''' serialize_queryset
-RETURNS   : a list of serialized objects (or 404)
-ARGUMENTS : <queryset:ModelQuery>, <serializer:SerializerClass>, <request:Object>
-            <identifier:String> for use in error message
-'''
-def serialize_queryset ( queryset, serializer, request, identifier='items' ):
-    serialized_items = []
-    for item in queryset:
-        serializer_data = serializer(item, context={'request':request})
-        serialized_items.append(serializer_data.data)
-
-    if len(serialized_items) == 0: return { 'status_code': 404, 'message': 'No '+identifier+' are available.' }
-    return serialized_items
-
-def serialize_queryset_with_args ( serializer, request, identifier='items', query={} ):
+# serialize_queryset
+# RETURNS   : a list of serialized objects (or 404)
+# ARGUMENTS : <serializer:SerializerClass>, <request:Object>
+#             <identifier:String> for use in error message,
+#             <query:Dict> optional filters to add to the db query e.g. { 'user': request.user }
+def serialize_queryset ( serializer, request, identifier='items', query={} ):
     queryset = serializer.model.objects.all().filter(**query)
     serialized_queryset = []
     for item in queryset:
         serializer_data = serializer(item, context={'request':request})
         serialized_queryset.append(serializer_data.data)
 
-    print( len(serialized_queryset) )
-    if len(serialized_queryset) is 0: return handle_response( Error(404, identifier).exception )
-    else: return handle_response( serialized_queryset )
+    if len(serialized_queryset) is 0: return HttpException(404, identifier).exception
+    else: return serialized_queryset
