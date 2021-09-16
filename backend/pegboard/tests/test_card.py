@@ -57,16 +57,14 @@ class CardTests ( TestCase ):
     '''
 
     # no_results_in_list_all
-    # ASSERTS   : should return 404 if there are no <Card> objects
-    # FUNCTION : `list`
+    # ASSERTS : should return 404 if there are no <Card> objects
     def test__no_results_in_list_all ( self ):
         response = self.view.list(self.request)
 
         self.assertEqual(response.status_code, 404)
 
     # no_archived_in_list_all
-    # ASSERTS   : should return only <Card> objects that have not been archived
-    # FUNCTION : `list`
+    # ASSERTS : should return only <Card> objects that have not been archived
     def test__no_archived_in_list_all ( self ):
         Card.objects.create(
             date_archived = self.field_archived,
@@ -77,8 +75,7 @@ class CardTests ( TestCase ):
         self.assertTrue(len(response.data) is 1)
 
     # only_has_permission_in_list_all
-    # ASSERTS   : should return only the <User:current_user> <Card> objects
-    # FUNCTION : `list`
+    # ASSERTS : should return only the <User:current_user> <Card> objects
     def test__only_has_permission_in_list_all ( self ):
         Card.objects.create(**self.current_user_test_card)
         Card.objects.create(**self.user_a_test_card)
@@ -92,9 +89,8 @@ class CardTests ( TestCase ):
     '''
 
     # no_permission
-    # ASSERTS   : should return 404 if the <User:current_user> does not
-    #             have access to the requested <Card>
-    # FUNCTION : 'retrieve'
+    # ASSERTS : should return 404 if the <User:current_user> does not
+    #           have access to the requested <Card>
     def test__no_permission ( self ):
 
         test_card = Card.objects.create(**self.user_a_test_card)
@@ -103,8 +99,7 @@ class CardTests ( TestCase ):
         self.assertEqual(response.status_code, 404)
 
     # no_archived
-    # ASSERTS   : should return 404 if the requested <Card> is archived
-    # FUNCTION : 'retrieve'
+    # ASSERTS : should return 404 if the requested <Card> is archived
     def test__no_archived ( self ):
 
         test_card = Card.objects.create(
@@ -121,29 +116,26 @@ class CardTests ( TestCase ):
     '''
 
     # get_by_list_with_no_list
-    # ASSERTS   : should return 404 when the requested <List> doesn't exist
-    # FUNCTION : 'get_by_list'
+    # ASSERTS : should return 404 when the requested <List> doesn't exist
     def test__get_by_list_with_no_list ( self ):
-        Card.objects.create(**self.current_user_test_card)
+        card = Card.objects.create(**self.current_user_test_card)
 
-        response = self.view.get_by_list(self.request, 1)
+        response = self.view.get_by_list(self.request, card.id)
         self.assertEqual(response.status_code, 404)
 
     # get_by_list_with_no_results
-    # ASSERTS   : `should return 404 when no <Card> objects are found
-    # FUNCTION : 'get_by_list'
+    # ASSERTS : `should return 404 when no <Card> objects are found
     def test__get_by_list_with_no_results ( self ):
-        List.objects.create(
+        current_list = List.objects.create(
             user=self.current_user,
             name='Test List'
         )
 
-        response = self.view.get_by_list(self.request, 1)
+        response = self.view.get_by_list(self.request, current_list.id)
         self.assertEqual(response.status_code, 404)
     
     # get_by_list_with_no_permission
-    # ASSERTS   : should return 404 when the <User:current_user> doesn't have access to the <List>
-    # FUNCTION : 'get_by_list'
+    # ASSERTS : should return 404 when the <User:current_user> doesn't have access to the <List>
     def test__get_by_list_with_no_permission ( self ):
         current_list = List.objects.create(
             user=self.user_a,
@@ -161,12 +153,11 @@ class CardTests ( TestCase ):
             **self.current_user_test_card
         )
 
-        response = self.view.get_by_list(self.request, 1)
+        response = self.view.get_by_list(self.request, current_list.id)
         self.assertEqual(response.status_code, 404)
 
     # get_by_list_with_archived_list
-    # ASSERTS   : should return 404 when the <List> is archived, even if its' children aren't
-    # FUNCTION : 'get_by_list'
+    # ASSERTS : should return 404 when the <List> is archived, even if its' children aren't
     def test__get_by_list_with_archived_list ( self ):
         current_list = List.objects.create(
             user=self.current_user,
@@ -178,7 +169,7 @@ class CardTests ( TestCase ):
             **self.current_user_test_card
         )
 
-        response = self.view.get_by_list(self.request, 1)
+        response = self.view.get_by_list(self.request, current_list.id)
  
         self.assertEqual(response.status_code, 404)
     
@@ -188,8 +179,7 @@ class CardTests ( TestCase ):
     '''
 
     # create_card
-    # ASSERTS   : should return a <Card> with an <id:Number> of 1 (the first object)
-    # FUNCTION : `create`
+    # ASSERTS : should return a <Card> with an <id:Number> of 1 (the first object)
     def test__create_card ( self ):
         self.request.data = {
             'user': 1,
@@ -199,16 +189,14 @@ class CardTests ( TestCase ):
         self.assertEqual(response.data['id'], 1)
     
     # create_empty_card
-    # ASSERTS   : should return 400 when the <Card> request does not contain required data
-    # FUNCTION : `create`
+    # ASSERTS : should return 400 when the <Card> request does not contain required data
     def test__create_empty_card ( self ):
         self.request.data = {}
         response = self.view.create(self.request)
         self.assertEqual(response.status_code, 400)
 
     # ccreate_card_list_doesnt_exist
-    # ASSERTS   : should return 400 when the requested <List> doesn't exist
-    # FUNCTION : `create`
+    # ASSERTS : should return 400 when the requested <List> doesn't exist
     def test__create_card_list_doesnt_exist ( self ):
         self.request.data = {
             'user': 1,
@@ -219,27 +207,85 @@ class CardTests ( TestCase ):
         self.assertEqual(response.status_code, 400)
     
     # card_in_no_permission_list
-    # ASSERTS   : should return 400 when the <User> does not have access to the requested <List>
-    # FUNCTION : `create`
+    # ASSERTS : should return 400 when the <User:current_user> does not have access to the requested <List>
     def test__create_card_in_list_with_no_permission ( self ):
-        List.objects.create(
+        current_list = List.objects.create(
             user=self.user_a,
             name='Test List'
         )
         self.request.data = {
             'user': 1,
             'name': self.field_name,
-            'list': 1,
+            'list': current_list.id,
         }
         response = self.view.create(self.request)
         self.assertEqual(response.status_code, 400)
     
-    # def test__update_empty_card ( self ):
-    #     pass
 
-    # TESTME <CardViewSet> `update`
-    # [ ] test__update_empty_card
-    # [ ] test__update_list_doesnt_exist
-    # [ ] test__update_card_doesnt_exist
-    # [ ] test__update_no_permission
+    '''    
+    <CardViewSet> TESTS FOR `update` FUNCTION
+    '''
+
+    # update_card
+    # ASSERTS : should return the <Card> object's updated name
+    def test__update_card ( self ):
+        card = Card.objects.create(**self.current_user_test_card)
+        self.request.data = {
+            'name': 'New Test Name',
+        }
+        response = self.view.update(self.request, card.id)
+        self.assertEqual(response.data['name'], 'New Test Name')
+
+    # update_empty_card
+    # ASSERTS : should return 400 when the <Card> request removes required data
+    def test__update_empty_card ( self ):
+        card = Card.objects.create(**self.current_user_test_card)
+        self.request.data = {
+            'name': None,
+        }
+        response = self.view.update(self.request, card.id)
+        self.assertEqual(response.status_code, 400)
+    
+    # update_doesnt_exist
+    # ASSERTS : should return 404 when the requested <Card> doesn't exist
+    def test__update_doesnt_exist ( self ):
+        self.request.data = {
+            'name': self.field_name
+        }
+        response = self.view.update(self.request, 1)
+        self.assertEqual(response.status_code, 404)
+    
+    # update_no_permission
+    # ASSERTS : should return 400 when the <User:current_user> does not have access to the requested <Card>
+    def test__update_no_permission ( self ):
+        card = Card.objects.create(**self.user_a_test_card)
+        self.request.data = {
+            'name': 'New Test Name'
+        }
+        response = self.view.update(self.request, card.id)
+        self.assertEqual(response.status_code, 404)
+
+    # update_list_doesnt_exist
+    # ASSERTS : should return 400 when the requested <List> doesn't exist
+    def test__update_list_doesnt_exist ( self ):
+        card = Card.objects.create(**self.user_a_test_card)
+        self.request.data = {
+            'list': 1
+        }
+        response = self.view.update(self.request, card.id)
+        self.assertEqual(response.status_code, 400)
+
+    # update_card_in_list_with_no_permission
+    # ASSERTS : should return 400 when the <User:current_user> does not have access to the requested <List>
+    def test__update_card_in_list_with_no_permission ( self ):
+        card = Card.objects.create(**self.current_user_test_card)
+        current_list = List.objects.create(
+            user=self.user_a,
+            name='Test List'
+        )
+        self.request.data = {
+            'list': current_list.id
+        }
+        response = self.view.update(self.request, card.id)
+        self.assertEqual(response.status_code, 400)
 

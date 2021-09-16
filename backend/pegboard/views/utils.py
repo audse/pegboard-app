@@ -40,6 +40,18 @@ def serialize_and_create ( serializer, request, identifier ):
             status=400
         )
 
+def serialize_and_update ( serializer, object_to_update, request, identifier ):
+    serialized_request = serializer(object_to_update, data=request.data, partial=True)
+    if serialized_request.is_valid():
+        serialized_request.save()
+        return Response(data=serialized_request.data)
+    else:
+        return Response(
+            data=get_exception_message(400, identifier),
+            status=400
+        )
+
+
 # serialize_query
 # RETURNS   : a singular serialized object or 404
 # ARGUMENTS : <serializer:SerializerClass>, <request:Object>,

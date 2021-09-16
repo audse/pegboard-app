@@ -7,7 +7,9 @@ from rest_framework.response import Response
 from ..models import Card, List
 from ..serializers import CardSerializer
 
-from .utils import get_exception_message, serialize_and_create, serialize_queryset, serialize_query
+from .utils import get_exception_message, serialize_and_create, serialize_and_update, serialize_queryset, serialize_query
+
+# TODO replace `user` query with `shared_with`
 
 class CardViewSet ( viewsets.ModelViewSet ):
     queryset = Card.objects.all()
@@ -18,7 +20,6 @@ class CardViewSet ( viewsets.ModelViewSet ):
         if 'list' in request.data.keys():
             try:
                 current_list = get_object_or_404(List, user=request.user, pk=request.data['list'])
-                # TODO replace `user` with `shared_with`
             except:
                 return False
         return valid
@@ -36,20 +37,42 @@ class CardViewSet ( viewsets.ModelViewSet ):
         )
 
     def create ( self, request ):
-        valid = self.validate_card(request)
-        
-        if valid:
+        if self.validate_card(request):
             return serialize_and_create(
                 serializer=self.serializer_class,
                 request=request,
                 identifier='card'
             )
         else:
-            return Response(data=get_exception_message(400, 'card'), status=400)
+            return Response(
+                data=get_exception_message(400, 'card'),
+                status=400
+            )
     
-    # def update ( self, request ):
-    #     valid = True
-    #     if 'list' in request.data.keys()
+    def update ( self, request, pk=None ):
+        if self.validate_card(request):
+
+            card_to_update = None
+            try:
+                card_to_update = get_object_or_404(Card, pk=pk, user=request.user)
+            except:
+                return Response(
+                    data=get_exception_message(404, 'card'),
+                    status=404
+                )
+            
+            return serialize_and_update(
+                serializer=self.serializer_class,
+                object_to_update=card_to_update,
+                request=request,
+                identifier='card'
+            )
+        else:
+            return Response(
+                data=get_exception_message(400, 'card'),
+                status=400
+            )
+
 
     def retrieve ( self, request, pk=None ):
         return serialize_query(
@@ -58,7 +81,7 @@ class CardViewSet ( viewsets.ModelViewSet ):
             identifier='card',
             query={
                 'pk': pk,
-                'user': request.user, # TODO replace `user` query with `shared_with`
+                'user': request.user,
                 'date_archived__isnull': True
             }
         )
