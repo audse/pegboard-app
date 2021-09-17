@@ -25,7 +25,7 @@ class ListTests ( TestCase ):
             password='password'
         )
 
-        self.field_name = 'List Name',
+        self.field_name = 'List Name'
         self.field_date_archived = timezone.now()
 
         self.current_user_test_list, self.user_a_test_list = {
@@ -36,7 +36,7 @@ class ListTests ( TestCase ):
             'name': self.field_name
         }
 
-        self.request = RequestFactory.get('/lists/')
+        self.request = RequestFactory().get('/lists/')
         self.request.user = self.current_user
 
         self.view = ListViewSet()
@@ -53,19 +53,19 @@ class ListTests ( TestCase ):
 
     def test__no_archived_in_list_all ( self ):
         List.objects.create(
-            date_archived=self.field_archived,
+            date_archived=self.field_date_archived,
             **self.current_user_test_list
         ), List.objects.create(**self.current_user_test_list)
 
         response = self.view.list(self.request)
-        self.assertTrue(len(response.data) is 1)
+        self.assertTrue(len(response.data) == 1)
 
     def test__only_has_permission_in_list_all ( self ):
         List.objects.create(**self.current_user_test_list)
         List.objects.create(**self.user_a_test_list)
 
         response = self.view.list(self.request)
-        self.assertTrue(len(response.data) is 1)
+        self.assertTrue(len(response.data) == 1)
     
 
     '''    
@@ -79,7 +79,7 @@ class ListTests ( TestCase ):
     
     def test__no_archived ( self ):
         test_list = List.objects.create(
-            date_archived=self.field_archived,
+            date_archived=self.field_date_archived,
             **self.current_user_test_list
         )
         response = self.view.retrieve(self.request, test_list.id)
@@ -146,7 +146,7 @@ class ListTests ( TestCase ):
             'name': self.field_name
         }
         response = self.view.create(self.request)
-        self.assertEqual(response.data['id'], 1)
+        self.assertEqual(response.data['name'], self.field_name)
     
     def test__create_empty_list ( self ):
         self.request.data = {}
@@ -160,7 +160,7 @@ class ListTests ( TestCase ):
             'board': 1,
         }
         response = self.view.create(self.request)
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 404)
 
     def test__create_list_in_board_with_no_permission ( self ):
         test_board = Board.objects.create(
@@ -173,7 +173,7 @@ class ListTests ( TestCase ):
             'board': test_board.id
         }
         response = self.view.create(self.request)
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 404)
 
     
     '''    
@@ -185,11 +185,11 @@ class ListTests ( TestCase ):
         self.request.data = {
             'name': 'New List Name'
         }
-        response = self.vuew.update(self.request, test_list.id)
+        response = self.view.update(self.request, test_list.id)
         self.assertEqual(response.data['name'], 'New List Name')
 
     def test__update_empty_list ( self ):
-        test_list = List.object.create(**self.current_user_test_list)
+        test_list = List.objects.create(**self.current_user_test_list)
         self.request.data = {
             'name': None
         }
@@ -229,4 +229,4 @@ class ListTests ( TestCase ):
             'board': test_board.id
         }
         response = self.view.update(self.request, test_list.id)
-        self.assertEqueal(response.status_code, 400)
+        self.assertEqual(response.status_code, 400)

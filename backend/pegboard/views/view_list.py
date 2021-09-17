@@ -16,7 +16,7 @@ class ListViewSet ( viewsets.ModelViewSet ):
     def validate_list ( self, request ):
         if 'board' in request.data.keys():
             try:
-                get_object_or_404(Board, pk=request.data['board'])
+                get_object_or_404(Board, pk=request.data['board'], user=request.user)
             except:
                 return False
         return True
@@ -73,6 +73,7 @@ class ListViewSet ( viewsets.ModelViewSet ):
         return serialize_query(
             serializer=self.serializer_class,
             request=request,
+            identifier='list',
             query={
                 'pk': pk,
                 'user': request.user,
@@ -82,6 +83,11 @@ class ListViewSet ( viewsets.ModelViewSet ):
 
     @action( methods=['get'], detail=True, url_path='board' )
     def get_by_board ( self, request, pk ):
+        current_board = None
+        try:
+            current_board = Board.objects.get(pk=pk, user=request.user, date_archived__isnull=True)
+        except:
+            return Response(data=get_exception_message(404, 'list'), status=404)
         return serialize_queryset(
             serializer=self.serializer_class, 
             request=request,
@@ -89,7 +95,7 @@ class ListViewSet ( viewsets.ModelViewSet ):
             query={
                 'user': request.user,
                 'date_archived__isnull': True,
-                'list__pk': pk,
+                'board': current_board.id
             }
         )
 

@@ -183,7 +183,7 @@ class CardTests ( TestCase ):
     # ASSERTS : should return a <Card> with an <id:Number> of 1 (the first object)
     def test__create_card ( self ):
         self.request.data = {
-            'user': 1,
+            'user': self.current_user.id,
             'name': self.field_name
         }
         response = self.view.create(self.request)
@@ -200,7 +200,7 @@ class CardTests ( TestCase ):
     # ASSERTS : should return 400 when the requested <List> doesn't exist
     def test__create_card_list_doesnt_exist ( self ):
         self.request.data = {
-            'user': 1,
+            'user': self.current_user.id,
             'name': self.field_name,
             'list': 1,
         }
@@ -215,7 +215,7 @@ class CardTests ( TestCase ):
             name='Test List'
         )
         self.request.data = {
-            'user': 1,
+            'user': self.current_user.id,
             'name': self.field_name,
             'list': current_list.id,
         }
