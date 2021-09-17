@@ -13,6 +13,7 @@ from ..views import CardViewSet
 # [ ] integration test ?
 # [ ] end-to-end test ?
 
+
 class CardTests ( TestCase ):
 
     def setUp ( self ):
@@ -118,9 +119,9 @@ class CardTests ( TestCase ):
     # get_by_list_with_no_list
     # ASSERTS : should return 404 when the requested <List> doesn't exist
     def test__get_by_list_with_no_list ( self ):
-        card = Card.objects.create(**self.current_user_test_card)
+        test_card = Card.objects.create(**self.current_user_test_card)
 
-        response = self.view.get_by_list(self.request, card.id)
+        response = self.view.get_by_list(self.request, 1)
         self.assertEqual(response.status_code, 404)
 
     # get_by_list_with_no_results
