@@ -135,3 +135,98 @@ class ListTests ( TestCase ):
         response = self.view.get_by_board(self.request, test_board)
         self.assertEqual(response.status_code, 404)
 
+
+    '''    
+    <ListViewSet> TESTS FOR `create` FUNCTION
+    '''
+
+    def test__create_list ( self ):
+        self.request.data = {
+            'user': self.current_user.id,
+            'name': self.field_name
+        }
+        response = self.view.create(self.request)
+        self.assertEqual(response.data['id'], 1)
+    
+    def test__create_empty_list ( self ):
+        self.request.data = {}
+        response = self.view.create(self.request)
+        self.assertEqual(response.status_code, 400)
+    
+    def test__create_list_board_doesnt_exist ( self ):
+        self.request.data = {
+            'user': self.current_user.id,
+            'name': self.field_name,
+            'board': 1,
+        }
+        response = self.view.create(self.request)
+        self.assertEqual(response.status_code, 400)
+
+    def test__create_list_in_board_with_no_permission ( self ):
+        test_board = Board.objects.create(
+            user=self.user_a,
+            name='Test Board'
+        )
+        self.request.data = {
+            'user': self.current_user.id,
+            'name': self.field_name,
+            'board': test_board.id
+        }
+        response = self.view.create(self.request)
+        self.assertEqual(response.status_code, 400)
+
+    
+    '''    
+    <ListViewSet> TESTS FOR `update` FUNCTION
+    '''
+
+    def test__update_list ( self ):
+        test_list = List.objects.create(**self.current_user_test_list)
+        self.request.data = {
+            'name': 'New List Name'
+        }
+        response = self.vuew.update(self.request, test_list.id)
+        self.assertEqual(response.data['name'], 'New List Name')
+
+    def test__update_empty_list ( self ):
+        test_list = List.object.create(**self.current_user_test_list)
+        self.request.data = {
+            'name': None
+        }
+        response = self.view.update(self.request, test_list.id)
+        self.assertEqual(response.status_code, 400)
+    
+    def test__update_doesnt_exist ( self ):
+        self.request.data = {
+            'name': self.field_name
+        }
+        response = self.view.update(self.request, 1)
+        self.assertEqual(response.status_code, 404)
+    
+    def test__update_no_permission ( self ):
+        test_list = List.objects.create(**self.user_a_test_list)
+        self.request.data = {
+            'name': 'New Test Name'
+        }
+        response = self.view.update(self.request, test_list.id)
+        self.assertEqual(response.status_code, 404)
+    
+    def test__update_board_doesnt_exist ( self ):
+        test_list = List.objects.create(**self.current_user_test_list)
+        self.request.data = {
+            'board': 1
+        }
+        response = self.view.update(self.request, test_list.id)
+        self.assertEqual(response.status_code, 400)
+
+    def test__update_list_in_board_with_no_permission ( self ):
+        test_list = List.objects.create(**self.current_user_test_list)
+        test_board = Board.objects.create(
+            user=self.user_a,
+            name='Test Board'
+        )
+        self.request.data = {
+            'board': test_board.id
+        }
+        response = self.view.update(self.request, test_list.id)
+        self.assertEqueal(response.status_code, 400)

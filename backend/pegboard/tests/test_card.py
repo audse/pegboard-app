@@ -269,7 +269,7 @@ class CardTests ( TestCase ):
     # update_list_doesnt_exist
     # ASSERTS : should return 400 when the requested <List> doesn't exist
     def test__update_list_doesnt_exist ( self ):
-        card = Card.objects.create(**self.user_a_test_card)
+        card = Card.objects.create(**self.current_user_test_card)
         self.request.data = {
             'list': 1
         }

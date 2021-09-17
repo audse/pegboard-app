@@ -46,7 +46,28 @@ class ListViewSet ( viewsets.ModelViewSet ):
             )
     
     def update ( self, request, pk=None ):
-        pass
+        if self.validate_list(request):
+
+            list_to_update = None
+            try:
+                list_to_update = get_object_or_404(List, pk=pk, user=request.user)
+            except:
+                return Response(
+                    data=get_exception_message(404, 'list'),
+                    status=404
+                )
+            
+            return serialize_and_update(
+                serializer=self.serializer_class,
+                object_to_update=list_to_update,
+                request=request,
+                identifier='list'
+            )
+        else:
+            return Response(
+                data=get_exception_message(400, 'list'),
+                status=400
+            )
 
     def retrieve ( self, request, pk=None ):
         return serialize_query(
@@ -74,5 +95,5 @@ class ListViewSet ( viewsets.ModelViewSet ):
 
     # TODO ListViewSet
     # [x] def create
-    # [ ] def update
+    # [x] def update
     # [ ] def archive @action
