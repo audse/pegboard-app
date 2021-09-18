@@ -10,7 +10,7 @@ from rest_framework.response import Response
 
 from django.template.defaultfilters import slugify
 
-from .serializers import ProfileSerializer, CardSerializer, ListSerializer, BoardSerializer, ThemeSerializer
+# from .serializers import ProfileSerializer, CardSerializer, ListSerializer, BoardSerializer, ThemeSerializer
 
 from django.contrib.auth.models import User
 from .models import Card, List, Board, Theme
