@@ -106,10 +106,8 @@ class CardViewSet ( viewsets.ModelViewSet ):
         )
     
     # TODO CardViewSet
-    # [x] def create
-    # [ ] def update
-    # [ ] def partial_update
     # [ ] def @action archive
-    # [ ] def @action get_unorganized
-    #     no list specified
-    # [ ] def @action get_archived
+    # [ ] def @action unarchive
+    # [ ] def @action list_unsorted
+    # [ ] def @action list_archived
+    # [ ] def @action retrieve_archived
