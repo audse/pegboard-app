@@ -100,6 +100,8 @@ class ListViewSet ( viewsets.ModelViewSet ):
         )
 
     # TODO ListViewSet
-    # [x] def create
-    # [x] def update
-    # [ ] def archive @action
+    # [ ] def @action archive 
+    # [ ] def @action unarchive
+    # [ ] def @action list_unsorted
+    # [ ] def @action list_archived
+    # [ ] def @action retrieve_archived

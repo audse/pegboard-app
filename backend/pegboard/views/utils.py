@@ -22,7 +22,7 @@ def get_exception_message ( status_code, identifier ):
         return 'You must log in to view this {identifier}.'
     elif status_code is 400:
         return 'There was a problem with the {identifier} data. Please fix any issues and try again.'
-    else: return 'An internal error occurred, please try again later.'
+    else: return 'An internal error with this {identifier} occurred, please try again later.'
 
 
 # serialize_and_create
