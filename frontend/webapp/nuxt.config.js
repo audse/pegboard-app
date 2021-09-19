@@ -16,14 +16,9 @@ export default {
         ]
     },
 
+    // Axios module configuration: https://go.nuxtjs.dev/config-axios
     axios: {
         baseURL: 'http://localhost:8000/api/',
-        headers: {
-            // 'Authorization': 'Token '
-            // 'X-CSRFToken': 'csrftoken',
-        },
-        // xsrfCookieName: 'csrftoken',
-        // xsrfHeaderName: 'X-CSRFToken',
     },
     
     auth: {
@@ -32,24 +27,16 @@ export default {
                 token: {
                   property: 'token',
                   global: true,
-                  // required: true,
                   type: 'Token'
                 },
-                // scheme: 'local',
-                // token: {
-                //   property: 'token',
-                //   global: true,
-                // },
-                // user: {
-                //   property: 'user',
-                //   autoFetch: true
-                // },
+                user: {
+                  property: ''
+                },
                 endpoints: {
                     login: { url: '/auth/login/', method: 'post', propertyName: 'access_token' },
                     logout: { url: '/auth/logout/', method: 'post' },
                     user: { url: '/auth/user/', method: 'get', propertyName: false, }
                 },
-                
                 tokenType: 'access',
                 tokenName: 'Token',
                 
@@ -59,6 +46,7 @@ export default {
 
     // Global CSS: https://go.nuxtjs.dev/config-css
     css: [
+        '~/static/css/app.scss'
     ],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -80,9 +68,6 @@ export default {
         '@nuxtjs/axios',
         '@nuxtjs/auth-next',
     ],
-
-    // Axios module configuration: https://go.nuxtjs.dev/config-axios
-    // axios: {},
 
     // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {
