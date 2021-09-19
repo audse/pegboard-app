@@ -11,7 +11,7 @@ from .utils import serialize_queryset, serialize_query, serialize_and_create, se
 class BoardViewSet ( viewsets.ModelViewSet ):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
-
+    
     def list ( self, request ):
         return serialize_queryset( 
             serializer=self.serializer_class,
