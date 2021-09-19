@@ -25,32 +25,54 @@
 </section>
 
 </template>
-<script>
+<script lang="ts">
 
-export default {
+// import { reactive } from '@vue/composition-api'
+import { defineComponent, useContext, reactive } from '@nuxtjs/composition-api'
 
-    data () { return {
-        loginData: {
-            username: null,
-            password: null,
-        },
-    }},
+export default defineComponent({
+
+    setup ( ) {
+
+        const context = useContext()
+
+        const loginData = reactive({
+            username: '',
+            password: ''
+        })
+
+        const loginWithEmail = async () => {
+
+        }
+
+        return {
+            loginData
+        }
+
+    },
+
+    // data () { return {
+    //     loginData: {
+    //         username: null,
+    //         password: null,
+    //     },
+    // }},
 
     middleware: 'unauth',
 
     methods: {
         async loginWithEmail () {
-            this.$auth.loginWith('local', {data: this.loginData}).then( result => {
+            this.$auth.loginWith('local', {data: this.loginData}).then( (result:Object) => {
                 this.$auth.setUserToken(`Token ${result.data.key}`).then( () => {
                     console.log('Successfully logged in.')
-                }).catch( e => {
+                }).catch( (e:string) => {
                     throw e
                 })
-            }).catch( e => {
+            }).catch( (e:string) => {
                 throw e
             })
         }
     },
-};
+})
 
 </script>
