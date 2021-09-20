@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useStore } from 'vuex'
+import store from './../store/index.store'
 import Service from './index.service'
 
 interface SignUpData {
@@ -15,8 +15,6 @@ interface SignInData {
 }
 
 class AuthService extends Service {
-
-    store:any = useStore()
 
     constructor () {
         super('auth')
@@ -34,34 +32,38 @@ class AuthService extends Service {
         try {
             const requestData:any = await axios.post(`${this.url}login/`, data)
             const token:string = requestData.data.key
-            return await this.setCurrentUser(token)
+            return await this.loadCurrentUser(token)
         } catch (e:any) {
             throw e
         }
     }
 
-    async setCurrentUser ( token:string ) {
-        const authConfig = { headers: { 'Authorization': `Token ${token}` } }
+    async loadCurrentUser ( token:string='' ) {
+        const authToken:string = token || localStorage.getItem('token') || 'null'
 
-        try {
-            // Get user data
-            const requestData = await axios.get(`${this.url}user/`, authConfig)
-            const currentUser = requestData.data
+        if ( authToken !== 'null' ) {
+            const authConfig = { headers: { 'Authorization': `Token ${authToken}` } }
 
-            // Update storage
-            this.updateStore( token, currentUser )
+            try {
+                // Get user data
+                const requestData = await axios.get(`${this.url}user/`, authConfig)
+                const currentUser = requestData.data
 
-            // Return current user
-            return currentUser
-        } catch (e:any) {
-            throw e
-        }
+                // Update storage
+                this.updateStore( authToken, currentUser )
+
+                // Return current user
+                return currentUser
+            } catch (e:any) {
+                throw e
+            }
+        } else return null
     }
 
     updateStore ( token:string, currentUser:object|null ) {
         localStorage.setItem('token', token)
-        this.store.commit('auth/setToken', token)
-        this.store.commit('auth/setCurrentUser', currentUser)
+        store.commit('auth/setToken', token)
+        store.commit('auth/setCurrentUser', currentUser)
     }
 
     // TODO class-specific methods

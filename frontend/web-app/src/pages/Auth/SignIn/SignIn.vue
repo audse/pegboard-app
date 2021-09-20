@@ -25,15 +25,14 @@
 <script lang="ts">
 
 import { reactive, computed, watch } from 'vue'
-import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import AuthService from './../../../services/auth.service'
 
 export default {
 
     setup () {
 
-        const store = useStore()
-        const user = computed( () => store.state.auth['currentUser'] )
+        const router = useRouter()
 
         const signInData = reactive({
             username: '',
@@ -44,12 +43,13 @@ export default {
 
         const signIn = async ( data:object ) => {
             await auth.signIn( data ).then( (userResponse:object) => {
-                console.log(userResponse)
+                router.push({ name: 'Home' })
+            }).catch( (e:any) => {
+                throw e
             })
         }
 
         return {
-            user,
             signInData,
             signIn
         }

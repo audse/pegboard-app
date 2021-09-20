@@ -1,6 +1,6 @@
 
 interface AuthState {
-    currentUser:object,
+    currentUser:object|null,
     token:string,
 }
 
@@ -9,30 +9,30 @@ const authStore = {
     
     state () {
         return {
-            currentUser: Object(),
+            currentUser: null,
             token: '',
         }
     },
 
     getters: {
 
-        isAuthorized ( state:AuthState ) {
-            return state.currentUser ? true : false
+        isAuthenticated ( state:AuthState ) {
+            return state.currentUser !== null
         }
 
     },
 
     mutations: {
 
-        setToken (state:AuthState, newToken:string) {
+        setToken ( state:AuthState, newToken:string ) {
             state.token = newToken
         },
 
-        setCurrentUser (state:AuthState, newUser:any) {
+        setCurrentUser ( state:AuthState, newUser:object ) {
             state.currentUser = newUser
         }
 
-    }
+    },
 
 }
 
