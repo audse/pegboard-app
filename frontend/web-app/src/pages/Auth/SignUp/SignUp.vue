@@ -1,0 +1,65 @@
+<template>
+
+<form @submit.prevent="signUpWithEmail(signUpData)">
+
+<section>
+    <label for="username">Username</label>
+    <input v-model="signUpData.username" name="username" type="text" />
+</section>
+<section>
+    <label for="email">Email</label>
+    <input v-model="signUpData.email" name="email" type="email" />
+</section>
+<section>
+    <label for="password">Password</label>
+    <input v-model="signUpData.password1" name="password" type="password" />
+</section>
+<section>
+    <label for="confirmPassword">Confirm Password</label>
+    <input v-model="signUpData.password2" name="confirmPassword" type="password" />
+</section>
+<section>
+    <button type="submit">Sign Up</button>
+</section>
+<section>
+    <label>Already signed up?</label>
+    <button class="secondary" to="/signin/">Sign In</button>
+</section>
+
+</form>
+
+</template>
+
+<script lang="ts">
+
+import { reactive } from 'vue'
+import AuthService from './../../../services/auth.service'
+
+export default {
+    name: 'SignUp',
+
+    setup () {
+
+        const signUpData = reactive({
+            username: '',
+            email: '',
+            password1: '',
+            password2: '',
+        })
+
+        const signUpWithEmail = async ( data:object ) => {
+            AuthService.signUpWithEmail( data ).then( (response:object) => {
+                console.log(response)
+            }).catch( (e:any) => {
+                throw e
+            })
+        }
+
+        return {
+            signUpData,
+            signUpWithEmail
+        }
+    }
+}
+
+</script>
