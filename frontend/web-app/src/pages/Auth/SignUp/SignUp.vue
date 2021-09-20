@@ -1,19 +1,4 @@
 <template>
-<!--
-<div id="g_id_onload"
-    data-client_id="652460956969-394v9crnmp6hf9pugt6vua5vsrin5odr.apps.googleusercontent.com"
-    data-callback="signUpWithGoogle">
-</div>
-<div class="g_id_signin"
-    data-ux_mode="redirect"
-    data-type="standard"
-    data-size="large"
-    data-theme="outline"
-    data-text="sign_in_with"
-    data-shape="rectangular"
-    data-logo_alignment="left">
-</div>
--->
 
 <div id="googleLogin"></div>
 
@@ -75,15 +60,15 @@ export default {
         }
 
         const signUpWithGoogle = ( response:any ) => {
-            console.log('Signing in with google...', response)
-            AuthService.signUpWithGoogle(response.credential)
+            console.log('Signing in with google...')
+            AuthService.signUpWithGoogle(response)
         }
 
         const initializeGoogle = () => {
 
             google.accounts.id.initialize({
                 client_id: '652460956969-394v9crnmp6hf9pugt6vua5vsrin5odr.apps.googleusercontent.com',
-                login_uri: 'http://localhost:8000/api/auth/google/'
+                callback: signUpWithGoogle,
             })
 
             google.accounts.id.renderButton(

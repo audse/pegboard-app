@@ -20,10 +20,12 @@ class AuthService extends Service {
         super('auth')
     }
 
-    async signUpWithGoogle ( token:string ) {
+    async signUpWithGoogle ( request:any ) {
         try {
-            console.log(token)
-            const requestData:any = axios.post(`${this.url}google/`, {'code': token})
+            console.log(request)
+            const token = request.credential
+            await axios.post(`${this.url}google/`, {token:token})
+
             return await this.loadCurrentUser(token)
         } catch (e:any) {
             throw e
