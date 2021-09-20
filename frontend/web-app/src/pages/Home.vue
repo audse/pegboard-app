@@ -11,7 +11,7 @@
 <section v-else>
 
 <router-link :to="{ name: 'Sign In' }">
-    <a class="text-blue-500">Sign In</a>
+    <a class="text-blue-500 pr-4">Sign In</a>
 </router-link>
 <router-link :to="{ name: 'Sign Up' }">
     <a class="text-blue-500">Sign Up</a>
@@ -37,11 +37,10 @@ export default {
         const router = useRouter()
         const store = useStore()
 
-        const auth = new AuthService()
         const currentUser = reactive(store.state.auth.currentUser)
 
         const signOut = async () => {
-            await auth.signOut().then( () => {
+            await AuthService.signOut().then( () => {
                 router.push({ name: 'Sign In' })
             }).catch( (e:any) => {
                 throw e

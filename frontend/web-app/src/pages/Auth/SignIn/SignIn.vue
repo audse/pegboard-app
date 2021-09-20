@@ -41,10 +41,8 @@ export default {
             password: '',
         })
 
-        const auth = new AuthService()
-
         const signIn = async ( data:object ) => {
-            await auth.signIn( data ).then( (userResponse:object) => {
+            await AuthService.signIn( data ).then( (userResponse:object) => {
                 router.push({ name: 'Home' })
             }).catch( (e:any) => {
                 throw e

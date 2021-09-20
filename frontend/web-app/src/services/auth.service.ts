@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import store from './../store/index.store'
 import Service from './index.service'
 
@@ -18,6 +18,16 @@ class AuthService extends Service {
 
     constructor () {
         super('auth')
+    }
+
+    async signUpWithGoogle ( token:string ) {
+        try {
+            console.log(token)
+            const requestData:any = axios.post(`${this.url}google/`, {'code': token})
+            return await this.loadCurrentUser(token)
+        } catch (e:any) {
+            throw e
+        }
     }
 
     async signUpWithEmail ( data:SignUpData ) {
@@ -83,4 +93,4 @@ class AuthService extends Service {
 
 }
 
-export default AuthService
+export default new AuthService()

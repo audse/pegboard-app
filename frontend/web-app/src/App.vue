@@ -1,7 +1,19 @@
 <template>
 
-<main class="p-6">
+<MainLayout>
 <router-view />
-</main>
+</MainLayout>
 
 </template>
+
+<script lang="ts">
+
+import MainLayout from './layouts/Main.layout.vue'
+
+export default {
+    components: {
+        MainLayout
+    }
+}
+
+</script>

@@ -1,11 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import authRoutes from './auth.routes'
+
 import store from './../store/index.store'
 import AuthService from '../services/auth.service'
 
 import Home from './../pages/Home.vue'
-import SignUp from './../pages/Auth/SignUp/SignUp.vue'
-import SignUpSuccess from './../pages/Auth/SignUp/SignUp.success.vue'
-import SignIn from './../pages/Auth/SignIn/SignIn.vue'
 
 const routes = [
     { 
@@ -13,30 +12,8 @@ const routes = [
         path: '/', 
         component: Home,
     },
-    { 
-        name: 'Sign Up',
-        path: '/signup', 
-        component: SignUp,
-        meta: {
-            requiresUnauth: true,
-        }
-    },
-    { 
-        name: 'Sign Up Success',
-        path: '/signup/success', 
-        component: SignUpSuccess,
-        meta: {
-            requiresUnauth: true,
-        }
-    },
-    { 
-        name: 'Sign In',
-        path: '/signin', 
-        component: SignIn,
-        meta: {
-            requiresUnauth: true,
-        }
-    },
+    
+    ...authRoutes
 ]
 
 const router = createRouter({
@@ -46,7 +23,7 @@ const router = createRouter({
 
 router.beforeEach( async (to, from, next) => {
 
-    await new AuthService().loadCurrentUser()
+    await AuthService.loadCurrentUser()
     const isAuthenticated = store.getters['auth/isAuthenticated']
 
     if ( to.meta.requiresAuth && !isAuthenticated ) {
