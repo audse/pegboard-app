@@ -21,12 +21,13 @@
 <section>
     <button type="submit">Sign Up</button>
 </section>
-<section>
-    <label>Already signed up?</label>
-    <button class="secondary" to="/signin/">Sign In</button>
-</section>
-
 </form>
+
+<label>Already signed up?</label>
+<router-link :to="{ name: 'Sign In' }">
+    <button class="secondary">Sign In</button>
+</router-link>
+
 
 </template>
 

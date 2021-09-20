@@ -27,7 +27,7 @@ const routes = [
         meta: {
             requiresUnauth: true,
         }
-    }
+    },
 ]
 
 const router = createRouter({

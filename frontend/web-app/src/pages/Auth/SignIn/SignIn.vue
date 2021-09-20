@@ -14,12 +14,14 @@
 <section>
     <button type="submit">Sign In</button>
 </section>
-<section>
-    <label>Not signed up?</label>
-    <button class="secondary" to="/signin/">Sign Up</button>
-</section>
 
 </form>
+
+<label>Not signed up?</label>
+<router-link :to="{ name: 'Sign Up' }">
+    <button class="secondary">Sign Up</button>
+</router-link>
+
 
 </template>
 <script lang="ts">

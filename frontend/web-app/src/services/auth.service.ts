@@ -38,6 +38,16 @@ class AuthService extends Service {
         }
     }
 
+    async signOut () {
+        try {
+            await axios.post(`${this.url}logout/`)
+            this.updateStore('', null)
+            return
+        } catch (e:any) {
+            throw e
+        }
+    }
+
     async loadCurrentUser ( token:string='' ) {
         const authToken:string = token || localStorage.getItem('token') || 'null'
 
