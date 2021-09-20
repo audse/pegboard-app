@@ -4,6 +4,7 @@ import AuthService from '../services/auth.service'
 
 import Home from './../pages/Home.vue'
 import SignUp from './../pages/Auth/SignUp/SignUp.vue'
+import SignUpSuccess from './../pages/Auth/SignUp/SignUp.success.vue'
 import SignIn from './../pages/Auth/SignIn/SignIn.vue'
 
 const routes = [
@@ -16,6 +17,14 @@ const routes = [
         name: 'Sign Up',
         path: '/signup', 
         component: SignUp,
+        meta: {
+            requiresUnauth: true,
+        }
+    },
+    { 
+        name: 'Sign Up Success',
+        path: '/signup/success', 
+        component: SignUpSuccess,
         meta: {
             requiresUnauth: true,
         }

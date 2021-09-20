@@ -34,12 +34,15 @@
 <script lang="ts">
 
 import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
 import AuthService from './../../../services/auth.service'
 
 export default {
     name: 'SignUp',
 
     setup () {
+
+        const router = useRouter()
 
         const signUpData = reactive({
             username: '',
@@ -48,9 +51,11 @@ export default {
             password2: '',
         })
 
+        const auth = new AuthService()
+
         const signUpWithEmail = async ( data:object ) => {
-            AuthService.signUpWithEmail( data ).then( (response:object) => {
-                console.log(response)
+            auth.signUpWithEmail( data ).then( (response:object) => {
+                router.push({ name: 'Sign Up Success' })
             }).catch( (e:any) => {
                 throw e
             })
