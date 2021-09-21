@@ -13,6 +13,14 @@ class Board ( models.Model ):
         on_delete = models.CASCADE,
         related_name = 'boards'
     )
+
+    folder = models.ForeignKey(
+        'Folder',
+        on_delete = models.SET_NULL,
+        null = True,
+        blank = True,
+        related_name = 'boards'
+    )
     
     name = models.CharField(max_length=128)
     description = models.TextField(blank=True)

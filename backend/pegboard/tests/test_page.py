@@ -276,8 +276,7 @@ class PageTests ( TestCase ):
         )
         response = self.view.list_unsorted(self.request)
         self.assertEqual(response.status_code, 404)
-
-
+        
 
     '''    
     <PageViewSet> TESTS FOR `list_archived` FUNCTION (ACTION)

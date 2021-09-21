@@ -138,3 +138,114 @@ class FolderTests ( TestCase ):
         }
         response = self.view.update(self.request, test_folder.id)
         self.assertEqual(response.status_code, 404)
+    
+
+
+    '''    
+    <FolderViewSet> TESTS FOR `list_archived` FUNCTION (ACTION)
+    '''
+
+    # should return a list containing only one archived <Folder>
+    def test__list_archived ( self ):
+        Folder.objects.create(**self.current_user_test_folder)
+        Folder.objects.create(
+            date_archived=self.field_date_archived,
+            **self.current_user_test_folder
+        )
+
+        response = self.view.list_archived(self.request)
+        self.assertTrue(len(response.data) is 1)
+    
+    # should return 404 when the <User:current_user> does not have access to the requested <Folder>
+    def test__list_archived_with_no_permission ( self ):
+        Folder.objects.create(
+            date_archived=self.field_date_archived,
+            **self.user_a_test_folder
+        )
+
+        response = self.view.list_archived(self.request)
+        self.assertEqual(response.status_code, 404)
+
+
+    '''    
+    <FolderViewSet> TESTS FOR `retrieve_archived` FUNCTION (ACTION)
+    '''
+
+    # should return a <Folder> with a non-empty `date_archived` field
+    def test__retrieve_archived ( self ):
+        test_folder = Folder.objects.create(
+            date_archived=self.field_date_archived,
+            **self.current_user_test_folder
+        )
+
+        response = self.view.retrieve_archived(self.request, test_folder.id)
+        self.assertTrue(response.data['date_archived'] is not None)
+    
+    # should return 404 when the <User:current_user> does not have access to the requested <Folder>
+    def test__retrieve_archived_with_no_permission ( self ):
+        test_folder = Folder.objects.create(
+            date_archived=self.field_date_archived,
+            **self.user_a_test_folder
+        )
+        response = self.view.retrieve_archived(self.request, test_folder.id)
+        self.assertEqual(response.status_code, 404)
+
+    '''    
+    <FolderViewSet> TESTS FOR `archive` FUNCTION (ACTION)
+    '''
+
+    # should update a <Folder> to a non-empty `date_archived` field
+    def test__archive ( self ):
+        test_folder = Folder.objects.create(**self.current_user_test_folder)
+
+        response = self.view.archive(self.request, test_folder.id)
+        self.assertTrue(response.data['date_archived'] is not None)
+
+    # should return 404 when the <User:current_user> does not have access to the requested <Folder>
+    def test__archive_with_no_permission ( self ):
+        test_folder = Folder.objects.create(**self.user_a_test_folder)
+        response = self.view.archive(self.request, test_folder.id)
+        self.assertEqual(response.status_code, 404)
+
+    # should return a <Folder> with a non-empty `date_archived` field
+    def test__archive_with_already_archived ( self ):
+        test_folder = Folder.objects.create(
+            date_archived=self.field_date_archived,
+            **self.current_user_test_folder
+        )
+
+        response = self.view.archive(self.request, test_folder.id)
+        self.assertTrue(response.data['date_archived'] is not None)
+
+    '''    
+    <FolderViewSet> TESTS FOR `unarchive` FUNCTION (ACTION)
+    '''
+
+    # should update a <Folder> to an empty `date_archived` field
+    def test__unarchive ( self ):
+        test_folder = Folder.objects.create(
+            date_archived=self.field_date_archived,
+            **self.current_user_test_folder
+        )
+
+        response = self.view.unarchive(self.request, test_folder.id)
+        self.assertTrue(response.data['date_archived'] is None)
+
+    # should return 404 when the <User:current_user> does not have access to the requested <Folder>
+    def test__unarchive_with_no_permission ( self ):
+        test_folder = Folder.objects.create(
+            date_archived=self.field_date_archived,
+            **self.user_a_test_folder
+        )
+
+        response = self.view.unarchive(self.request, test_folder.id)
+        self.assertEqual(response.status_code, 404)
+
+    # should return a <Folder> with an empty `date_archived` field
+    def test__unarchive_with_not_archived ( self ):
+        test_folder = Folder.objects.create(**self.current_user_test_folder)
+
+        response = self.view.unarchive(self.request, test_folder.id)
+        self.assertTrue(response.data['date_archived'] is None)
+
+
