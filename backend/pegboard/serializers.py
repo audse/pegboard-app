@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
-from .models import Card, Page, Board, Folder, Theme
+from .models import Note, Page, Board, Folder, Theme
 
-class CardSerializer ( serializers.ModelSerializer ):
-    model = Card
+class NoteSerializer ( serializers.ModelSerializer ):
+    model = Note
     class Meta:
-        model = Card
+        model = Note
         fields = '__all__'
         # TODO add ordering here
 

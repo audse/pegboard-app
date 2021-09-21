@@ -1,4 +1,4 @@
-from .view_card import CardViewSet
+from .view_note import NoteViewSet
 from .view_page import PageViewSet
 from .view_board import BoardViewSet
 from .view_folder import FolderViewSet

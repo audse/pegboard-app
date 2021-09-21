@@ -6,7 +6,7 @@ from . import views
 # Django Rest Framework Setup
 router = routers.DefaultRouter()
 # router.register(r'profiles', views.ProfileViewSet)
-router.register(r'cards', views.CardViewSet)
+router.register(r'notes', views.NoteViewSet)
 router.register(r'pages', views.PageViewSet)
 router.register(r'boards', views.BoardViewSet)
 router.register(r'themes', views.ThemeViewSet)

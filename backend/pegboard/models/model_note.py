@@ -4,12 +4,12 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
-class Card ( models.Model ):
+class Note ( models.Model ):
 
     user = models.ForeignKey(
         User,
         on_delete = models.CASCADE,
-        related_name = 'cards'
+        related_name = 'notes'
     )
 
     page = models.ForeignKey(
@@ -17,7 +17,7 @@ class Card ( models.Model ):
         on_delete = models.SET_NULL,
         null = True,
         blank = True,
-        related_name = 'cards'
+        related_name = 'notes'
     )
 
     board = models.ForeignKey(
@@ -25,13 +25,13 @@ class Card ( models.Model ):
         on_delete = models.SET_NULL,
         null = True,
         blank = True,
-        related_name = 'cards'
+        related_name = 'notes'
     )
 
     name = models.CharField(max_length=128)
     content = models.TextField(blank=True)
 
-    display = models.CharField(max_length=36, default='card')
+    display = models.CharField(max_length=36, default='note')
     url = models.SlugField(blank=True)
     order = models.IntegerField(default=0)
 
@@ -48,11 +48,11 @@ class Card ( models.Model ):
     def __str__ ( self ):
         return self.name
 
-# TODO model_card.py
+# TODO model_note.py
 # [ ] attachment
 # [ ] shared with
 #     original user should be automatically added
 # [ ] implement children, parents
 # [ ] automatic url slugify
 # [ ] board foreignkey
-#     for unorganized cards
+#     for unorganized notes

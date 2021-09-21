@@ -4,18 +4,18 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from ..models import Card, Page
-from ..serializers import CardSerializer
+from ..models import Note, Page
+from ..serializers import NoteSerializer
 
 from .utils import get_exception_message, serialize_and_create, serialize_and_update, serialize_queryset, serialize_query
 
 # TODO replace `user` query with `shared_with`
 
-class CardViewSet ( viewsets.ModelViewSet ):
-    queryset = Card.objects.all()
-    serializer_class = CardSerializer
+class NoteViewSet ( viewsets.ModelViewSet ):
+    queryset = Note.objects.all()
+    serializer_class = NoteSerializer
 
-    def validate_card ( self, request ):
+    def validate_note ( self, request ):
         valid = True
         if 'page' in request.data.keys():
             try:
@@ -29,7 +29,7 @@ class CardViewSet ( viewsets.ModelViewSet ):
         return serialize_queryset(
             serializer = self.serializer_class, 
             request = request,
-            identifier = 'cards',
+            identifier = 'notes',
             query = {
                 'user': request.user,
                 'date_archived__isnull': True
@@ -37,39 +37,39 @@ class CardViewSet ( viewsets.ModelViewSet ):
         )
 
     def create ( self, request ):
-        if self.validate_card(request):
+        if self.validate_note(request):
             return serialize_and_create(
                 serializer=self.serializer_class,
                 request=request,
-                identifier='card'
+                identifier='note'
             )
         else:
             return Response(
-                data=get_exception_message(400, 'card'),
+                data=get_exception_message(400, 'note'),
                 status=400
             )
     
     def update ( self, request, pk=None ):
-        if self.validate_card(request):
+        if self.validate_note(request):
 
-            card_to_update = None
+            note_to_update = None
             try:
-                card_to_update = get_object_or_404(Card, pk=pk, user=request.user)
+                note_to_update = get_object_or_404(Note, pk=pk, user=request.user)
             except:
                 return Response(
-                    data=get_exception_message(404, 'card'),
+                    data=get_exception_message(404, 'note'),
                     status=404
                 )
             
             return serialize_and_update(
                 serializer=self.serializer_class,
-                object_to_update=card_to_update,
+                object_to_update=note_to_update,
                 request=request,
-                identifier='card'
+                identifier='note'
             )
         else:
             return Response(
-                data=get_exception_message(400, 'card'),
+                data=get_exception_message(400, 'note'),
                 status=400
             )
 
@@ -78,7 +78,7 @@ class CardViewSet ( viewsets.ModelViewSet ):
         return serialize_query(
             serializer=self.serializer_class, 
             request=request,
-            identifier='card',
+            identifier='note',
             query={
                 'pk': pk,
                 'user': request.user,
@@ -97,7 +97,7 @@ class CardViewSet ( viewsets.ModelViewSet ):
         return serialize_queryset(
             serializer=self.serializer_class,
             request=request,
-            identifier='cards',
+            identifier='notes',
             query={
                 'user': request.user,
                 'page': current_page,
@@ -105,7 +105,7 @@ class CardViewSet ( viewsets.ModelViewSet ):
             }
         )
     
-    # TODO CardViewSet
+    # TODO NoteViewSet
     # [ ] def @action archive
     # [ ] def @action unarchive
     # [ ] def @action list_unsorted
