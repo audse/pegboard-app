@@ -4,17 +4,18 @@ The core principle of Pegboard is to organize the way you would in real life- an
 ## Technologies
 
 ### Backend
-* Python with Django and Django REST Framework
-* PostgreSQL
+* Python
+* Django/Django REST Framework
+* PostgresQL
 
 ### Frontend
+* Typescript/Javascript
 * Vue3
-* Quasar
 * My Custom UI Library (Cosmic Component Library) for Vue3 - [find out more here](https://github.com/audse/cosmic-library)
 
 ## Features
-* Organize your ideas into cards, lists, and boards for ultimate flexibility.
-* Automatically generate color themes (or pick from out presets) to give each board a different vibe (and pick a sitewide theme to your taste).
+* Organize your ideas into notes, pages, boards, and folders for ultimate flexibility.
+* Automatically generate color themes (or pick from our presets) to give each board a different vibe (and pick a sitewide theme to your taste).
 
 ### Roadmap
 Pegboard is currently still under development. In the future, there are plans to implement the following features:
@@ -24,6 +25,7 @@ Pegboard is currently still under development. In the future, there are plans to
 - [ ] Work within a team or a family.
 - [ ] Search all cards with a menagerie of filters.
 - [ ] Choose what information is most prominent per board, per list, or even on a card-by-card basis.
+- [ ] A native iOS App (for great performance on both desktop and mobile)
 
 ## Installation
 Pegboard is still under development, so installation is not recommended.
