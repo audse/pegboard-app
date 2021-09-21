@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Card, List, Board, Theme
+from .models import Card, List, Board, Folder, Theme
 
 class CardSerializer ( serializers.ModelSerializer ):
     model = Card
@@ -19,6 +19,12 @@ class BoardSerializer ( serializers.ModelSerializer ):
     model = Board
     class Meta:
         model = Board
+        fields = '__all__'
+
+class FolderSerializer ( serializers.ModelSerializer ):
+    model = Folder
+    class Meta:
+        model = Folder
         fields = '__all__'
 
 class ThemeSerializer ( serializers.ModelSerializer ):

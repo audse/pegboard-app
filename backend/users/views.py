@@ -3,8 +3,10 @@ from rest_auth.registration.views import SocialLoginView, SocialLoginSerializer
 # from allauth.socialaccount.providers.google.views import GoogleOAuth2RestAdapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from django.views.decorators.csrf import csrf_exempt
-from google.oauth2 import id_token
+from google.oauth2 import id_token, credentials
 from google.auth.transport import requests
+
+# from .models import SocialProfile
 
 from rest_framework.response import Response
 
@@ -13,6 +15,23 @@ from rest_framework.response import Response
     # adapter_class = GoogleOAuth2Adapter
     # callback_url = 'http://localhost:3000'
     # client_class = OAuth2Client
+
+def GoogleSignUp (request):
+    # Get JSON Web Token
+    token = None
+    try:
+        token = request.data['token']
+    except Exception as err:
+        return Response(err)
+
+    # Access User Data
+    try:
+        decrypted_token = id_token.verify_oauth2_token(token, requests.Request(), '652460956969-394v9crnmp6hf9pugt6vua5vsrin5odr.apps.googleusercontent.com')
+        return Response()
+
+    except Exception as err:
+        return Response(err)
+
 
 class GoogleLogin(SocialLoginView):
     authentication_classes = []

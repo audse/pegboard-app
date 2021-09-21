@@ -5,6 +5,21 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from pegboard.models import Theme
 
+# class SocialProfile ( models.Model ):
+
+#     provider_id = models.CharField(max_length=256)
+
+#     email = models.CharField(max_length=256, blank=True)
+#     username = models.CharField(max_length=256, blank=True)
+#     display_name = models.CharField(max_length=256, blank=True)
+
+#     theme = models.ForeignKey( 
+#         Theme, 
+#         on_delete=models.SET_NULL,
+#         null=True,
+#         blank=True,
+#     )
+
 class Profile ( models.Model ):
 
     user = models.OneToOneField(
