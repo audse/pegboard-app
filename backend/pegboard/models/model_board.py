@@ -17,6 +17,17 @@ class BoardQuerySet ( models.QuerySet ):
             Q(shared_with=user),
             date_archived__isnull=True,
         )
+    
+    def retrieve(self, user, pk):
+        try:
+            return self.get(
+                Q(user=user) |
+                Q(shared_with=user),
+                date_archived__isnull=True,
+                pk=pk
+            )
+        except Exception as e:
+            return e
 
     def list_by_folder(self, user, folder):
         return self.filter(
@@ -32,6 +43,17 @@ class BoardQuerySet ( models.QuerySet ):
             Q(shared_with=user),
             date_archived__isnull=False,
         )
+    
+    def retrieve_archived(self, user, pk):
+        try:
+            return self.get(
+                Q(user=user) |
+                Q(shared_with=user),
+                date_archived__isnull=False,
+                pk=pk
+            )
+        except Exception as e:
+            return e
 
     def list_unsorted(self, user):
         return self.filter(
@@ -58,11 +80,17 @@ class BoardManager ( models.Manager ):
     def list(self, user):
         return self.get_queryset().list(user)
 
+    def retrieve(self, user, pk):
+        return self.get_queryset().retrieve(user, pk)
+
     def list_by_folder(self, user, folder):
         return self.get_queryset().list_by_folder(user, folder)
 
     def list_archived(self, user):
         return self.get_queryset().list_archived(user)
+
+    def retrieve_archived(self, user, pk):
+        return self.get_queryset().retrieve_archived(user, pk)
     
     def list_unsorted(self, user):
         return self.get_queryset().list_unsorted(user)
