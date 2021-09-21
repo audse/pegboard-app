@@ -4,6 +4,8 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from django.utils import timezone
+
 from ..models import Page, Board
 from ..serializers import PageSerializer
 
@@ -80,13 +82,10 @@ class PageViewSet ( viewsets.ModelViewSet ):
         )
 
     @action( methods=['get'], detail=True, url_path='board' )
-    def get_by_board ( self, request, pk ):
-        current_board = None
+    def list_by_board ( self, request, pk ):
         try:
             current_board = Board.objects.get(pk=pk, user=request.user, date_archived__isnull=True)
-        except:
-            return Response(data=get_exception_message(404, 'page'), status=404)
-        return serialize_queryset(
+            return serialize_queryset(
             serializer=self.serializer_class, 
             request=request,
             identifier='pages',
@@ -96,10 +95,90 @@ class PageViewSet ( viewsets.ModelViewSet ):
                 'board': current_board.id
             }
         )
+        except:
+            return Response(data=get_exception_message(404, 'page'), status=404)
+        
+    
+    @action( methods=['get'], detail=True, url_path='unsorted')
+    def list_unsorted ( self, request ):
+        return serialize_queryset(
+            serializer=self.serializer_class,
+            request=request,
+            identifier='pages',
+            query={
+                'user': request.user,
+                'board__isnull': True,
+                'date_archived__isnull': True,
+            }
+        )
+    
+    @action( methods=['get'], detail=True, url_path='archived' )
+    def list_archived ( self, request ):
+        return serialize_queryset(
+            serializer=self.serializer_class,
+            request=request,
+            identifier='pages',
+            query={
+                'user': request.user,
+                'date_archived__isnull': False,
+            }
+        )
+    
+    @action( methods=['get'], detail=True, url_path='archived' )
+    def retrieve_archived ( self, request, pk ):
+        return serialize_query(
+            serializer=self.serializer_class,
+            request=request,
+            identifier='page',
+            query={
+                'pk': pk,
+                'user': request.user,
+                'date_archived__isnull': False,
+            }
+        )
+    
+    @action( methods=['put'], detail=True, url_path='archive' )
+    def archive ( self, request, pk ):
+        try:
+            page_to_update = get_object_or_404(
+                Page,
+                pk=pk,
+                user=request.user
+            )
+            return serialize_and_update(
+                serializer=self.serializer_class,
+                object_to_update=page_to_update,
+                request=request,
+                data={
+                    'date_archived': timezone.now()
+                },
+                identifier='page',
+            )
+        except:
+            return Response(
+                data=get_exception_message(404, 'page'),
+                status=404
+            )
 
-    # TODO PageViewSet
-    # [ ] def @action archive 
-    # [ ] def @action unarchive
-    # [ ] def @action page_unsorted
-    # [ ] def @action page_archived
-    # [ ] def @action retrieve_archived
+    @action( methods=['put'], detail=True, url_path='archive' )
+    def unarchive ( self, request, pk ):
+        try:
+            page_to_update = get_object_or_404(
+                Page,
+                pk=pk,
+                user=request.user
+            )
+            return serialize_and_update(
+                serializer=self.serializer_class,
+                object_to_update=page_to_update,
+                request=request,
+                data={
+                    'date_archived': None,
+                },
+                identifier='page',
+            )
+        except:
+            return Response(
+                data=get_exception_message(404, 'page'),
+                status=404
+            )

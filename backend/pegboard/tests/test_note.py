@@ -33,7 +33,7 @@ class NoteTests ( TestCase ):
 
         # Create Example Data
         self.field_name = 'Test Note'
-        self.field_archived = timezone.now()
+        self.field_date_archived = timezone.now()
 
         self.current_user_test_note, self.user_a_test_note = {
             'user': self.current_user,
@@ -66,7 +66,7 @@ class NoteTests ( TestCase ):
     # should return only <Note> objects that have not been archived
     def test__no_archived_in_list_all ( self ):
         Note.objects.create(
-            date_archived = self.field_archived,
+            date_archived = self.field_date_archived,
             **self.current_user_test_note
         ), Note.objects.create(**self.current_user_test_note)
 
@@ -99,7 +99,7 @@ class NoteTests ( TestCase ):
     def test__no_archived ( self ):
 
         test_note = Note.objects.create(
-            date_archived=self.field_archived,
+            date_archived=self.field_date_archived,
             **self.current_user_test_note
         )
 
@@ -154,7 +154,7 @@ class NoteTests ( TestCase ):
         current_page = Page.objects.create(
             user=self.current_user,
             name='Test Page',
-            date_archived = self.field_archived
+            date_archived = self.field_date_archived
         )
         Note.objects.create( # the <Page> is archived, but it's <Note> isn't
             page=current_page,
@@ -308,6 +308,16 @@ class NoteTests ( TestCase ):
         response = self.view.list_unsorted(self.request)
         self.assertTrue(len(response.data) is 1)
 
+    # should return 404 when there are no unsorted, unarchived <Note> objects
+    def test__list_unsorted_with_archived ( self ):
+        Note.objects.create(
+            date_archived=self.field_date_archived,
+            **self.current_user_test_note
+        )
+        response = self.view.list_unsorted(self.request)
+        self.assertEqual(response.status_code, 404)
+
+
 
     '''    
     <NoteViewSet> TESTS FOR `list_archived` FUNCTION (ACTION)
@@ -317,7 +327,7 @@ class NoteTests ( TestCase ):
     def test__list_archived ( self ):
         Note.objects.create(**self.current_user_test_note)
         Note.objects.create(
-            date_archived=self.field_archived,
+            date_archived=self.field_date_archived,
             **self.current_user_test_note
         )
 
@@ -327,7 +337,7 @@ class NoteTests ( TestCase ):
     # should return 404 when the <User:current_user> does not have access to the requested <Note>
     def test__list_archived_with_no_permission ( self ):
         Note.objects.create(
-            date_archived=self.field_archived,
+            date_archived=self.field_date_archived,
             **self.user_a_test_note
         )
 
@@ -342,7 +352,7 @@ class NoteTests ( TestCase ):
     # should return a <Note> with a non-empty `date_archived` field
     def test__retrieve_archived ( self ):
         test_note = Note.objects.create(
-            date_archived=self.field_archived,
+            date_archived=self.field_date_archived,
             **self.current_user_test_note
         )
 
@@ -352,7 +362,7 @@ class NoteTests ( TestCase ):
     # should return 404 when the <User:current_user> does not have access to the requested <Note>
     def test__retrieve_archived_with_no_permission ( self ):
         test_note = Note.objects.create(
-            date_archived=self.field_archived,
+            date_archived=self.field_date_archived,
             **self.user_a_test_note
         )
         response = self.view.retrieve_archived(self.request, test_note.id)
@@ -378,7 +388,7 @@ class NoteTests ( TestCase ):
     # should return a <Note> with a non-empty `date_archived` field
     def test__archive_with_already_archived ( self ):
         test_note = Note.objects.create(
-            date_archived=self.field_archived,
+            date_archived=self.field_date_archived,
             **self.current_user_test_note
         )
 
@@ -392,7 +402,7 @@ class NoteTests ( TestCase ):
     # should update a <Note> to an empty `date_archived` field
     def test__unarchive ( self ):
         test_note = Note.objects.create(
-            date_archived=self.field_archived,
+            date_archived=self.field_date_archived,
             **self.current_user_test_note
         )
 
@@ -402,7 +412,7 @@ class NoteTests ( TestCase ):
     # should return 404 when the <User:current_user> does not have access to the requested <Note>
     def test__unarchive_with_no_permission ( self ):
         test_note = Note.objects.create(
-            date_archived=self.field_archived,
+            date_archived=self.field_date_archived,
             **self.user_a_test_note
         )
 
