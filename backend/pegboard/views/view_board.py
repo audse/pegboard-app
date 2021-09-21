@@ -1,4 +1,6 @@
 from __future__ import unicode_literals
+from django.db.models.query_utils import Q
+from django.http.response import Http404, HttpResponse
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -9,21 +11,16 @@ from django.utils import timezone
 from ..models import Board, Folder
 from ..serializers import BoardSerializer
 
-from .utils import serialize_queryset, serialize_query, serialize_and_create, serialize_and_update, get_exception_message
+from .utils import serialize_query_without_args, serialize_queryset, serialize_query, serialize_and_create, serialize_and_update, get_e_message, serialize_queryset_without_args
 
 class BoardViewSet ( viewsets.ModelViewSet ):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
     
     def list ( self, request ):
-        return serialize_queryset( 
+        return serialize_queryset_without_args(
+            queryset=Board.objects.list(user=request.user),
             serializer=self.serializer_class,
-            request=request,
-            identifier='boards',
-            query={
-                'user': request.user,
-                'date_archived__isnull': True,
-            }
         )
 
     def create ( self, request ):
@@ -47,88 +44,82 @@ class BoardViewSet ( viewsets.ModelViewSet ):
                 data=request.data,
                 identifier='board'
             )
-        except:
-            return Response(
-                data=get_exception_message(404, 'board'),
-                status=404
-            )
+        except Exception as e:
+            return Response(e, status=404)
 
     def retrieve ( self, request, pk=None ):
-        return serialize_query(
-            serializer=self.serializer_class, 
-            request=request,
-            identifier='board',
-            query={
-                'pk': pk,
-                'user': request.user,
-                'date_archived__isnull': True
-            }
+        try:
+            return serialize_query_without_args(
+                query_object=get_object_or_404(
+                    Board,
+                    Q(user=request.user) |
+                    Q(shared_with=request.user),
+                    pk=pk,
+                    date_archived__isnull=True
+                ),
+                serializer=self.serializer_class, 
+            )
+        except Exception as e:
+            return Response(e, status=404)
+    
+    @action( methods=['get'], detail=True, url_path='shared' )
+    def list_by_shared_with ( self, request ):
+        return serialize_queryset_without_args(
+            queryset=Board.objects.list_shared_with(user=request.user),
+            serializer=self.serializer_class,
         )
 
     @action( methods=['get'], detail=True, url_path='folder' )
     def list_by_folder ( self, request, pk ):
         try:
             current_folder = Folder.objects.get(pk=pk, user=request.user, date_archived__isnull=True)
-            return serialize_queryset(
-            serializer=self.serializer_class, 
-            request=request,
-            identifier='boards',
-            query={
-                'user': request.user,
-                'date_archived__isnull': True,
-                'folder': current_folder.id
-            }
-        )
+            return serialize_queryset_without_args(
+                queryset=Board.objects.list_by_folder(user=request.user, folder=current_folder),
+                serializer=self.serializer_class,
+            )
         except:
-            return Response(data=get_exception_message(404, 'folder'), status=404)
+            return Response(data=get_e_message(404, 'folder'), status=404)
         
     
     @action( methods=['get'], detail=True, url_path='unsorted')
     def list_unsorted ( self, request ):
-        return serialize_queryset(
+        return serialize_queryset_without_args(
+            queryset=Board.objects.list_unsorted(user=request.user),
             serializer=self.serializer_class,
-            request=request,
-            identifier='boards',
-            query={
-                'user': request.user,
-                'folder__isnull': True,
-                'date_archived__isnull': True,
-            }
         )
     
 
     @action( methods=['get'], detail=True, url_path='archived' )
     def list_archived ( self, request ):
-        return serialize_queryset(
+        return serialize_queryset_without_args(
+            queryset=Board.objects.list_archived(user=request.user),
             serializer=self.serializer_class,
-            request=request,
-            identifier='boards',
-            query={
-                'user': request.user,
-                'date_archived__isnull': False,
-            }
         )
     
     @action( methods=['get'], detail=True, url_path='archived' )
     def retrieve_archived ( self, request, pk ):
-        return serialize_query(
-            serializer=self.serializer_class,
-            request=request,
-            identifier='board',
-            query={
-                'pk': pk,
-                'user': request.user,
-                'date_archived__isnull': False,
-            }
-        )
+        try:
+            return serialize_query_without_args(
+                query_object=get_object_or_404(
+                    Board,
+                    Q(user=request.user) |
+                    Q(shared_with=request.user),
+                    pk=pk,
+                    date_archived__isnull=False
+                ),
+                serializer=self.serializer_class,
+            )
+        except Exception as e:
+            return Response(e, status=404)
     
     @action( methods=['put'], detail=True, url_path='archive' )
     def archive ( self, request, pk ):
         try:
             board_to_update = get_object_or_404(
                 Board,
+                Q(user=request.user) |
+                Q(shared_with=request.user),
                 pk=pk,
-                user=request.user
             )
             return serialize_and_update(
                 serializer=self.serializer_class,
@@ -139,19 +130,17 @@ class BoardViewSet ( viewsets.ModelViewSet ):
                 },
                 identifier='board',
             )
-        except:
-            return Response(
-                data=get_exception_message(404, 'board'),
-                status=404
-            )
+        except Exception as e:
+            return Response(e, status=404)
 
     @action( methods=['put'], detail=True, url_path='archive' )
     def unarchive ( self, request, pk ):
         try:
             board_to_update = get_object_or_404(
                 Board,
+                Q(user=request.user) |
+                Q(shared_with=request.user),
                 pk=pk,
-                user=request.user
             )
             return serialize_and_update(
                 serializer=self.serializer_class,
@@ -162,8 +151,5 @@ class BoardViewSet ( viewsets.ModelViewSet ):
                 },
                 identifier='board',
             )
-        except:
-            return Response(
-                data=get_exception_message(404, 'board'),
-                status=404
-            )
+        except Exception as e:
+            return Response(e, status=404)

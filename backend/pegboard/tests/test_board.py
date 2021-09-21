@@ -143,6 +143,17 @@ class BoardTests ( TestCase ):
 
 
     '''    
+    <BoardViewSet> TESTS FOR `list_by_shared_with` FUNCTION (ACTION)
+    '''
+
+    def test__list_by_shared_with ( self ):
+        test_board_a = Board.objects.create(**self.user_a_test_board)
+        test_board_a.shared_with.add(self.current_user)
+
+        response = self.view.list_by_shared_with(self.request)
+        self.assertTrue(len(response.data) == 1)
+
+    '''    
     <BoardViewSet> TESTS FOR `list_by_folder` FUNCTION (ACTION)
     '''
     

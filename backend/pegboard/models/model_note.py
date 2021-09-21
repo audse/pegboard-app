@@ -31,7 +31,13 @@ class Note ( models.Model ):
     name = models.CharField(max_length=128)
     content = models.TextField(blank=True)
 
-    display = models.CharField(max_length=36, default='note')
+    DISPLAY_CHOICES = [
+        ('n', 'note'),
+        ('h', 'heading'),
+        ('i', 'image')
+    ]
+
+    display = models.CharField(max_length=36, choices=DISPLAY_CHOICES, default='n')
     url = models.SlugField(blank=True)
     order = models.IntegerField(default=0)
 
