@@ -25,7 +25,7 @@ def get_exception_message ( status_code, identifier ):
 # ARGUMENTS : <serializer:SerializerClass>, <request:Object> with <request.data>,
 #            <identifier:String> for use in error message
 def serialize_and_create ( serializer, request, identifier ):
-    serialized_request = serializer(data=request.data)
+    serialized_request = serializer(data=request.data, context={'request':request})
     if serialized_request.is_valid():
         serialized_request.save()
         return Response(data=serialized_request.data)
@@ -35,8 +35,8 @@ def serialize_and_create ( serializer, request, identifier ):
             status=400
         )
 
-def serialize_and_update ( serializer, object_to_update, request, identifier ):
-    serialized_request = serializer(object_to_update, data=request.data, partial=True)
+def serialize_and_update ( serializer, object_to_update, request, data , identifier):
+    serialized_request = serializer(object_to_update, data=data, partial=True, context={'request':request})
     if serialized_request.is_valid():
         serialized_request.save()
         return Response(data=serialized_request.data)

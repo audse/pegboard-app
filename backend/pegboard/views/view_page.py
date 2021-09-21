@@ -47,22 +47,20 @@ class PageViewSet ( viewsets.ModelViewSet ):
     
     def update ( self, request, pk=None ):
         if self.validate_page(request):
-
-            page_to_update = None
             try:
                 page_to_update = get_object_or_404(Page, pk=pk, user=request.user)
+                return serialize_and_update(
+                    serializer=self.serializer_class,
+                    object_to_update=page_to_update,
+                    request=request,
+                    data=request.data,
+                    identifier='page'
+                )
             except:
                 return Response(
                     data=get_exception_message(404, 'page'),
                     status=404
                 )
-            
-            return serialize_and_update(
-                serializer=self.serializer_class,
-                object_to_update=page_to_update,
-                request=request,
-                identifier='page'
-            )
         else:
             return Response(
                 data=get_exception_message(400, 'page'),

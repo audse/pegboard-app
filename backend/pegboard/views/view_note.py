@@ -4,6 +4,8 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from django.utils import timezone
+
 from ..models import Note, Page
 from ..serializers import NoteSerializer
 
@@ -51,22 +53,20 @@ class NoteViewSet ( viewsets.ModelViewSet ):
     
     def update ( self, request, pk=None ):
         if self.validate_note(request):
-
-            note_to_update = None
             try:
                 note_to_update = get_object_or_404(Note, pk=pk, user=request.user)
+                return serialize_and_update(
+                    serializer=self.serializer_class,
+                    object_to_update=note_to_update,
+                    request=request,
+                    data=request.data,
+                    identifier='note'
+                )
             except:
                 return Response(
                     data=get_exception_message(404, 'note'),
                     status=404
                 )
-            
-            return serialize_and_update(
-                serializer=self.serializer_class,
-                object_to_update=note_to_update,
-                request=request,
-                identifier='note'
-            )
         else:
             return Response(
                 data=get_exception_message(400, 'note'),
@@ -87,7 +87,7 @@ class NoteViewSet ( viewsets.ModelViewSet ):
         )
 
     @action( methods=['get'], detail=True, url_path='page' )
-    def get_by_page ( self, request, pk ):
+    def list_by_page ( self, request, pk ):
         current_page = None
         try:
             current_page = Page.objects.get(pk=pk, user=request.user, date_archived__isnull=True)
@@ -105,9 +105,88 @@ class NoteViewSet ( viewsets.ModelViewSet ):
             }
         )
     
-    # TODO NoteViewSet
-    # [ ] def @action archive
-    # [ ] def @action unarchive
-    # [ ] def @action list_unsorted
-    # [ ] def @action list_archived
-    # [ ] def @action retrieve_archived
+    @action( methods=['get'], detail=True, url_path='unsorted' )
+    def list_unsorted ( self, request ):
+        return serialize_queryset(
+            serializer=self.serializer_class,
+            request=request,
+            identifier='notes',
+            query={
+                'user': request.user,
+                'page__isnull': True,
+                'date_archived__isnull': True,
+            }
+        )
+    
+    @action( methods=['get'], detail=True, url_path='archived' )
+    def list_archived ( self, request ):
+        return serialize_queryset(
+            serializer=self.serializer_class,
+            request=request,
+            identifier='notes',
+            query={
+                'user': request.user,
+                'date_archived__isnull': False,
+            }
+        )
+    
+    @action( methods=['get'], detail=True, url_path='archived' )
+    def retrieve_archived ( self, request, pk ):
+        return serialize_query(
+            serializer=self.serializer_class,
+            request=request,
+            identifier='note',
+            query={
+                'pk': pk,
+                'user': request.user,
+                'date_archived__isnull': False,
+            }
+        )
+    
+    @action( methods=['put'], detail=True, url_path='archive' )
+    def archive ( self, request, pk ):
+        try:
+            note_to_update = get_object_or_404(
+                Note,
+                pk=pk,
+                user=request.user
+            )
+            return serialize_and_update(
+                serializer=self.serializer_class,
+                object_to_update=note_to_update,
+                request=request,
+                data={
+                    'date_archived': timezone.now()
+                },
+                identifier='note',
+            )
+        except:
+            return Response(
+                data=get_exception_message(404, 'note'),
+                status=404
+            )
+
+    @action( methods=['put'], detail=True, url_path='archive' )
+    def unarchive ( self, request, pk ):
+        try:
+            note_to_update = get_object_or_404(
+                Note,
+                pk=pk,
+                user=request.user
+            )
+            return serialize_and_update(
+                serializer=self.serializer_class,
+                object_to_update=note_to_update,
+                request=request,
+                data={
+                    'date_archived': None,
+                },
+                identifier='note',
+            )
+        except:
+            return Response(
+                data=get_exception_message(404, 'note'),
+                status=404
+            )
+
+# TODO <NoteViewSet> `destroy`

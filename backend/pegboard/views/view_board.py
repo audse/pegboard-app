@@ -41,6 +41,7 @@ class BoardViewSet ( viewsets.ModelViewSet ):
                 serializer=self.serializer_class,
                 object_to_update=board_to_update,
                 request=request,
+                data=request.data,
                 identifier='board'
             )
         except:

@@ -41,6 +41,7 @@ class FolderViewSet ( viewsets.ModelViewSet ):
                 serializer=self.serializer_class,
                 object_to_update=folder_to_update,
                 request=request,
+                data=request.data,
                 identifier='folder'
             )
         except:
