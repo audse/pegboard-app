@@ -7,7 +7,7 @@ from . import views
 router = routers.DefaultRouter()
 # router.register(r'profiles', views.ProfileViewSet)
 router.register(r'cards', views.CardViewSet)
-router.register(r'lists', views.ListViewSet)
+router.register(r'pages', views.PageViewSet)
 router.register(r'boards', views.BoardViewSet)
 router.register(r'themes', views.ThemeViewSet)
 

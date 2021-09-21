@@ -6,7 +6,7 @@ from django.test.client import RequestFactory
 from django.utils import timezone
 
 from django.contrib.auth.models import User
-from ..models import Card, List
+from ..models import Card, Page
 from ..views import CardViewSet
 
 # TESTME test_card.py
@@ -113,64 +113,64 @@ class CardTests ( TestCase ):
 
 
     '''    
-    <CardViewSet> TESTS FOR `get_by_list` FUNCTION (ACTION)
+    <CardViewSet> TESTS FOR `get_by_page` FUNCTION (ACTION)
     '''
 
-    # get_by_list_with_no_list
-    # ASSERTS : should return 404 when the requested <List> doesn't exist
-    def test__get_by_list_with_no_list ( self ):
+    # get_by_page_with_no_page
+    # ASSERTS : should return 404 when the requested <Page> doesn't exist
+    def test__get_by_page_with_no_page ( self ):
         test_card = Card.objects.create(**self.current_user_test_card)
 
-        response = self.view.get_by_list(self.request, 1)
+        response = self.view.get_by_page(self.request, 1)
         self.assertEqual(response.status_code, 404)
 
-    # get_by_list_with_no_results
+    # get_by_page_with_no_results
     # ASSERTS : `should return 404 when no <Card> objects are found
-    def test__get_by_list_with_no_results ( self ):
-        current_list = List.objects.create(
+    def test__get_by_page_with_no_results ( self ):
+        current_page = Page.objects.create(
             user=self.current_user,
-            name='Test List'
+            name='Test Page'
         )
 
-        response = self.view.get_by_list(self.request, current_list.id)
+        response = self.view.get_by_page(self.request, current_page.id)
         self.assertEqual(response.status_code, 404)
     
-    # get_by_list_with_no_permission
-    # ASSERTS : should return 404 when the <User:current_user> doesn't have access to the <List>
-    def test__get_by_list_with_no_permission ( self ):
-        current_list = List.objects.create(
+    # get_by_page_with_no_permission
+    # ASSERTS : should return 404 when the <User:current_user> doesn't have access to the <Page>
+    def test__get_by_page_with_no_permission ( self ):
+        current_page = Page.objects.create(
             user=self.user_a,
-            name='Test List'
+            name='Test Page'
         )
 
         # Create <Card> objects for both users so that the test does not give a false positive
         Card.objects.create(
-            list=current_list,
+            page=current_page,
             **self.user_a_test_card
         ), Card.objects.create(
             **self.current_user_test_card
         ), Card.objects.create(
-            list=current_list, # This should never happen, they don't own this <List>
+            page=current_page, # This should never happen, they don't own this <Page>
             **self.current_user_test_card
         )
 
-        response = self.view.get_by_list(self.request, current_list.id)
+        response = self.view.get_by_page(self.request, current_page.id)
         self.assertEqual(response.status_code, 404)
 
-    # get_by_list_with_archived_list
-    # ASSERTS : should return 404 when the <List> is archived, even if its' children aren't
-    def test__get_by_list_with_archived_list ( self ):
-        current_list = List.objects.create(
+    # get_by_page_with_archived_page
+    # ASSERTS : should return 404 when the <Page> is archived, even if its' children aren't
+    def test__get_by_page_with_archived_page ( self ):
+        current_page = Page.objects.create(
             user=self.current_user,
-            name='Test List',
+            name='Test Page',
             date_archived = self.field_archived
         )
-        Card.objects.create( # the <List> is archived, but it's <Card> isn't
-            list=current_list,
+        Card.objects.create( # the <Page> is archived, but it's <Card> isn't
+            page=current_page,
             **self.current_user_test_card
         )
 
-        response = self.view.get_by_list(self.request, current_list.id)
+        response = self.view.get_by_page(self.request, current_page.id)
  
         self.assertEqual(response.status_code, 404)
     
@@ -196,28 +196,28 @@ class CardTests ( TestCase ):
         response = self.view.create(self.request)
         self.assertEqual(response.status_code, 400)
 
-    # ccreate_card_list_doesnt_exist
-    # ASSERTS : should return 400 when the requested <List> doesn't exist
-    def test__create_card_list_doesnt_exist ( self ):
+    # create_card_page_doesnt_exist
+    # ASSERTS : should return 400 when the requested <Page> doesn't exist
+    def test__create_card_page_doesnt_exist ( self ):
         self.request.data = {
             'user': self.current_user.id,
             'name': self.field_name,
-            'list': 1,
+            'page': 1,
         }
         response = self.view.create(self.request)
         self.assertEqual(response.status_code, 400)
     
-    # card_in_no_permission_list
-    # ASSERTS : should return 400 when the <User:current_user> does not have access to the requested <List>
-    def test__create_card_in_list_with_no_permission ( self ):
-        current_list = List.objects.create(
+    # create_card_in_no_permission_page
+    # ASSERTS : should return 400 when the <User:current_user> does not have access to the requested <Page>
+    def test__create_card_in_page_with_no_permission ( self ):
+        current_page = Page.objects.create(
             user=self.user_a,
-            name='Test List'
+            name='Test Page'
         )
         self.request.data = {
             'user': self.current_user.id,
             'name': self.field_name,
-            'list': current_list.id,
+            'page': current_page.id,
         }
         response = self.view.create(self.request)
         self.assertEqual(response.status_code, 400)
@@ -266,26 +266,26 @@ class CardTests ( TestCase ):
         response = self.view.update(self.request, card.id)
         self.assertEqual(response.status_code, 404)
 
-    # update_list_doesnt_exist
-    # ASSERTS : should return 400 when the requested <List> doesn't exist
-    def test__update_list_doesnt_exist ( self ):
+    # update_page_doesnt_exist
+    # ASSERTS : should return 400 when the requested <Page> doesn't exist
+    def test__update_page_doesnt_exist ( self ):
         card = Card.objects.create(**self.current_user_test_card)
         self.request.data = {
-            'list': 1
+            'page': 1
         }
         response = self.view.update(self.request, card.id)
         self.assertEqual(response.status_code, 400)
 
-    # update_card_in_list_with_no_permission
-    # ASSERTS : should return 400 when the <User:current_user> does not have access to the requested <List>
-    def test__update_card_in_list_with_no_permission ( self ):
+    # update_card_in_page_with_no_permission
+    # ASSERTS : should return 400 when the <User:current_user> does not have access to the requested <Page>
+    def test__update_card_in_page_with_no_permission ( self ):
         card = Card.objects.create(**self.current_user_test_card)
-        current_list = List.objects.create(
+        current_page = Page.objects.create(
             user=self.user_a,
-            name='Test List'
+            name='Test Page'
         )
         self.request.data = {
-            'list': current_list.id
+            'page': current_page.id
         }
         response = self.view.update(self.request, card.id)
         self.assertEqual(response.status_code, 400)

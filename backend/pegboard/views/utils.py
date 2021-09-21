@@ -8,11 +8,6 @@ from rest_framework.response import Response
 # To assist with Django REST Framework ViewSets
 # 
 
-#FIXME
-# [x] merge serialize_x and serialize_x_with_args
-# [ ] update views to use new serialize method
-# [x] reformat function comments
-
 def get_exception_message ( status_code, identifier ):
     if status_code is 404:
         return 'This {identifier} could not be found.'

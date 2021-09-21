@@ -4,16 +4,16 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from ..models import List, Board
-from ..serializers import ListSerializer
+from ..models import Page, Board
+from ..serializers import PageSerializer
 
 from .utils import get_exception_message, serialize_queryset, serialize_query, serialize_and_create, serialize_and_update
 
-class ListViewSet ( viewsets.ModelViewSet ):
-    queryset = List.objects.all()
-    serializer_class = ListSerializer
+class PageViewSet ( viewsets.ModelViewSet ):
+    queryset = Page.objects.all()
+    serializer_class = PageSerializer
 
-    def validate_list ( self, request ):
+    def validate_page ( self, request ):
         if 'board' in request.data.keys():
             try:
                 get_object_or_404(Board, pk=request.data['board'], user=request.user)
@@ -25,7 +25,7 @@ class ListViewSet ( viewsets.ModelViewSet ):
         return serialize_queryset(
             serializer=self.serializer_class,
             request=request,
-            identifier='lists',
+            identifier='pages',
             query={
                 'user': request.user,
                 'date_archived__isnull': True,
@@ -33,11 +33,11 @@ class ListViewSet ( viewsets.ModelViewSet ):
         )
 
     def create ( self, request ):
-        if self.validate_list(request):
+        if self.validate_page(request):
             return serialize_and_create(
                 serializer=self.serializer_class,
                 request=request,
-                identifier='lists',
+                identifier='pages',
             )
         else:
             return Response(
@@ -46,26 +46,26 @@ class ListViewSet ( viewsets.ModelViewSet ):
             )
     
     def update ( self, request, pk=None ):
-        if self.validate_list(request):
+        if self.validate_page(request):
 
-            list_to_update = None
+            page_to_update = None
             try:
-                list_to_update = get_object_or_404(List, pk=pk, user=request.user)
+                page_to_update = get_object_or_404(Page, pk=pk, user=request.user)
             except:
                 return Response(
-                    data=get_exception_message(404, 'list'),
+                    data=get_exception_message(404, 'page'),
                     status=404
                 )
             
             return serialize_and_update(
                 serializer=self.serializer_class,
-                object_to_update=list_to_update,
+                object_to_update=page_to_update,
                 request=request,
-                identifier='list'
+                identifier='page'
             )
         else:
             return Response(
-                data=get_exception_message(400, 'list'),
+                data=get_exception_message(400, 'page'),
                 status=400
             )
 
@@ -73,7 +73,7 @@ class ListViewSet ( viewsets.ModelViewSet ):
         return serialize_query(
             serializer=self.serializer_class,
             request=request,
-            identifier='list',
+            identifier='page',
             query={
                 'pk': pk,
                 'user': request.user,
@@ -87,11 +87,11 @@ class ListViewSet ( viewsets.ModelViewSet ):
         try:
             current_board = Board.objects.get(pk=pk, user=request.user, date_archived__isnull=True)
         except:
-            return Response(data=get_exception_message(404, 'list'), status=404)
+            return Response(data=get_exception_message(404, 'page'), status=404)
         return serialize_queryset(
             serializer=self.serializer_class, 
             request=request,
-            identifier='lists',
+            identifier='pages',
             query={
                 'user': request.user,
                 'date_archived__isnull': True,
@@ -99,9 +99,9 @@ class ListViewSet ( viewsets.ModelViewSet ):
             }
         )
 
-    # TODO ListViewSet
+    # TODO PageViewSet
     # [ ] def @action archive 
     # [ ] def @action unarchive
-    # [ ] def @action list_unsorted
-    # [ ] def @action list_archived
+    # [ ] def @action page_unsorted
+    # [ ] def @action page_archived
     # [ ] def @action retrieve_archived

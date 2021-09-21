@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Card, List, Board, Folder, Theme
+from .models import Card, Page, Board, Folder, Theme
 
 class CardSerializer ( serializers.ModelSerializer ):
     model = Card
@@ -9,10 +9,10 @@ class CardSerializer ( serializers.ModelSerializer ):
         fields = '__all__'
         # TODO add ordering here
 
-class ListSerializer ( serializers.ModelSerializer ):
-    model = List
+class PageSerializer ( serializers.ModelSerializer ):
+    model = Page
     class Meta:
-        model = List
+        model = Page
         fields = '__all__'
     
 class BoardSerializer ( serializers.ModelSerializer ):

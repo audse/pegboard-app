@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from ..models import Card, List
+from ..models import Card, Page
 from ..serializers import CardSerializer
 
 from .utils import get_exception_message, serialize_and_create, serialize_and_update, serialize_queryset, serialize_query
@@ -17,9 +17,9 @@ class CardViewSet ( viewsets.ModelViewSet ):
 
     def validate_card ( self, request ):
         valid = True
-        if 'list' in request.data.keys():
+        if 'page' in request.data.keys():
             try:
-                current_list = get_object_or_404(List, user=request.user, pk=request.data['list'])
+                current_page = get_object_or_404(Page, user=request.user, pk=request.data['page'])
             except:
                 return False
         return valid
@@ -86,13 +86,13 @@ class CardViewSet ( viewsets.ModelViewSet ):
             }
         )
 
-    @action( methods=['get'], detail=True, url_path='list' )
-    def get_by_list ( self, request, pk ):
-        current_list = None
+    @action( methods=['get'], detail=True, url_path='page' )
+    def get_by_page ( self, request, pk ):
+        current_page = None
         try:
-            current_list = List.objects.get(pk=pk, user=request.user, date_archived__isnull=True)
+            current_page = Page.objects.get(pk=pk, user=request.user, date_archived__isnull=True)
         except:
-            return Response(data=get_exception_message(404, 'list'), status=404)
+            return Response(data=get_exception_message(404, 'page'), status=404)
 
         return serialize_queryset(
             serializer=self.serializer_class,
@@ -100,7 +100,7 @@ class CardViewSet ( viewsets.ModelViewSet ):
             identifier='cards',
             query={
                 'user': request.user,
-                'list': current_list,
+                'page': current_page,
                 'date_archived__isnull': True,
             }
         )

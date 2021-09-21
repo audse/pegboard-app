@@ -4,14 +4,14 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
-# TODO consider renaming list model
+# TODO consider renaming page model
 
-class List ( models.Model ):
+class Page ( models.Model ):
 
     user = models.ForeignKey(
         User,
         on_delete = models.CASCADE,
-        related_name = 'lists'
+        related_name = 'pages'
     )
 
     board = models.ForeignKey(
@@ -19,7 +19,7 @@ class List ( models.Model ):
         on_delete = models.SET_NULL,
         null = True,
         blank = True,
-        related_name = 'lists'
+        related_name = 'pages'
     )
     
     name = models.CharField(max_length=128)
@@ -35,6 +35,6 @@ class List ( models.Model ):
     def __str__ ( self ):
         return self.name
 
-# TODO model_list.py
+# TODO model_page.py
 # @ implement ManyToOneField for cards
 # @ implement children, parents

@@ -12,8 +12,8 @@ class Card ( models.Model ):
         related_name = 'cards'
     )
 
-    list = models.ForeignKey(
-        'List',
+    page = models.ForeignKey(
+        'Page',
         on_delete = models.SET_NULL,
         null = True,
         blank = True,
