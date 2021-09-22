@@ -9,7 +9,7 @@ from django.utils import timezone
 from ..models import Note, Page
 from ..serializers import NoteSerializer
 
-from .utils import get_exception_message, serialize_and_create, serialize_and_update, serialize_queryset, serialize_query, serialize_query_without_args, serialize_queryset_without_args
+from .utils import serialize_and_create, serialize_and_update, serialize_query, serialize_queryset
 
 # TODO <NoteViewSet> `destroy`
 
@@ -27,7 +27,7 @@ class NoteViewSet ( viewsets.ModelViewSet ):
         return True
 
     def list ( self, request ):
-        return serialize_queryset_without_args(
+        return serialize_queryset(
             queryset=Note.objects.list(user=request.user),
             serializer=self.serializer_class,
         )
@@ -40,10 +40,7 @@ class NoteViewSet ( viewsets.ModelViewSet ):
                 identifier='notes',
             )
         else:
-            return Response(
-                data=get_exception_message(404, 'note'),
-                status=404
-            )
+            return Response('An error validating the data occurred.', status=500)
     
     def update ( self, request, pk=None ):
         if self.validate_note(request):
@@ -55,20 +52,14 @@ class NoteViewSet ( viewsets.ModelViewSet ):
                     data=request.data,
                     identifier='note'
                 )
-            except:
-                return Response(
-                    data=get_exception_message(404, 'note'),
-                    status=404
-                )
+            except Exception as e:
+                return Response(e, status=404)
         else:
-            return Response(
-                data=get_exception_message(400, 'note'),
-                status=400
-            )
+            return Response('An error validating the data occurred.', status=500)
 
     def retrieve ( self, request, pk=None ):
         try:
-            return serialize_query_without_args(
+            return serialize_query(
                 query_object=Note.objects.retrieve(user=request.user, pk=pk),
                 serializer=self.serializer_class,
             )
@@ -79,7 +70,7 @@ class NoteViewSet ( viewsets.ModelViewSet ):
     def list_by_page ( self, request, pk ):
         try:
             current_page = Page.objects.retrieve(user=request.user, pk=pk)
-            return serialize_queryset_without_args(
+            return serialize_queryset(
                 queryset=Note.objects.list_by_page(user=request.user, page=current_page),
                 serializer=self.serializer_class, 
         )
@@ -89,14 +80,14 @@ class NoteViewSet ( viewsets.ModelViewSet ):
     
     @action( methods=['get'], detail=True, url_path='unsorted')
     def list_unsorted ( self, request ):
-        return serialize_queryset_without_args(
+        return serialize_queryset(
             queryset=Note.objects.list_unsorted(user=request.user),
             serializer=self.serializer_class,
         )
     
     @action( methods=['get'], detail=True, url_path='archived' )
     def list_archived ( self, request ):
-        return serialize_queryset_without_args(
+        return serialize_queryset(
             queryset=Note.objects.list_archived(user=request.user),
             serializer=self.serializer_class,
         )
@@ -104,7 +95,7 @@ class NoteViewSet ( viewsets.ModelViewSet ):
     @action( methods=['get'], detail=True, url_path='archived' )
     def retrieve_archived ( self, request, pk ):
         try:
-            return serialize_query_without_args(
+            return serialize_query(
                 query_object=Note.objects.retrieve_archived(user=request.user, pk=pk),
                 serializer=self.serializer_class,
             )

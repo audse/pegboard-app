@@ -46,56 +46,11 @@ def serialize_and_update ( serializer, object_to_update, request, data , identif
             data=get_exception_message(400, identifier),
             status=400
         )
-
-
-# serialize_query
-# RETURNS   : a singular serialized object or 404
-# ARGUMENTS : <serializer:SerializerClass>, <request:Object>,
-#             <identifier:String> for use in error message,
-#             <query:Dict> optional filters to add to the db query e.g. { 'user': request.user }
-def serialize_query ( serializer, request, identifier, query={} ):
-    query_item = None
-    try:
-        query_item = get_object_or_404(serializer.model, **query)
-    except Exception as exception:
-        exception_name = type(exception).__name__
-        # if exception_name is 'ObjectDoesNotExist':
-            # return handle_response( HttpException(404, identifier).exception )
-        return Response(
-            data=get_exception_message(404, identifier),
-            status=404
-        )
-    
-        # TODO create exception cases 
-        # e.g. 403 permission denied
-        # they all show up as 404
-    
-    return Response(data=serializer(query_item, context={'request':request}).data)
-
-def serialize_query_without_args(query_object, serializer):
+        
+def serialize_query(query_object, serializer):
     return Response(data=serializer(query_object).data)
 
-# serialize_queryset
-# RETURNS   : a list of serialized objects (or 404)
-# ARGUMENTS : <serializer:SerializerClass>, <request:Object>
-#             <identifier:String> for use in error message,
-#             <query:Dict> optional filters to add to the db query e.g. { 'user': request.user }
-def serialize_queryset ( serializer, request, identifier='items', query={}, exclude={} ):
-    queryset = serializer.model.objects.all().filter(**query).exclude(**exclude)
-    serialized_queryset = []
-    for item in queryset:
-        serializer_data = serializer(item, context={'request':request})
-        serialized_queryset.append(serializer_data.data)
-
-    if len(serialized_queryset) == 0:
-        return Response(
-            data=get_exception_message(404, identifier),
-            status=404
-        )
-    else:
-        return Response(data=serialized_queryset)
-
-def serialize_queryset_without_args(queryset, serializer):
+def serialize_queryset(queryset, serializer):
     try:
         serialized_queryset = []
         for item in queryset:
@@ -106,5 +61,5 @@ def serialize_queryset_without_args(queryset, serializer):
             raise FileNotFoundError
 
         return Response(data=serialized_queryset)
-    except Exception as exception:
-        return Response(exception, status=404)
+    except Exception as e:
+        return Response(e, status=404)

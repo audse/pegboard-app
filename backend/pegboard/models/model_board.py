@@ -17,6 +17,20 @@ class BoardQuerySet ( models.QuerySet ):
             Q(shared_with=user),
             date_archived__isnull=True,
         )
+
+    def list_children(self, user, pk):
+        try:
+            current_board = self.get(
+                Q(user=user) | Q(shared_with=user),
+                date_archived__isnull=True,
+                pk=pk
+            )
+            print(current_board, current_board.pages.all())
+            return current_board.pages.all().filter(
+                date_archived__isnull=True
+            )
+        except Exception as e:
+            return e
     
     def retrieve(self, user, pk):
         try:
@@ -80,6 +94,9 @@ class BoardManager ( models.Manager ):
     def list(self, user):
         return self.get_queryset().list(user)
 
+    def list_children(self, user, pk):
+        return self.get_queryset().list_children(user, pk)
+
     def retrieve(self, user, pk):
         return self.get_queryset().retrieve(user, pk)
 
@@ -118,7 +135,7 @@ class Board ( models.Model ):
         on_delete = models.SET_NULL,
         blank = True,
         null = True,
-        related_name = 'boards'
+        related_name = 'folder_boards'
     )
     
     name = models.CharField(max_length=128)
@@ -130,7 +147,7 @@ class Board ( models.Model ):
     color_palette = models.ManyToManyField(
         'Color',
         blank=True,
-        related_name='board_colors'
+        related_name='color_boards'
     )
 
     date_created = models.DateTimeField('date created', default=timezone.now)

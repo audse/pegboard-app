@@ -27,6 +27,19 @@ class PageQuerySet ( models.QuerySet ):
             )
         except Exception as e:
             return e
+    
+    def list_children(self, user, pk):
+        try:
+            current_page = self.get(
+                Q(board__user=user) | Q(board__shared_with=user),
+                date_archived__isnull=True,
+                pk=pk,
+            )
+            return current_page.notes.all().filter(
+                date_archived__isnull=True
+            )
+        except Exception as e:
+            return e
         
     def list_by_board(self, user, board):
         return self.filter(
@@ -78,6 +91,9 @@ class PageManager ( models.Manager ):
 
     def list(self, user):
         return self.get_queryset().list(user)
+    
+    def list_children(self, user, pk):
+        return self.get_queryset().list_children(user, pk)
 
     def list_by_board(self, user, board):
         return self.get_queryset().list_by_board(user, board)

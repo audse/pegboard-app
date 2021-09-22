@@ -9,7 +9,7 @@ from django.utils import timezone
 from ..models import Page, Board
 from ..serializers import PageSerializer
 
-from .utils import get_exception_message, serialize_query_without_args, serialize_queryset, serialize_query, serialize_and_create, serialize_and_update, serialize_queryset_without_args
+from .utils import serialize_query, serialize_and_create, serialize_and_update, serialize_queryset
 
 class PageViewSet ( viewsets.ModelViewSet ):
     queryset = Page.objects.all()
@@ -24,7 +24,7 @@ class PageViewSet ( viewsets.ModelViewSet ):
         return True
 
     def list ( self, request ):
-        return serialize_queryset_without_args(
+        return serialize_queryset(
             queryset=Page.objects.list(user=request.user),
             serializer=self.serializer_class,
         )
@@ -37,10 +37,7 @@ class PageViewSet ( viewsets.ModelViewSet ):
                 identifier='pages',
             )
         else:
-            return Response(
-                data=get_exception_message(404, 'board'),
-                status=404
-            )
+            return Response('An error validating the data occurred.', status=500)
     
     def update ( self, request, pk=None ):
         if self.validate_page(request):
@@ -53,20 +50,14 @@ class PageViewSet ( viewsets.ModelViewSet ):
                     data=request.data,
                     identifier='page'
                 )
-            except:
-                return Response(
-                    data=get_exception_message(404, 'page'),
-                    status=404
-                )
+            except Exception as e:
+                return Response(e, status=500)
         else:
-            return Response(
-                data=get_exception_message(400, 'page'),
-                status=400
-            )
+            return Response('An error validating the data occurred.', status=500)
 
     def retrieve ( self, request, pk=None ):
         try:
-            return serialize_query_without_args(
+            return serialize_query(
                 query_object=Page.objects.retrieve(user=request.user, pk=pk),
                 serializer=self.serializer_class,
             )
@@ -77,7 +68,7 @@ class PageViewSet ( viewsets.ModelViewSet ):
     def list_by_board ( self, request, pk ):
         try:
             current_board = Board.objects.retrieve(user=request.user, pk=pk)
-            return serialize_queryset_without_args(
+            return serialize_queryset(
                 queryset=Page.objects.list_by_board(user=request.user, board=current_board),
                 serializer=self.serializer_class, 
         )
@@ -87,14 +78,14 @@ class PageViewSet ( viewsets.ModelViewSet ):
     
     @action( methods=['get'], detail=True, url_path='unsorted')
     def list_unsorted ( self, request ):
-        return serialize_queryset_without_args(
+        return serialize_queryset(
             queryset=Page.objects.list_unsorted(user=request.user),
             serializer=self.serializer_class,
         )
     
     @action( methods=['get'], detail=True, url_path='archived' )
     def list_archived ( self, request ):
-        return serialize_queryset_without_args(
+        return serialize_queryset(
             queryset=Page.objects.list_archived(user=request.user),
             serializer=self.serializer_class,
         )
@@ -102,7 +93,7 @@ class PageViewSet ( viewsets.ModelViewSet ):
     @action( methods=['get'], detail=True, url_path='archived' )
     def retrieve_archived ( self, request, pk ):
         try:
-            return serialize_query_without_args(
+            return serialize_query(
                 query_object=Page.objects.retrieve_archived(user=request.user, pk=pk),
                 serializer=self.serializer_class,
             )

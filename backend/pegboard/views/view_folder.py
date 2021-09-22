@@ -10,14 +10,14 @@ from django.utils import timezone
 from ..models import Folder
 from ..serializers import FolderSerializer
 
-from .utils import serialize_query_without_args, serialize_queryset, serialize_query, serialize_and_create, serialize_and_update, get_exception_message, serialize_queryset_without_args
+from .utils import serialize_query, serialize_queryset, serialize_and_create, serialize_and_update
 
 class FolderViewSet ( viewsets.ModelViewSet ):
     queryset = Folder.objects.all()
     serializer_class = FolderSerializer
     
     def list ( self, request ):
-        return serialize_queryset_without_args(
+        return serialize_queryset(
             queryset=Folder.objects.list(user=request.user),
             serializer=self.serializer_class,
         )
@@ -43,7 +43,7 @@ class FolderViewSet ( viewsets.ModelViewSet ):
 
     def retrieve ( self, request, pk=None ):
         try:
-            return serialize_query_without_args(
+            return serialize_query(
                 query_object=Folder.objects.retrieve(user=request.user, pk=pk),
                 serializer=self.serializer_class,
             )
@@ -52,7 +52,7 @@ class FolderViewSet ( viewsets.ModelViewSet ):
 
     @action( methods=['get'], detail=True, url_path='archived' )
     def list_archived ( self, request ):
-        return serialize_queryset_without_args(
+        return serialize_queryset(
             queryset=Folder.objects.list_archived(user=request.user),
             serializer=self.serializer_class,
         )
@@ -60,7 +60,7 @@ class FolderViewSet ( viewsets.ModelViewSet ):
     @action( methods=['get'], detail=True, url_path='archived' )
     def retrieve_archived ( self, request, pk ):
         try:
-            return serialize_query_without_args(
+            return serialize_query(
                 query_object=Folder.objects.retrieve_archived(user=request.user, pk=pk),
                 serializer=self.serializer_class,
             )
