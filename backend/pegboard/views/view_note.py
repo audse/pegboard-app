@@ -41,7 +41,7 @@ class NoteViewSet ( viewsets.ModelViewSet ):
         except Exception as e:
             return Response(e, status=404)
     
-    @action(detail=True, url_path='unsorted')
+    @action(detail=False, url_path='unsorted')
     def list_unsorted(self, request):
         return serialize_queryset(
             queryset=Note.objects.list_unsorted(user=request.user),

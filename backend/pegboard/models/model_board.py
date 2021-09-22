@@ -8,6 +8,8 @@ from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 from django.db.models import Q
 
+from .utils import DISPLAY_CHOICES
+
 
 class BoardQuerySet ( models.QuerySet ):
 
@@ -210,18 +212,6 @@ class Board ( models.Model ):
         blank=True,
         related_name='color_boards'
     )
-
-    DISPLAY_CHOICES = [
-        ('n', 'note'),
-        ('h', 'heading'),
-        ('i', 'image'),
-        ('c', 'checkbox'),
-        ('a', 'assignee'),
-        ('r', 'readme'),
-        ('s', 'small'),
-        ('l', 'checklist'),
-        ('d', 'date'),
-    ]
 
     default_note_display = models.CharField(max_length=3, choices=DISPLAY_CHOICES, default='n')
 

@@ -7,14 +7,18 @@
 
     <button class="secondary" @click="signOut">Sign Out</button>
 
+    <router-link :to="{ name: 'Folders' }">
+        <a>Go To Folders</a>
+    </router-link>
+
 </section>
 <section v-else>
 
 <router-link :to="{ name: 'Sign In' }">
-    <a class="text-blue-500 pr-4">Sign In</a>
+    <a class="pr-4">Sign In</a>
 </router-link>
 <router-link :to="{ name: 'Sign Up' }">
-    <a class="text-blue-500">Sign Up</a>
+    <a>Sign Up</a>
 </router-link>
 
 </section>

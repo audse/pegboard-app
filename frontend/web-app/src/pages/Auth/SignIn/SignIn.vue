@@ -14,7 +14,6 @@
 <section>
     <button type="submit">Sign In</button>
 </section>
-
 </form>
 
 <label>Not signed up?</label>
@@ -51,7 +50,8 @@ export default {
 
         return {
             signInData,
-            signIn
+            signIn,
+            // AuthService
         }
 
     }

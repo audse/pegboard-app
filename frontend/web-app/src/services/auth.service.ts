@@ -20,21 +20,9 @@ class AuthService extends Service {
         super('auth')
     }
 
-    async signUpWithGoogle ( request:any ) {
-        try {
-            console.log(request)
-            const token = request.credential
-            await axios.post(`${this.url}google/`, {token:token})
-
-            return await this.loadCurrentUser(token)
-        } catch (e:any) {
-            throw e
-        }
-    }
-
     async signUpWithEmail ( data:SignUpData ) {
         try {
-            return await axios.post(`${this.url}signup/`, data)
+            return await axios.post(`${this.url}signup/`, data, this.authConfig)
         } catch (e:any) {
             throw e
         }
@@ -42,7 +30,8 @@ class AuthService extends Service {
 
     async signIn ( data:SignInData ) {
         try {
-            const requestData:any = await axios.post(`${this.url}login/`, data)
+            console.log(this.authConfig)
+            const requestData:any = await axios.post(`${this.url}login/`, data, this.authConfig)
             const token:string = requestData.data.key
             return await this.loadCurrentUser(token)
         } catch (e:any) {
@@ -52,7 +41,7 @@ class AuthService extends Service {
 
     async signOut () {
         try {
-            await axios.post(`${this.url}logout/`)
+            await axios.post(`${this.url}logout/`, this.authConfig)
             this.updateStore('', null)
             return
         } catch (e:any) {
@@ -64,11 +53,12 @@ class AuthService extends Service {
         const authToken:string = token || localStorage.getItem('token') || 'null'
 
         if ( authToken !== 'null' ) {
-            const authConfig = { headers: { 'Authorization': `Token ${authToken}` } }
+
+            this.authConfig.headers['Authorization'] = `Token ${authToken}`
 
             try {
                 // Get user data
-                const requestData = await axios.get(`${this.url}user/`, authConfig)
+                const requestData = await axios.get(`${this.url}user/`, this.authConfig)
                 const currentUser = requestData.data
 
                 // Update storage

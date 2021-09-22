@@ -4,9 +4,11 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.utils.text import slugify
-from django.db.models.signals import post_save, m2m_changed
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db.models import Q
+
+from .utils import DISPLAY_CHOICES
 
 class NoteQuerySet ( models.QuerySet ):
 
@@ -88,18 +90,6 @@ class Note ( models.Model ):
     name = models.CharField(max_length=128)
     content = models.TextField(blank=True)
 
-    DISPLAY_CHOICES = [
-        ('n', 'note'), # default view: notecard with truncated text
-        ('h', 'heading'), # bigger/bolder text
-        ('i', 'image'), # shows only image
-        ('c', 'checkbox'), # big checkbox on front of note for easy mark done
-        ('a', 'assignee'), # emphasizes the assignee with their avatar on the front
-        ('r', 'readme'), # longer text field with markdown
-        ('s', 'small'), # a smaller/denser `note` view
-        ('l', 'checklist'), # displays checklist prominently, good for headings
-        ('d', 'date'), # displays due date/todo date prominently, with colors to indicate soonness
-    ]
-
     display = models.CharField(max_length=3, choices=DISPLAY_CHOICES, default='n')
     url = models.SlugField(blank=True)
     order = models.IntegerField(default=0)
@@ -110,14 +100,6 @@ class Note ( models.Model ):
 
     tags = models.ManyToManyField(
         'Tag',
-        blank=True,
-        related_name='notes'
-    )
-
-    checklist = models.ForeignKey(
-        'Checklist',
-        on_delete=models.SET_NULL,
-        null=True,
         blank=True,
         related_name='notes'
     )

@@ -7,7 +7,7 @@ from django.test.client import RequestFactory
 from django.utils import timezone
 
 from django.contrib.auth.models import User
-from ..models import Board, Folder, Page
+from ..models import Board, Folder, Page, Note
 from ..views import BoardViewSet
 
 
@@ -36,6 +36,14 @@ class BoardTests ( TestCase ):
         }, {
             'user': self.user_a,
             'name': self.field_name
+        }
+
+        self.current_user_test_page, self.user_a_test_page = {
+            'user': self.current_user,
+            'name': 'Page Name',
+        }, {
+            'user': self.user_a,
+            'name': 'Page Name',
         }
 
         self.request = RequestFactory().get('/boards/')
@@ -69,6 +77,13 @@ class BoardTests ( TestCase ):
         response = self.view.list(self.request)
         self.assertTrue(len(response.data) == 1)
     
+    def test__list_with_shared_with(self):
+        test_board = Board.objects.create(**self.user_a_test_board)
+        test_board.shared_with.add(self.current_user)
+
+        response = self.view.list(self.request)
+        self.assertTrue(len(response.data) == 1)
+    
 
     '''    
     <BoardViewSet> TESTS FOR `list_children` FUNCTION
@@ -76,13 +91,63 @@ class BoardTests ( TestCase ):
 
     def test__list_children(self):
         test_board = Board.objects.create(**self.current_user_test_board)
-        test_page = Page.objects.create(
-            name='test_page',
-            user=self.current_user,
-            board=test_board
+        Page.objects.create(
+            board=test_board,
+            **self.current_user_test_page
         )
 
         response = self.view.list_children(self.request, test_board.id)
+        self.assertTrue(len(response.data) == 1)
+    
+    def test__list_no_children(self):
+        test_board = Board.objects.create(**self.current_user_test_board)
+        Page.objects.create(**self.current_user_test_page)
+
+        response = self.view.list_children(self.request, test_board.id)
+        self.assertTrue(response.status_code != 200)
+
+    def test__list_archived_children(self):
+        test_board = Board.objects.create(**self.current_user_test_board)
+        Page.objects.create(
+            board=test_board,
+            date_archived=self.field_date_archived,
+            **self.user_a_test_page
+        )
+
+        response = self.view.list_children(self.request, test_board.id)
+        self.assertTrue(response.status_code != 200)
+
+    
+    '''
+    <BoardViewSet> TESTS FOR `list_grandchildren` FUNCTION
+    '''
+
+    def test__list_children(self):
+        test_board = Board.objects.create(**self.current_user_test_board)
+        test_page = Page.objects.create(
+            board=test_board,
+            **self.current_user_test_page
+        )
+        Note.objects.create(
+            user=self.current_user,
+            board=test_board,
+            page=test_page,
+            name='Test Note'
+        )
+
+        response = self.view.list_children(self.request, test_board.id)
+        self.assertTrue(len(response.data) == 1)
+
+
+    '''
+    <BoardViewSet> TESTS FOR `list_shared_with` FUNCTION
+    '''
+
+    def test__list_shared_with(self):
+        test_board = Board.objects.create(**self.user_a_test_board)
+        test_board.shared_with.add(self.current_user)
+
+        response = self.view.list_shared_with(self.request)
         self.assertTrue(len(response.data) == 1)
 
     '''    
@@ -150,7 +215,7 @@ class BoardTests ( TestCase ):
 
 
     '''    
-    <BoardViewSet> TESTS FOR `list_by_shared_with` FUNCTION (ACTION)
+    <BoardViewSet> TESTS FOR `list_by_shared_with` FUNCTION
     '''
 
     def test__list_shared_with(self):
@@ -161,7 +226,7 @@ class BoardTests ( TestCase ):
         self.assertTrue(len(response.data) == 1)
 
     '''    
-    <BoardViewSet> TESTS FOR `list_unsorted` FUNCTION (ACTION)
+    <BoardViewSet> TESTS FOR `list_unsorted` FUNCTION
     '''
 
     # should return a list of only one unsorted <Board>
@@ -207,7 +272,7 @@ class BoardTests ( TestCase ):
         
 
     '''    
-    <BoardViewSet> TESTS FOR `list_archived` FUNCTION (ACTION)
+    <BoardViewSet> TESTS FOR `list_archived` FUNCTION
     '''
 
     # should return a list containing only one archived <Board>
@@ -232,7 +297,7 @@ class BoardTests ( TestCase ):
         self.assertTrue(response.status_code != 200)
 
     '''    
-    <BoardViewSet> TESTS FOR `archive` FUNCTION (ACTION)
+    <BoardViewSet> TESTS FOR `archive` FUNCTION
     '''
 
     # should update a <Board> to a non-empty `date_archived` field
@@ -259,7 +324,7 @@ class BoardTests ( TestCase ):
         self.assertTrue(response.data['date_archived'] is not None)
 
     '''    
-    <BoardViewSet> TESTS FOR `unarchive` FUNCTION (ACTION)
+    <BoardViewSet> TESTS FOR `unarchive` FUNCTION
     '''
 
     # should update a <Board> to an empty `date_archived` field

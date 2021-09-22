@@ -14,7 +14,7 @@ class BoardViewSet ( viewsets.ModelViewSet ):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
     
-    def list ( self, request ):
+    def list(self, request):
         return serialize_queryset(
             queryset=Board.objects.list(user=request.user),
             serializer=self.serializer_class,
@@ -93,36 +93,36 @@ class BoardViewSet ( viewsets.ModelViewSet ):
         except Exception as e:
             return Response(e, status=404)
     
-    @action( methods=['get'], detail=True, url_path='unsorted')
-    def list_unsorted ( self, request ):
+    @action( methods=['get'], detail=False, url_path='unsorted')
+    def list_unsorted(self, request):
         return serialize_queryset(
             queryset=Board.objects.list_unsorted(user=request.user),
             serializer=self.serializer_class,
         )
 
-    @action( methods=['get'], detail=True, url_path='shared' )
-    def list_shared_with ( self, request ):
+    @action( methods=['get'], detail=False, url_path='shared' )
+    def list_shared_with(self, request):
         return serialize_queryset(
             queryset=Board.objects.list_shared_with(user=request.user),
             serializer=self.serializer_class,
         )
     
 
-    @action( methods=['get'], detail=True, url_path='archived' )
-    def list_archived ( self, request ):
+    @action( methods=['get'], detail=False, url_path='archived' )
+    def list_archived(self, request):
         return serialize_queryset(
             queryset=Board.objects.list_archived(user=request.user),
             serializer=self.serializer_class,
         )
     
-    def create ( self, request ):
+    def create(self, request):
         return serialize_and_create(
             serializer=self.serializer_class,
             request=request,
             identifier='board'
         )
     
-    def update ( self, request, pk=None ):
+    def update(self, request, pk=None):
         try:
             return serialize_and_update(
                 serializer=self.serializer_class,
@@ -135,7 +135,7 @@ class BoardViewSet ( viewsets.ModelViewSet ):
             return Response(e, status=404)
 
     @action( methods=['put'], detail=True, url_path='archive' )
-    def archive ( self, request, pk ):
+    def archive(self, request, pk):
         try:
             return serialize_and_update(
                 serializer=self.serializer_class,
@@ -150,7 +150,7 @@ class BoardViewSet ( viewsets.ModelViewSet ):
             return Response(e, status=404)
 
     @action( methods=['put'], detail=True, url_path='archive' )
-    def unarchive ( self, request, pk ):
+    def unarchive(self, request, pk):
         try:
             return serialize_and_update(
                 serializer=self.serializer_class,

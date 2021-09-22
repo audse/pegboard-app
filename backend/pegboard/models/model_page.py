@@ -79,14 +79,6 @@ class Page ( models.Model ):
         related_name='pages'
     )
 
-    checklist = models.ForeignKey(
-        'Checklist',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='pages'
-    )
-
     assigned_to = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,

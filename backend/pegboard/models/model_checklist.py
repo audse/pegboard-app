@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import ArrayField
 
 class Checklist ( models.Model ):
 
@@ -12,26 +13,30 @@ class Checklist ( models.Model ):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='board'
+        related_name='checklists'
     )
     page = models.ForeignKey(
         'Page',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='page'
+        related_name='checklists'
     )
     note = models.ForeignKey(
         'Note',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='note'
+        related_name='checklists'
     )
 
     name = models.CharField(max_length=128, blank=True)
 
-    items = models.JSONField(null=False, default=dict)
+    check_items = ArrayField(
+        models.JSONField(null=False, default=dict),
+        blank=True,
+        null=True
+    )
 
     def __str__ ( self ):
         return self.name

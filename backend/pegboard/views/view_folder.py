@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from django.utils import timezone
 
@@ -11,10 +13,13 @@ from ..serializers import FolderSerializer
 from .utils import serialize_query, serialize_queryset, serialize_and_create, serialize_and_update
 
 class FolderViewSet ( viewsets.ModelViewSet ):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Folder.objects.all()
     serializer_class = FolderSerializer
     
     def list ( self, request ):
+        print('\nTHE USER IS \n', request.user, request.auth, '\n\n')
         return serialize_queryset(
             queryset=Folder.objects.list(user=request.user),
             serializer=self.serializer_class,
@@ -27,9 +32,9 @@ class FolderViewSet ( viewsets.ModelViewSet ):
                 serializer=self.serializer_class,
             )
         except Exception as e:
-            return Response(e, status=404)
+            return Response(str(e), status=404)
 
-    @action( methods=['get'], detail=True, url_path='archived' )
+    @action( methods=['get'], detail=False, url_path='archived' )
     def list_archived ( self, request ):
         return serialize_queryset(
             queryset=Folder.objects.list_archived(user=request.user),
@@ -53,7 +58,7 @@ class FolderViewSet ( viewsets.ModelViewSet ):
                 identifier='folder'
             )
         except Exception as e:
-            return Response(e, status=404)
+            return Response(str(e), status=404)
     
     @action( methods=['put'], detail=True, url_path='archive' )
     def archive ( self, request, pk ):
@@ -68,7 +73,7 @@ class FolderViewSet ( viewsets.ModelViewSet ):
                 identifier='folder',
             )
         except Exception as e:
-            return Response(e, status=404)
+            return Response(str(e), status=404)
 
     @action( methods=['put'], detail=True, url_path='archive' )
     def unarchive ( self, request, pk ):
@@ -83,4 +88,4 @@ class FolderViewSet ( viewsets.ModelViewSet ):
                 identifier='folder',
             )
         except Exception as e:
-            return Response(e, status=404)
+            return Response(str(e), status=404)

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import authRoutes from './auth.routes'
+import pegboardRoutes from './pegboard.routes'
 
 import store from './../store/index.store'
 import AuthService from '../services/auth.service'
@@ -13,7 +14,8 @@ const routes = [
         component: Home,
     },
     
-    ...authRoutes
+    ...authRoutes,
+    ...pegboardRoutes
 ]
 
 const router = createRouter({

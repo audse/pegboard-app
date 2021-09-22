@@ -23,7 +23,7 @@ class FolderQuerySet ( models.QuerySet ):
                 pk=pk
             )
         except Exception as e:
-            return e
+            return str(e)
     
     def list_children(self, user, pk):
         try:
@@ -32,10 +32,10 @@ class FolderQuerySet ( models.QuerySet ):
                 pk=pk
             )
             return current_folder.boards.all().filter(
-                user=user
+                user__id=user.id,
             )
         except Exception as e:
-            return e
+            return str(e)
 
     def list_archived(self, user):
         return self.filter(

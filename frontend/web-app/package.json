@@ -9,11 +9,13 @@
   "dependencies": {
     "axios": "^0.21.4",
     "jose": "^3.17.0",
+    "js-cookie": "^3.0.1",
     "vue": "^3.2.6",
     "vue-router": "^4.0.11",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
+    "@types/js-cookie": "^2.2.7",
     "@vitejs/plugin-vue": "^1.6.1",
     "@vue/compiler-sfc": "^3.2.6",
     "autoprefixer": "^10.3.4",
