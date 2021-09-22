@@ -12,16 +12,14 @@ class NoteQuerySet ( models.QuerySet ):
 
     def list(self, user):
         return self.filter(
-            Q(user=user) |
-            Q(shared_with=user),
+            Q(user=user) | Q(shared_with=user),
             date_archived__isnull=True,
         )
 
     def retrieve(self, user, pk):
         try:
             return self.get(
-                Q(user=user) |
-                Q(shared_with=user),
+                Q(user=user) | Q(shared_with=user),
                 date_archived__isnull=True,
                 pk=pk
             )
@@ -30,32 +28,42 @@ class NoteQuerySet ( models.QuerySet ):
         
     def list_by_page(self, user, page):
         return self.filter(
-            Q(user=user) |
-            Q(shared_with=user),
+            Q(user=user) | Q(shared_with=user),
             date_archived__isnull=True,
             page=page
+        )
+        
+    def list_by_board(self, user, board):
+        return self.filter(
+            Q(user=user) | Q(shared_with=user),
+            date_archived__isnull=True,
+            board=board
+        )
+
+    def list_by_tag(self, user, tag):
+        return self.filter(
+            Q(user=user) | Q(shared_with=user),
+            date_archived__isnull=True,
+            tag=tag
         )
 
     def list_unsorted(self, user):
         return self.filter(
-            Q(user=user) | 
-            Q(shared_with=user),
+            Q(user=user) | Q(shared_with=user),
             page__isnull=True,
             date_archived__isnull=True,
         )
 
     def list_archived(self, user):
         return self.filter(
-            Q(user=user) | 
-            Q(shared_with=user),
+            Q(user=user) | Q(shared_with=user),
             date_archived__isnull=False,
         )
     
     def retrieve_archived(self, user, pk):
         try:
             return self.get(
-                Q(user=user) | 
-                Q(shared_with=user),
+                Q(user=user) | Q(shared_with=user),
                 date_archived__isnull=False,
                 pk=pk
             )
@@ -82,6 +90,12 @@ class NoteManager ( models.Manager ):
     def list_by_page(self, user, page):
         return self.get_queryset().list_by_page(user, page)
 
+    def list_by_board(self, user, board):
+        return self.get_queryset().list_by_board(user, board)
+
+    def list_by_tag(self, user, tag):
+        return self.get_queryset().list_by_tag(user, tag)
+
     def retrieve(self, user, pk):
         return self.get_queryset().retrieve(user, pk)
 
@@ -102,30 +116,30 @@ class Note ( models.Model ):
 
     user = models.ForeignKey(
         User,
-        on_delete = models.CASCADE,
-        related_name = 'notes'
+        on_delete=models.CASCADE,
+        related_name='notes'
     )
 
     shared_with = models.ManyToManyField(
         User,
         blank=True,
-        related_name = 'shared_notes',
+        related_name='shared_notes',
     )
 
     page = models.ForeignKey(
         'Page',
-        on_delete = models.SET_NULL,
-        null = True,
-        blank = True,
-        related_name = 'notes'
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='notes'
     )
 
     board = models.ForeignKey(
         'Board',
-        on_delete = models.SET_NULL,
-        null = True,
-        blank = True,
-        related_name = 'notes'
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='notes'
     )
 
     name = models.CharField(max_length=128)
@@ -134,12 +148,38 @@ class Note ( models.Model ):
     DISPLAY_CHOICES = [
         ('n', 'note'),
         ('h', 'heading'),
-        ('i', 'image')
+        ('i', 'image'),
+        ('c', 'checkbox'),
+        ('a', 'assignee'),
     ]
 
     display = models.CharField(max_length=36, choices=DISPLAY_CHOICES, default='n')
     url = models.SlugField(blank=True)
     order = models.IntegerField(default=0)
+
+    marked_done = models.BooleanField(default=False)
+
+    tags = models.ManyToManyField(
+        'Tag',
+        blank=True,
+        related_name='tag'
+    )
+
+    checklist = models.ForeignKey(
+        'Checklist',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='checklist'
+    )
+
+    assigned_to = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='assigned_notes',
+    )
 
     # Due dates are stored as charfields to parse both single dates
     # and durations
