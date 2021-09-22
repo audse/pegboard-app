@@ -12,42 +12,18 @@ class PageQuerySet ( models.QuerySet ):
 
     def list(self, user):
         return self.filter(
-            Q(user=user) |
-            Q(shared_with=user),
+            Q(user=user) | Q(board__user=user) | Q(board__shared_with=user),
             date_archived__isnull=True,
         )
 
     def retrieve(self, user, pk):
         try:
             return self.get(
-                Q(user=user) |
-                Q(shared_with=user),
-                date_archived__isnull=True,
+                Q(user=user) | Q(board__user=user) | Q(board__shared_with=user),
                 pk=pk
             )
         except Exception as e:
             return e
-    
-    def list_children(self, user, pk):
-        try:
-            current_page = self.get(
-                Q(board__user=user) | Q(board__shared_with=user),
-                date_archived__isnull=True,
-                pk=pk,
-            )
-            return current_page.notes.all().filter(
-                date_archived__isnull=True
-            )
-        except Exception as e:
-            return e
-        
-    def list_by_board(self, user, board):
-        return self.filter(
-            Q(user=user) |
-            Q(shared_with=user),
-            date_archived__isnull=True,
-            board=board
-        )
 
     def list_unsorted(self, user):
         return self.filter(
@@ -57,31 +33,6 @@ class PageQuerySet ( models.QuerySet ):
             date_archived__isnull=True,
         )
 
-    def list_archived(self, user):
-        return self.filter(
-            Q(user=user) | 
-            Q(shared_with=user),
-            date_archived__isnull=False,
-        )
-    
-    def retrieve_archived(self, user, pk):
-        try:
-            return self.get(
-                Q(user=user) | 
-                Q(shared_with=user),
-                date_archived__isnull=False,
-                pk=pk
-            )
-        except Exception as e:
-            return e
-    
-    def list_shared_with(self, user):
-        return self.filter(
-            shared_with=user,
-            date_archived__isnull=True,
-        ).exclude(
-            user=user
-        )
 
 class PageManager ( models.Manager ):
     use_in_migrations = True
@@ -91,12 +42,6 @@ class PageManager ( models.Manager ):
 
     def list(self, user):
         return self.get_queryset().list(user)
-    
-    def list_children(self, user, pk):
-        return self.get_queryset().list_children(user, pk)
-
-    def list_by_board(self, user, board):
-        return self.get_queryset().list_by_board(user, board)
 
     def retrieve(self, user, pk):
         return self.get_queryset().retrieve(user, pk)
@@ -104,14 +49,6 @@ class PageManager ( models.Manager ):
     def list_unsorted(self, user):
         return self.get_queryset().list_unsorted(user)
 
-    def list_archived(self, user):
-        return self.get_queryset().list_archived(user)
-
-    def retrieve_archived(self, user, pk):
-        return self.get_queryset().retrieve_archived(user, pk)
-
-    def list_shared_with(self, user):
-        return self.get_queryset().list_shared_with(user)
 
 class Page ( models.Model ):
 
@@ -121,12 +58,6 @@ class Page ( models.Model ):
         User,
         on_delete = models.CASCADE,
         related_name = 'pages'
-    )
-
-    shared_with = models.ManyToManyField(
-        User,
-        blank=True,
-        related_name = 'shared_pages',
     )
 
     board = models.ForeignKey(
@@ -143,6 +74,28 @@ class Page ( models.Model ):
 
     order = models.IntegerField(default=0)
 
+    tags = models.ManyToManyField(
+        'Tag',
+        blank=True,
+        related_name='pages'
+    )
+
+    checklist = models.ForeignKey(
+        'Checklist',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='pages'
+    )
+
+    assigned_to = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='assigned_pages',
+    )
+
     date_created = models.DateTimeField('date created', default=timezone.now)
     date_updated = models.DateTimeField('date updated', default=timezone.now)
     date_archived = models.DateTimeField('date archived', blank=True, null=True)
@@ -150,17 +103,6 @@ class Page ( models.Model ):
     def __str__ ( self ):
         return self.name
     
-
-@receiver(post_save, sender=Page)
-def save_shared_with(sender, instance, **kwargs):
-    post_save.disconnect(save_shared_with, sender=sender)
-    m2m_changed.disconnect(save_shared_with, sender=sender)
-
-    instance.shared_with.add(instance.user)
-    instance.save()
-
-    m2m_changed.connect(save_shared_with, sender=sender)
-    post_save.connect(save_shared_with, sender=sender)
 
 @receiver(post_save, sender=Page)
 def save_url(sender, instance, **kwargs):
@@ -171,8 +113,14 @@ def save_url(sender, instance, **kwargs):
 
     post_save.connect(save_url, sender=sender)
 
-m2m_changed.connect(save_shared_with, sender=Page.shared_with.through)    
+@receiver(post_save, sender=Page)
+def save_date_updated(sender, instance, **kwargs):
+    post_save.disconnect(save_date_updated, sender=sender)
+
+    instance.date_updated = timezone.now()
+    instance.save()
+
+    post_save.connect(save_date_updated, sender=sender)
 
 # TODO model_page.py
-# [ ] implement ManyToOneField for cards
 # [ ] implement children, parents

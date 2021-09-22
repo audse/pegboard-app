@@ -12,70 +12,32 @@ class NoteQuerySet ( models.QuerySet ):
 
     def list(self, user):
         return self.filter(
-            Q(user=user) | Q(shared_with=user),
-            date_archived__isnull=True,
+            Q(user=user) | Q(board__user=user) | Q(board__shared_with=user) | Q(page__user=user),
         )
 
     def retrieve(self, user, pk):
         try:
             return self.get(
-                Q(user=user) | Q(shared_with=user),
-                date_archived__isnull=True,
+                Q(user=user) | Q(board__user=user) | Q(board__shared_with=user) | Q(page__user=user),
                 pk=pk
             )
         except Exception as e:
             return e
-        
-    def list_by_page(self, user, page):
-        return self.filter(
-            Q(user=user) | Q(shared_with=user),
-            date_archived__isnull=True,
-            page=page
-        )
-        
-    def list_by_board(self, user, board):
-        return self.filter(
-            Q(user=user) | Q(shared_with=user),
-            date_archived__isnull=True,
-            board=board
-        )
-
-    def list_by_tag(self, user, tag):
-        return self.filter(
-            Q(user=user) | Q(shared_with=user),
-            date_archived__isnull=True,
-            tag=tag
-        )
 
     def list_unsorted(self, user):
         return self.filter(
-            Q(user=user) | Q(shared_with=user),
+            user=user,
             page__isnull=True,
+            board__isnull=True,
             date_archived__isnull=True,
         )
-
-    def list_archived(self, user):
-        return self.filter(
-            Q(user=user) | Q(shared_with=user),
-            date_archived__isnull=False,
-        )
     
-    def retrieve_archived(self, user, pk):
-        try:
-            return self.get(
-                Q(user=user) | Q(shared_with=user),
-                date_archived__isnull=False,
-                pk=pk
-            )
-        except Exception as e:
-            return e
-    
-    def list_shared_with(self, user):
+    def list__unsorted_by_board(self, user, board_pk):
         return self.filter(
-            shared_with=user,
+            Q(user=user) | Q(board__user=user) | Q(board__shared_with=user),
+            page__isnull=True,
+            board__pk=board_pk,
             date_archived__isnull=True,
-        ).exclude(
-            user=user
         )
 
 class NoteManager ( models.Manager ):
@@ -87,29 +49,15 @@ class NoteManager ( models.Manager ):
     def list(self, user):
         return self.get_queryset().list(user)
 
-    def list_by_page(self, user, page):
-        return self.get_queryset().list_by_page(user, page)
-
-    def list_by_board(self, user, board):
-        return self.get_queryset().list_by_board(user, board)
-
-    def list_by_tag(self, user, tag):
-        return self.get_queryset().list_by_tag(user, tag)
-
     def retrieve(self, user, pk):
         return self.get_queryset().retrieve(user, pk)
 
     def list_unsorted(self, user):
         return self.get_queryset().list_unsorted(user)
 
-    def list_archived(self, user):
-        return self.get_queryset().list_archived(user)
+    def list_unsorted_by_board(self, user, board_pk):
+        return self.get_queryset().list_unsorted_by_board(user, board_pk)
 
-    def retrieve_archived(self, user, pk):
-        return self.get_queryset().retrieve_archived(user, pk)
-
-    def list_shared_with(self, user):
-        return self.get_queryset().list_shared_with(user)
 
 class Note ( models.Model ):
     objects = NoteManager()
@@ -118,12 +66,6 @@ class Note ( models.Model ):
         User,
         on_delete=models.CASCADE,
         related_name='notes'
-    )
-
-    shared_with = models.ManyToManyField(
-        User,
-        blank=True,
-        related_name='shared_notes',
     )
 
     page = models.ForeignKey(
@@ -146,23 +88,26 @@ class Note ( models.Model ):
     content = models.TextField(blank=True)
 
     DISPLAY_CHOICES = [
-        ('n', 'note'),
-        ('h', 'heading'),
-        ('i', 'image'),
-        ('c', 'checkbox'),
-        ('a', 'assignee'),
+        ('n', 'note'), # default view: notecard with truncated text
+        ('h', 'heading'), # bigger/bolder text
+        ('i', 'image'), # shows only image
+        ('c', 'checkbox'), # big checkbox on front of note for easy mark done
+        ('a', 'assignee'), # emphasizes the assignee with their avatar on the front
+        ('r', 'readme') # longer text field with markdown
     ]
 
     display = models.CharField(max_length=36, choices=DISPLAY_CHOICES, default='n')
     url = models.SlugField(blank=True)
     order = models.IntegerField(default=0)
 
+    starred = models.BooleanField(default=False)
+    pinned = models.BooleanField(default=False)
     marked_done = models.BooleanField(default=False)
 
     tags = models.ManyToManyField(
         'Tag',
         blank=True,
-        related_name='tag'
+        related_name='notes'
     )
 
     checklist = models.ForeignKey(
@@ -170,7 +115,7 @@ class Note ( models.Model ):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='checklist'
+        related_name='notes'
     )
 
     assigned_to = models.ForeignKey(
@@ -196,17 +141,6 @@ class Note ( models.Model ):
 
 
 @receiver(post_save, sender=Note)
-def save_shared_with(sender, instance, **kwargs):
-    post_save.disconnect(save_shared_with, sender=sender)
-    m2m_changed.disconnect(save_shared_with, sender=sender)
-
-    instance.shared_with.add(instance.user)
-    instance.save()
-
-    m2m_changed.connect(save_shared_with, sender=sender)
-    post_save.connect(save_shared_with, sender=sender)
-
-@receiver(post_save, sender=Note)
 def save_url(sender, instance, **kwargs):
     post_save.disconnect(save_url, sender=sender)
 
@@ -215,10 +149,16 @@ def save_url(sender, instance, **kwargs):
 
     post_save.connect(save_url, sender=sender)
 
-m2m_changed.connect(save_shared_with, sender=Note.shared_with.through)  
+@receiver(post_save, sender=Note)
+def save_date_updated(sender, instance, **kwargs):
+    post_save.disconnect(save_date_updated, sender=sender)
+
+    instance.date_updated = timezone.now()
+    instance.save()
+
+    post_save.connect(save_date_updated, sender=sender)
+
 
 # TODO model_note.py
 # [ ] attachment
 # [ ] implement children, parents
-# [ ] board foreignkey
-#     for unorganized notes

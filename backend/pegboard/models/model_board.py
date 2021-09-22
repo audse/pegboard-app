@@ -13,10 +13,18 @@ class BoardQuerySet ( models.QuerySet ):
 
     def list(self, user):
         return self.filter(
-            Q(user=user) |
-            Q(shared_with=user),
+            Q(user=user) | Q(shared_with=user),
             date_archived__isnull=True,
         )
+    
+    def retrieve(self, user, pk):
+        try:
+            return self.get(
+                Q(user=user) | Q(shared_with=user),
+                pk=pk
+            )
+        except Exception as e:
+            return e
 
     def list_children(self, user, pk):
         try:
@@ -25,31 +33,86 @@ class BoardQuerySet ( models.QuerySet ):
                 date_archived__isnull=True,
                 pk=pk
             )
-            print(current_board, current_board.pages.all())
             return current_board.pages.all().filter(
                 date_archived__isnull=True
             )
         except Exception as e:
             return e
-    
-    def retrieve(self, user, pk):
+
+    def retrieve_child(self, user, board_pk, page_pk):
         try:
-            return self.get(
-                Q(user=user) |
-                Q(shared_with=user),
+            current_board = self.get(
+                Q(user=user) | Q(shared_with=user),
                 date_archived__isnull=True,
-                pk=pk
+                pk=board_pk
+            )
+            return current_board.pages.all().get(
+                pk=page_pk
             )
         except Exception as e:
             return e
 
-    def list_by_folder(self, user, folder):
-        return self.filter(
-            Q(user=user) |
-            Q(shared_with=user),
-            folder=folder,
-            date_archived__isnull=True,
-        )
+    def list_archived_children(self, user, pk):
+        try:
+            current_board = self.get(
+                Q(user=user) | Q(shared_with=user),
+                date_archived__isnull=True,
+                pk=pk
+            )
+            return current_board.pages.all().filter(
+                date_archived__isnull=False
+            )
+        except Exception as e:
+            return e
+    
+    def list_grandchildren(self, user, board_pk, page_pk):
+        try:
+            current_board = self.get(
+                Q(user=user) | Q(shared_with=user),
+                date_archived__isnull=True,
+                pk=board_pk
+            )
+            current_page = current_board.pages.all().get(
+                date_archived__isnull=True,
+                pk=page_pk
+            )
+            return current_page.notes.all().filter(
+                date_archived__isnull=True
+            )
+        except Exception as e:
+            return e
+    
+    def retrieve_grandchild(self, user, board_pk, page_pk, note_pk):
+        try:
+            current_board = self.get(
+                Q(user=user) | Q(shared_with=user),
+                date_archived__isnull=True,
+                pk=board_pk
+            )
+            current_page = current_board.pages.all().get(
+                pk=page_pk
+            )
+            return current_page.notes.all().get(
+                pk=note_pk
+            )
+        except Exception as e:
+            return e
+    
+    def list_archived_grandchildren(self, user, board_pk, page_pk):
+        try:
+            current_board = self.get(
+                Q(user=user) | Q(shared_with=user),
+                date_archived__isnull=True,
+                pk=board_pk
+            )
+            current_page = current_board.pages.all().get(
+                pk=page_pk
+            )
+            return current_page.notes.all().filter(
+                date_archived__isnull=False
+            )
+        except Exception as e:
+            return e
 
     def list_archived(self, user):
         return self.filter(
@@ -57,17 +120,6 @@ class BoardQuerySet ( models.QuerySet ):
             Q(shared_with=user),
             date_archived__isnull=False,
         )
-    
-    def retrieve_archived(self, user, pk):
-        try:
-            return self.get(
-                Q(user=user) |
-                Q(shared_with=user),
-                date_archived__isnull=False,
-                pk=pk
-            )
-        except Exception as e:
-            return e
 
     def list_unsorted(self, user):
         return self.filter(
@@ -94,20 +146,29 @@ class BoardManager ( models.Manager ):
     def list(self, user):
         return self.get_queryset().list(user)
 
-    def list_children(self, user, pk):
-        return self.get_queryset().list_children(user, pk)
-
     def retrieve(self, user, pk):
         return self.get_queryset().retrieve(user, pk)
 
-    def list_by_folder(self, user, folder):
-        return self.get_queryset().list_by_folder(user, folder)
+    def list_children(self, user, pk):
+        return self.get_queryset().list_children(user, pk)
+        
+    def retrieve_child(self, user, board_pk, page_pk):
+        return self.get_queryset().retrieve_child(user, board_pk, page_pk)
+
+    def list_archived_children(self, user, pk):
+        return self.get_queryset().list_archived_children(user, pk)
+
+    def list_grandchildren(self, user, board_pk, page_pk):
+        return self.get_queryset().list_grandchildren(user, board_pk, page_pk)
+        
+    def retrieve_grandchild(self, user, board_pk, page_pk, note_pk):
+        return self.get_queryset().retrieve_grandchild(user, board_pk, page_pk, note_pk)
+
+    def list_archived_grandchildren(self, user, board_pk, page_pk):
+        return self.get_queryset().list_archived_grandchildren(user, board_pk, page_pk)
 
     def list_archived(self, user):
         return self.get_queryset().list_archived(user)
-
-    def retrieve_archived(self, user, pk):
-        return self.get_queryset().retrieve_archived(user, pk)
     
     def list_unsorted(self, user):
         return self.get_queryset().list_unsorted(user)
@@ -135,7 +196,7 @@ class Board ( models.Model ):
         on_delete = models.SET_NULL,
         blank = True,
         null = True,
-        related_name = 'folder_boards'
+        related_name = 'boards'
     )
     
     name = models.CharField(max_length=128)
@@ -161,17 +222,30 @@ class Board ( models.Model ):
 def save_shared_with(sender, instance, **kwargs):
     post_save.disconnect(save_shared_with, sender=sender)
     m2m_changed.disconnect(save_shared_with, sender=sender)
+
     instance.shared_with.add(instance.user)
     instance.save()
-    post_save.connect(save_shared_with, sender=sender)
+
     m2m_changed.connect(save_shared_with, sender=sender)
+    post_save.connect(save_shared_with, sender=sender)
 
 @receiver(post_save, sender=Board)
 def save_url(sender, instance, **kwargs):
     post_save.disconnect(save_url, sender=sender)
+
     instance.url = slugify(instance.name)
     instance.save()
+
     post_save.connect(save_url, sender=sender)
+
+@receiver(post_save, sender=Board)
+def save_date_updated(sender, instance, **kwargs):
+    post_save.disconnect(save_date_updated, sender=sender)
+
+    instance.date_updated = timezone.now()
+    instance.save()
+
+    post_save.connect(save_date_updated, sender=sender)
 
 m2m_changed.connect(save_shared_with, sender=Board.shared_with.through)    
 
