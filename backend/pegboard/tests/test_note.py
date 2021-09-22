@@ -95,76 +95,6 @@ class NoteTests ( TestCase ):
         response = self.view.retrieve(self.request, test_note.id)
         self.assertTrue(response.status_code != 200)
 
-    # should return 404 if the requested <Note> is archived
-    def test__no_archived ( self ):
-
-        test_note = Note.objects.create(
-            date_archived=self.field_date_archived,
-            **self.current_user_test_note
-        )
-
-        response = self.view.retrieve(self.request, test_note.id)
-        self.assertTrue(response.status_code != 200)
-
-
-    '''    
-    <NoteViewSet> TESTS FOR `list_by_page` FUNCTION (ACTION)
-    '''
-
-    # should return 404 when the requested <Page> doesn't exist
-    def test__list_by_page_with_no_page ( self ):
-        test_note = Note.objects.create(**self.current_user_test_note)
-
-        response = self.view.list_by_page(self.request, 1)
-        self.assertTrue(response.status_code != 200)
-
-    # `should return 404 when no <Note> objects are found
-    def test__list_by_page_with_no_results ( self ):
-        current_page = Page.objects.create(
-            user=self.current_user,
-            name='Test Page'
-        )
-
-        response = self.view.list_by_page(self.request, current_page.id)
-        self.assertTrue(response.status_code != 200)
-    
-    # should return 404 when the <User:current_user> doesn't have access to the <Page>
-    def test__list_by_page_with_no_permission ( self ):
-        current_page = Page.objects.create(
-            user=self.user_a,
-            name='Test Page'
-        )
-
-        # Create <Note> objects for both users so that the test does not give a false positive
-        Note.objects.create(
-            page=current_page,
-            **self.user_a_test_note
-        ), Note.objects.create(
-            **self.current_user_test_note
-        ), Note.objects.create(
-            page=current_page, # This should never happen, they don't own this <Page>
-            **self.current_user_test_note
-        )
-
-        response = self.view.list_by_page(self.request, current_page.id)
-        self.assertTrue(response.status_code != 200)
-
-    # should return 404 when the <Page> is archived, even if its' children aren't
-    def test__list_by_page_with_archived_page ( self ):
-        current_page = Page.objects.create(
-            user=self.current_user,
-            name='Test Page',
-            date_archived = self.field_date_archived
-        )
-        Note.objects.create( # the <Page> is archived, but it's <Note> isn't
-            page=current_page,
-            **self.current_user_test_note
-        )
-
-        response = self.view.list_by_page(self.request, current_page.id)
- 
-        self.assertTrue(response.status_code != 200)
-    
 
     '''    
     <NoteViewSet> TESTS FOR `create` FUNCTION
@@ -318,56 +248,6 @@ class NoteTests ( TestCase ):
         self.assertTrue(response.status_code != 200)
 
 
-
-    '''    
-    <NoteViewSet> TESTS FOR `list_archived` FUNCTION (ACTION)
-    '''
-
-    # should return a list containing only one archived <Note>
-    def test__list_archived ( self ):
-        Note.objects.create(**self.current_user_test_note)
-        Note.objects.create(
-            date_archived=self.field_date_archived,
-            **self.current_user_test_note
-        )
-
-        response = self.view.list_archived(self.request)
-        self.assertTrue(len(response.data) is 1)
-    
-    # should return 404 when the <User:current_user> does not have access to the requested <Note>
-    def test__list_archived_with_no_permission ( self ):
-        Note.objects.create(
-            date_archived=self.field_date_archived,
-            **self.user_a_test_note
-        )
-
-        response = self.view.list_archived(self.request)
-        self.assertTrue(response.status_code != 200)
-
-
-    '''    
-    <NoteViewSet> TESTS FOR `retrieve_archived` FUNCTION (ACTION)
-    '''
-
-    # should return a <Note> with a non-empty `date_archived` field
-    def test__retrieve_archived ( self ):
-        test_note = Note.objects.create(
-            date_archived=self.field_date_archived,
-            **self.current_user_test_note
-        )
-
-        response = self.view.retrieve_archived(self.request, test_note.id)
-        self.assertTrue(response.data['date_archived'] is not None)
-    
-    # should return 404 when the <User:current_user> does not have access to the requested <Note>
-    def test__retrieve_archived_with_no_permission ( self ):
-        test_note = Note.objects.create(
-            date_archived=self.field_date_archived,
-            **self.user_a_test_note
-        )
-        response = self.view.retrieve_archived(self.request, test_note.id)
-        self.assertTrue(response.status_code != 200)
-
     '''    
     <NoteViewSet> TESTS FOR `archive` FUNCTION (ACTION)
     '''
@@ -393,7 +273,7 @@ class NoteTests ( TestCase ):
         )
 
         response = self.view.archive(self.request, test_note.id)
-        self.assertTrue(response.status_code != 200)
+        self.assertTrue(response.data['date_archived'] is not None)
 
     '''    
     <NoteViewSet> TESTS FOR `unarchive` FUNCTION (ACTION)
@@ -424,5 +304,5 @@ class NoteTests ( TestCase ):
         test_note = Note.objects.create(**self.current_user_test_note)
 
         response = self.view.unarchive(self.request, test_note.id)
-        self.assertTrue(response.status_code != 200)
+        self.assertTrue(response.data['date_archived'] is None)
 

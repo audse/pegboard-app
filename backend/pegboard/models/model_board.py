@@ -211,6 +211,20 @@ class Board ( models.Model ):
         related_name='color_boards'
     )
 
+    DISPLAY_CHOICES = [
+        ('n', 'note'),
+        ('h', 'heading'),
+        ('i', 'image'),
+        ('c', 'checkbox'),
+        ('a', 'assignee'),
+        ('r', 'readme'),
+        ('s', 'small'),
+        ('l', 'checklist'),
+        ('d', 'date'),
+    ]
+
+    default_note_display = models.CharField(max_length=3, choices=DISPLAY_CHOICES, default='n')
+
     date_created = models.DateTimeField('date created', default=timezone.now)
     date_updated = models.DateTimeField('date updated', default=timezone.now)
     date_archived = models.DateTimeField('date archived', blank=True, null=True)

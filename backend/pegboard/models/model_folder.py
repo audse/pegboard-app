@@ -12,7 +12,7 @@ class FolderQuerySet ( models.QuerySet ):
 
     def list(self, user):
         return self.filter(
-            Q(user=user) | Q(shared_with=user),
+            user=user,
             date_archived__isnull=True,
         )
 

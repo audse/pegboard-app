@@ -13,6 +13,7 @@ class NoteQuerySet ( models.QuerySet ):
     def list(self, user):
         return self.filter(
             Q(user=user) | Q(board__user=user) | Q(board__shared_with=user) | Q(page__user=user),
+            date_archived__isnull=True
         )
 
     def retrieve(self, user, pk):
@@ -93,10 +94,13 @@ class Note ( models.Model ):
         ('i', 'image'), # shows only image
         ('c', 'checkbox'), # big checkbox on front of note for easy mark done
         ('a', 'assignee'), # emphasizes the assignee with their avatar on the front
-        ('r', 'readme') # longer text field with markdown
+        ('r', 'readme'), # longer text field with markdown
+        ('s', 'small'), # a smaller/denser `note` view
+        ('l', 'checklist'), # displays checklist prominently, good for headings
+        ('d', 'date'), # displays due date/todo date prominently, with colors to indicate soonness
     ]
 
-    display = models.CharField(max_length=36, choices=DISPLAY_CHOICES, default='n')
+    display = models.CharField(max_length=3, choices=DISPLAY_CHOICES, default='n')
     url = models.SlugField(blank=True)
     order = models.IntegerField(default=0)
 

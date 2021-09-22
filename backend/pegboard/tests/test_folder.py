@@ -76,15 +76,7 @@ class FolderTests ( TestCase ):
         test_folder = Folder.objects.create(**self.user_a_test_folder)
         response = self.view.retrieve(self.request, test_folder.id)
         self.assertTrue(response.status_code != 200)
-    
-    def test__no_archived(self):
-        test_folder = Folder.objects.create(
-            date_archived=self.field_date_archived,
-            **self.current_user_test_folder
-        )
-        response = self.view.retrieve(self.request, test_folder.id)
-        self.assertTrue(response.status_code != 200)
-    
+        
 
     '''    
     <FolderViewSet> TESTS FOR `create` FUNCTION
@@ -166,27 +158,6 @@ class FolderTests ( TestCase ):
 
 
     '''    
-    <FolderViewSet> TESTS FOR `retrieve_archived` FUNCTION (ACTION)
-    '''
-
-    def test__retrieve_archived(self):
-        test_folder = Folder.objects.create(
-            date_archived=self.field_date_archived,
-            **self.current_user_test_folder
-        )
-
-        response = self.view.retrieve_archived(self.request, test_folder.id)
-        self.assertTrue(response.data['date_archived'] is not None)
-    
-    def test__retrieve_archived_with_no_permission(self):
-        test_folder = Folder.objects.create(
-            date_archived=self.field_date_archived,
-            **self.user_a_test_folder
-        )
-        response = self.view.retrieve_archived(self.request, test_folder.id)
-        self.assertTrue(response.status_code != 200)
-
-    '''    
     <FolderViewSet> TESTS FOR `archive` FUNCTION (ACTION)
     '''
 
@@ -208,7 +179,7 @@ class FolderTests ( TestCase ):
         )
 
         response = self.view.archive(self.request, test_folder.id)
-        self.assertTrue(response.status_code != 200)
+        self.assertTrue(response.data['date_archived'] is not None)
 
     '''    
     <FolderViewSet> TESTS FOR `unarchive` FUNCTION (ACTION)
@@ -236,6 +207,6 @@ class FolderTests ( TestCase ):
         test_folder = Folder.objects.create(**self.current_user_test_folder)
 
         response = self.view.unarchive(self.request, test_folder.id)
-        self.assertTrue(response.status_code != 200)
+        self.assertTrue(response.data['date_archived'] is None)
 
 

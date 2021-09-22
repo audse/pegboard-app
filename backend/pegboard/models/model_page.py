@@ -27,8 +27,7 @@ class PageQuerySet ( models.QuerySet ):
 
     def list_unsorted(self, user):
         return self.filter(
-            Q(user=user) | 
-            Q(shared_with=user),
+            user=user,
             board__isnull=True,
             date_archived__isnull=True,
         )

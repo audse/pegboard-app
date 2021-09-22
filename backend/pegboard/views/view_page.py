@@ -15,7 +15,7 @@ class PageViewSet ( viewsets.ModelViewSet ):
     queryset = Page.objects.all()
     serializer_class = PageSerializer
 
-    def validate_page ( self, request ):
+    def validate_page(self, request):
         if 'board' in request.data.keys():
             try:
                 get_object_or_404(Board, pk=request.data['board'], user=request.user)
@@ -23,13 +23,30 @@ class PageViewSet ( viewsets.ModelViewSet ):
                 return False
         return True
 
-    def list ( self, request ):
+    def list(self, request):
         return serialize_queryset(
             queryset=Page.objects.list(user=request.user),
             serializer=self.serializer_class,
         )
 
-    def create ( self, request ):
+    def retrieve(self, request, pk=None):
+        try:
+            return serialize_query(
+                query_object=Page.objects.retrieve(user=request.user, pk=pk),
+                serializer=self.serializer_class,
+            )
+        except Exception as e:
+            return Response(e, status=404)
+        
+    
+    @action( detail=True, url_path='unsorted' )
+    def list_unsorted(self, request):
+        return serialize_queryset(
+            queryset=Page.objects.list_unsorted(user=request.user),
+            serializer=self.serializer_class,
+        )
+        
+    def create(self, request):
         if self.validate_page(request):
             return serialize_and_create(
                 serializer=self.serializer_class,
@@ -39,7 +56,7 @@ class PageViewSet ( viewsets.ModelViewSet ):
         else:
             return Response('An error validating the data occurred.', status=500)
     
-    def update ( self, request, pk=None ):
+    def update(self, request, pk=None):
         if self.validate_page(request):
             try:
                 page_to_update = get_object_or_404(Page, pk=pk, user=request.user)
@@ -55,53 +72,9 @@ class PageViewSet ( viewsets.ModelViewSet ):
         else:
             return Response('An error validating the data occurred.', status=500)
 
-    def retrieve ( self, request, pk=None ):
-        try:
-            return serialize_query(
-                query_object=Page.objects.retrieve(user=request.user, pk=pk),
-                serializer=self.serializer_class,
-            )
-        except Exception as e:
-            return Response(e, status=404)
-
-    @action( methods=['get'], detail=True, url_path='board' )
-    def list_by_board ( self, request, pk ):
-        try:
-            current_board = Board.objects.retrieve(user=request.user, pk=pk)
-            return serialize_queryset(
-                queryset=Page.objects.list_by_board(user=request.user, board=current_board),
-                serializer=self.serializer_class, 
-        )
-        except Exception as e:
-            return Response(e, status=404)
-        
-    
-    @action( methods=['get'], detail=True, url_path='unsorted')
-    def list_unsorted ( self, request ):
-        return serialize_queryset(
-            queryset=Page.objects.list_unsorted(user=request.user),
-            serializer=self.serializer_class,
-        )
-    
-    @action( methods=['get'], detail=True, url_path='archived' )
-    def list_archived ( self, request ):
-        return serialize_queryset(
-            queryset=Page.objects.list_archived(user=request.user),
-            serializer=self.serializer_class,
-        )
-    
-    @action( methods=['get'], detail=True, url_path='archived' )
-    def retrieve_archived ( self, request, pk ):
-        try:
-            return serialize_query(
-                query_object=Page.objects.retrieve_archived(user=request.user, pk=pk),
-                serializer=self.serializer_class,
-            )
-        except Exception as e:
-            return Response(e, status=404)
     
     @action( methods=['put'], detail=True, url_path='archive' )
-    def archive ( self, request, pk ):
+    def archive(self, request, pk):
         try:
             return serialize_and_update(
                 serializer=self.serializer_class,
@@ -116,11 +89,11 @@ class PageViewSet ( viewsets.ModelViewSet ):
             return Response(e, status=404)
 
     @action( methods=['put'], detail=True, url_path='archive' )
-    def unarchive ( self, request, pk ):
+    def unarchive(self, request, pk):
         try:
             return serialize_and_update(
                 serializer=self.serializer_class,
-                object_to_update=Page.objects.retrieve_archived(user=request.user, pk=pk),
+                object_to_update=Page.objects.retrieve(user=request.user, pk=pk),
                 request=request,
                 data={
                     'date_archived': None,

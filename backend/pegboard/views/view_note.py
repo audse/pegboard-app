@@ -18,7 +18,7 @@ class NoteViewSet ( viewsets.ModelViewSet ):
     queryset = Note.objects.all()
     serializer_class = NoteSerializer
 
-    def validate_note ( self, request ):
+    def validate_note(self, request):
         if 'page' in request.data.keys():
             try:
                 get_object_or_404(Page, pk=request.data['page'], user=request.user)
@@ -26,13 +26,29 @@ class NoteViewSet ( viewsets.ModelViewSet ):
                 return False
         return True
 
-    def list ( self, request ):
+    def list(self, request):
         return serialize_queryset(
             queryset=Note.objects.list(user=request.user),
             serializer=self.serializer_class,
         )
 
-    def create ( self, request ):
+    def retrieve(self, request, pk=None):
+        try:
+            return serialize_query(
+                query_object=Note.objects.retrieve(user=request.user, pk=pk),
+                serializer=self.serializer_class,
+            )
+        except Exception as e:
+            return Response(e, status=404)
+    
+    @action(detail=True, url_path='unsorted')
+    def list_unsorted(self, request):
+        return serialize_queryset(
+            queryset=Note.objects.list_unsorted(user=request.user),
+            serializer=self.serializer_class,
+        )
+
+    def create(self, request):
         if self.validate_note(request):
             return serialize_and_create(
                 serializer=self.serializer_class,
@@ -42,7 +58,7 @@ class NoteViewSet ( viewsets.ModelViewSet ):
         else:
             return Response('An error validating the data occurred.', status=500)
     
-    def update ( self, request, pk=None ):
+    def update(self, request, pk=None):
         if self.validate_note(request):
             try:
                 return serialize_and_update(
@@ -57,50 +73,7 @@ class NoteViewSet ( viewsets.ModelViewSet ):
         else:
             return Response('An error validating the data occurred.', status=500)
 
-    def retrieve ( self, request, pk=None ):
-        try:
-            return serialize_query(
-                query_object=Note.objects.retrieve(user=request.user, pk=pk),
-                serializer=self.serializer_class,
-            )
-        except Exception as e:
-            return Response(e, status=404)
-
-    @action( methods=['get'], detail=True, url_path='page' )
-    def list_by_page ( self, request, pk ):
-        try:
-            current_page = Page.objects.retrieve(user=request.user, pk=pk)
-            return serialize_queryset(
-                queryset=Note.objects.list_by_page(user=request.user, page=current_page),
-                serializer=self.serializer_class, 
-        )
-        except Exception as e:
-            return Response(e, status=404)
         
-    
-    @action( methods=['get'], detail=True, url_path='unsorted')
-    def list_unsorted ( self, request ):
-        return serialize_queryset(
-            queryset=Note.objects.list_unsorted(user=request.user),
-            serializer=self.serializer_class,
-        )
-    
-    @action( methods=['get'], detail=True, url_path='archived' )
-    def list_archived ( self, request ):
-        return serialize_queryset(
-            queryset=Note.objects.list_archived(user=request.user),
-            serializer=self.serializer_class,
-        )
-    
-    @action( methods=['get'], detail=True, url_path='archived' )
-    def retrieve_archived ( self, request, pk ):
-        try:
-            return serialize_query(
-                query_object=Note.objects.retrieve_archived(user=request.user, pk=pk),
-                serializer=self.serializer_class,
-            )
-        except Exception as e:
-            return Response(e, status=404)
     
     @action( methods=['put'], detail=True, url_path='archive' )
     def archive ( self, request, pk ):
@@ -122,7 +95,7 @@ class NoteViewSet ( viewsets.ModelViewSet ):
         try:
             return serialize_and_update(
                 serializer=self.serializer_class,
-                object_to_update=Note.objects.retrieve_archived(user=request.user, pk=pk),
+                object_to_update=Note.objects.retrieve(user=request.user, pk=pk),
                 request=request,
                 data={
                     'date_archived': None,
