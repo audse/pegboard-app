@@ -1,8 +1,8 @@
 from __future__ import unicode_literals
 from rest_framework import viewsets
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+from rest_framework.authentication import TokenAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 
 from django.utils import timezone
@@ -13,13 +13,13 @@ from ..serializers import FolderSerializer
 from .utils import serialize_query, serialize_queryset, serialize_and_create, serialize_and_update
 
 class FolderViewSet ( viewsets.ModelViewSet ):
-    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     queryset = Folder.objects.all()
     serializer_class = FolderSerializer
-    
+
     def list ( self, request ):
-        print('\nTHE USER IS \n', request.user, request.auth, '\n\n')
+        print('\nTHE USER IS \n', request.user, '\n\n')
         return serialize_queryset(
             queryset=Folder.objects.list(user=request.user),
             serializer=self.serializer_class,

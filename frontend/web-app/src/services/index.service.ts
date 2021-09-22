@@ -11,9 +11,9 @@ class Service {
         headers: {
             'X-CSRFToken': Cookies.get('csrftoken'),
             'Authorization':`Token ${localStorage.getItem('token')}`,
-            'WWW-Authenticate': 'Token',
         },
         withCredentials: true,
+        // xsrfCookieName: 'csrftoken'
     }
 
     constructor ( url:string ) {
@@ -23,7 +23,7 @@ class Service {
     async list () {
         console.log(this.authConfig)
         try {
-            return await axios.get(this.url)
+            return await axios.get(this.url, this.authConfig)
         } catch (e:any) {
             throw e
         }
