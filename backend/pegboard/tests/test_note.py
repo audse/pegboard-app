@@ -61,7 +61,7 @@ class NoteTests ( TestCase ):
     def test__no_results_in_list_all ( self ):
         response = self.view.list(self.request)
 
-        self.assertEqual(response.status_code, 404)
+        self.assertTrue(response.status_code != 200)
 
     # should return only <Note> objects that have not been archived
     def test__no_archived_in_list_all ( self ):
@@ -93,7 +93,7 @@ class NoteTests ( TestCase ):
         test_note = Note.objects.create(**self.user_a_test_note)
 
         response = self.view.retrieve(self.request, test_note.id)
-        self.assertEqual(response.status_code, 404)
+        self.assertTrue(response.status_code != 200)
 
     # should return 404 if the requested <Note> is archived
     def test__no_archived ( self ):
@@ -104,7 +104,7 @@ class NoteTests ( TestCase ):
         )
 
         response = self.view.retrieve(self.request, test_note.id)
-        self.assertEqual(response.status_code, 404)
+        self.assertTrue(response.status_code != 200)
 
 
     '''    
@@ -116,7 +116,7 @@ class NoteTests ( TestCase ):
         test_note = Note.objects.create(**self.current_user_test_note)
 
         response = self.view.list_by_page(self.request, 1)
-        self.assertEqual(response.status_code, 404)
+        self.assertTrue(response.status_code != 200)
 
     # `should return 404 when no <Note> objects are found
     def test__list_by_page_with_no_results ( self ):
@@ -126,7 +126,7 @@ class NoteTests ( TestCase ):
         )
 
         response = self.view.list_by_page(self.request, current_page.id)
-        self.assertEqual(response.status_code, 404)
+        self.assertTrue(response.status_code != 200)
     
     # should return 404 when the <User:current_user> doesn't have access to the <Page>
     def test__list_by_page_with_no_permission ( self ):
@@ -147,7 +147,7 @@ class NoteTests ( TestCase ):
         )
 
         response = self.view.list_by_page(self.request, current_page.id)
-        self.assertEqual(response.status_code, 404)
+        self.assertTrue(response.status_code != 200)
 
     # should return 404 when the <Page> is archived, even if its' children aren't
     def test__list_by_page_with_archived_page ( self ):
@@ -163,7 +163,7 @@ class NoteTests ( TestCase ):
 
         response = self.view.list_by_page(self.request, current_page.id)
  
-        self.assertEqual(response.status_code, 404)
+        self.assertTrue(response.status_code != 200)
     
 
     '''    
@@ -183,7 +183,7 @@ class NoteTests ( TestCase ):
     def test__create_empty_note ( self ):
         self.request.data = {}
         response = self.view.create(self.request)
-        self.assertEqual(response.status_code, 400)
+        self.assertTrue(response.status_code != 200)
 
     # should return 400 when the requested <Page> doesn't exist
     def test__create_note_page_doesnt_exist ( self ):
@@ -193,7 +193,7 @@ class NoteTests ( TestCase ):
             'page': 1,
         }
         response = self.view.create(self.request)
-        self.assertEqual(response.status_code, 400)
+        self.assertTrue(response.status_code != 200)
     
     # should return 400 when the <User:current_user> does not have access to the requested <Page>
     def test__create_note_in_page_with_no_permission ( self ):
@@ -207,7 +207,7 @@ class NoteTests ( TestCase ):
             'page': current_page.id,
         }
         response = self.view.create(self.request)
-        self.assertEqual(response.status_code, 400)
+        self.assertTrue(response.status_code != 200)
     
 
     '''    
@@ -230,7 +230,7 @@ class NoteTests ( TestCase ):
             'name': None,
         }
         response = self.view.update(self.request, note.id)
-        self.assertEqual(response.status_code, 400)
+        self.assertTrue(response.status_code != 200)
     
     # should return 404 when the requested <Note> doesn't exist
     def test__update_doesnt_exist ( self ):
@@ -238,7 +238,7 @@ class NoteTests ( TestCase ):
             'name': self.field_name
         }
         response = self.view.update(self.request, 1)
-        self.assertEqual(response.status_code, 404)
+        self.assertTrue(response.status_code != 200)
     
     # should return 400 when the <User:current_user> does not have access to the requested <Note>
     def test__update_no_permission ( self ):
@@ -247,7 +247,7 @@ class NoteTests ( TestCase ):
             'name': 'New Test Name'
         }
         response = self.view.update(self.request, note.id)
-        self.assertEqual(response.status_code, 404)
+        self.assertTrue(response.status_code != 200)
 
     # should return 400 when the requested <Page> doesn't exist
     def test__update_page_doesnt_exist ( self ):
@@ -256,7 +256,7 @@ class NoteTests ( TestCase ):
             'page': 1
         }
         response = self.view.update(self.request, note.id)
-        self.assertEqual(response.status_code, 400)
+        self.assertTrue(response.status_code != 200)
 
     # should return 400 when the <User:current_user> does not have access to the requested <Page>
     def test__update_note_in_page_with_no_permission ( self ):
@@ -269,7 +269,7 @@ class NoteTests ( TestCase ):
             'page': current_page.id
         }
         response = self.view.update(self.request, note.id)
-        self.assertEqual(response.status_code, 400)
+        self.assertTrue(response.status_code != 200)
 
 
     '''    
@@ -292,7 +292,7 @@ class NoteTests ( TestCase ):
         Note.objects.create(**self.user_a_test_note)
 
         response = self.view.list_unsorted(self.request)
-        self.assertEqual(response.status_code, 404)
+        self.assertTrue(response.status_code != 200)
 
     # should return a list of only one unsorted <Note>
     def test__list_unsorted_page_doesnt_exist ( self ):
@@ -315,7 +315,7 @@ class NoteTests ( TestCase ):
             **self.current_user_test_note
         )
         response = self.view.list_unsorted(self.request)
-        self.assertEqual(response.status_code, 404)
+        self.assertTrue(response.status_code != 200)
 
 
 
@@ -342,7 +342,7 @@ class NoteTests ( TestCase ):
         )
 
         response = self.view.list_archived(self.request)
-        self.assertEqual(response.status_code, 404)
+        self.assertTrue(response.status_code != 200)
 
 
     '''    
@@ -366,7 +366,7 @@ class NoteTests ( TestCase ):
             **self.user_a_test_note
         )
         response = self.view.retrieve_archived(self.request, test_note.id)
-        self.assertEqual(response.status_code, 404)
+        self.assertTrue(response.status_code != 200)
 
     '''    
     <NoteViewSet> TESTS FOR `archive` FUNCTION (ACTION)
@@ -383,7 +383,7 @@ class NoteTests ( TestCase ):
     def test__archive_with_no_permission ( self ):
         test_note = Note.objects.create(**self.user_a_test_note)
         response = self.view.archive(self.request, test_note.id)
-        self.assertEqual(response.status_code, 404)
+        self.assertTrue(response.status_code != 200)
 
     # should return a <Note> with a non-empty `date_archived` field
     def test__archive_with_already_archived ( self ):
@@ -393,7 +393,7 @@ class NoteTests ( TestCase ):
         )
 
         response = self.view.archive(self.request, test_note.id)
-        self.assertTrue(response.data['date_archived'] is not None)
+        self.assertTrue(response.status_code != 200)
 
     '''    
     <NoteViewSet> TESTS FOR `unarchive` FUNCTION (ACTION)
@@ -417,12 +417,12 @@ class NoteTests ( TestCase ):
         )
 
         response = self.view.unarchive(self.request, test_note.id)
-        self.assertEqual(response.status_code, 404)
+        self.assertTrue(response.status_code != 200)
 
     # should return a <Note> with an empty `date_archived` field
     def test__unarchive_with_not_archived ( self ):
         test_note = Note.objects.create(**self.current_user_test_note)
 
         response = self.view.unarchive(self.request, test_note.id)
-        self.assertTrue(response.data['date_archived'] is None)
+        self.assertTrue(response.status_code != 200)
 

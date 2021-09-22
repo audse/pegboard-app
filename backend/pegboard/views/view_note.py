@@ -9,33 +9,27 @@ from django.utils import timezone
 from ..models import Note, Page
 from ..serializers import NoteSerializer
 
-from .utils import get_exception_message, serialize_and_create, serialize_and_update, serialize_queryset, serialize_query
+from .utils import get_exception_message, serialize_and_create, serialize_and_update, serialize_queryset, serialize_query, serialize_query_without_args, serialize_queryset_without_args
 
-# TODO replace `user` query with `shared_with`
+# TODO <NoteViewSet> `destroy`
+
 
 class NoteViewSet ( viewsets.ModelViewSet ):
     queryset = Note.objects.all()
     serializer_class = NoteSerializer
 
     def validate_note ( self, request ):
-        valid = True
         if 'page' in request.data.keys():
             try:
-                current_page = get_object_or_404(Page, user=request.user, pk=request.data['page'])
+                get_object_or_404(Page, pk=request.data['page'], user=request.user)
             except:
                 return False
-        return valid
-
+        return True
 
     def list ( self, request ):
-        return serialize_queryset(
-            serializer = self.serializer_class, 
-            request = request,
-            identifier = 'notes',
-            query = {
-                'user': request.user,
-                'date_archived__isnull': True
-            }
+        return serialize_queryset_without_args(
+            queryset=Note.objects.list(user=request.user),
+            serializer=self.serializer_class,
         )
 
     def create ( self, request ):
@@ -43,21 +37,20 @@ class NoteViewSet ( viewsets.ModelViewSet ):
             return serialize_and_create(
                 serializer=self.serializer_class,
                 request=request,
-                identifier='note'
+                identifier='notes',
             )
         else:
             return Response(
-                data=get_exception_message(400, 'note'),
-                status=400
+                data=get_exception_message(404, 'note'),
+                status=404
             )
     
     def update ( self, request, pk=None ):
         if self.validate_note(request):
             try:
-                note_to_update = get_object_or_404(Note, pk=pk, user=request.user)
                 return serialize_and_update(
                     serializer=self.serializer_class,
-                    object_to_update=note_to_update,
+                    object_to_update=Note.objects.retrieve(user=request.user, pk=pk),
                     request=request,
                     data=request.data,
                     identifier='note'
@@ -73,120 +66,77 @@ class NoteViewSet ( viewsets.ModelViewSet ):
                 status=400
             )
 
-
     def retrieve ( self, request, pk=None ):
-        return serialize_query(
-            serializer=self.serializer_class, 
-            request=request,
-            identifier='note',
-            query={
-                'pk': pk,
-                'user': request.user,
-                'date_archived__isnull': True
-            }
-        )
+        try:
+            return serialize_query_without_args(
+                query_object=Note.objects.retrieve(user=request.user, pk=pk),
+                serializer=self.serializer_class,
+            )
+        except Exception as e:
+            return Response(e, status=404)
 
     @action( methods=['get'], detail=True, url_path='page' )
     def list_by_page ( self, request, pk ):
-        current_page = None
         try:
-            current_page = Page.objects.get(pk=pk, user=request.user, date_archived__isnull=True)
-        except:
-            return Response(data=get_exception_message(404, 'page'), status=404)
-
-        return serialize_queryset(
-            serializer=self.serializer_class,
-            request=request,
-            identifier='notes',
-            query={
-                'user': request.user,
-                'page': current_page,
-                'date_archived__isnull': True,
-            }
+            current_page = Page.objects.retrieve(user=request.user, pk=pk)
+            return serialize_queryset_without_args(
+                queryset=Note.objects.list_by_page(user=request.user, page=current_page),
+                serializer=self.serializer_class, 
         )
+        except Exception as e:
+            return Response(e, status=404)
+        
     
-    @action( methods=['get'], detail=True, url_path='unsorted' )
+    @action( methods=['get'], detail=True, url_path='unsorted')
     def list_unsorted ( self, request ):
-        return serialize_queryset(
+        return serialize_queryset_without_args(
+            queryset=Note.objects.list_unsorted(user=request.user),
             serializer=self.serializer_class,
-            request=request,
-            identifier='notes',
-            query={
-                'user': request.user,
-                'page__isnull': True,
-                'date_archived__isnull': True,
-            }
         )
     
     @action( methods=['get'], detail=True, url_path='archived' )
     def list_archived ( self, request ):
-        return serialize_queryset(
+        return serialize_queryset_without_args(
+            queryset=Note.objects.list_archived(user=request.user),
             serializer=self.serializer_class,
-            request=request,
-            identifier='notes',
-            query={
-                'user': request.user,
-                'date_archived__isnull': False,
-            }
         )
     
     @action( methods=['get'], detail=True, url_path='archived' )
     def retrieve_archived ( self, request, pk ):
-        return serialize_query(
-            serializer=self.serializer_class,
-            request=request,
-            identifier='note',
-            query={
-                'pk': pk,
-                'user': request.user,
-                'date_archived__isnull': False,
-            }
-        )
+        try:
+            return serialize_query_without_args(
+                query_object=Note.objects.retrieve_archived(user=request.user, pk=pk),
+                serializer=self.serializer_class,
+            )
+        except Exception as e:
+            return Response(e, status=404)
     
     @action( methods=['put'], detail=True, url_path='archive' )
     def archive ( self, request, pk ):
         try:
-            note_to_update = get_object_or_404(
-                Note,
-                pk=pk,
-                user=request.user
-            )
             return serialize_and_update(
                 serializer=self.serializer_class,
-                object_to_update=note_to_update,
+                object_to_update=Note.objects.retrieve(user=request.user, pk=pk),
                 request=request,
                 data={
                     'date_archived': timezone.now()
                 },
                 identifier='note',
             )
-        except:
-            return Response(
-                data=get_exception_message(404, 'note'),
-                status=404
-            )
+        except Exception as e:
+            return Response(e, status=404)
 
     @action( methods=['put'], detail=True, url_path='archive' )
     def unarchive ( self, request, pk ):
         try:
-            note_to_update = get_object_or_404(
-                Note,
-                pk=pk,
-                user=request.user
-            )
             return serialize_and_update(
                 serializer=self.serializer_class,
-                object_to_update=note_to_update,
+                object_to_update=Note.objects.retrieve_archived(user=request.user, pk=pk),
                 request=request,
                 data={
                     'date_archived': None,
                 },
                 identifier='note',
             )
-        except:
-            return Response(
-                data=get_exception_message(404, 'note'),
-                status=404
-            )
-
-# TODO <NoteViewSet> `destroy`
+        except Exception as e:
+            return Response(e, status=404)
