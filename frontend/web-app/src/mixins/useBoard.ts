@@ -34,12 +34,21 @@ const useBoard = () => {
         await BoardService.create(data)
     }
 
-    const pages = ref([])
-    const refreshChildren = async (boardId:string) => {
+    const pages = ref()
+    const refreshPages = async (boardId:string) => {
         BoardService.listChildren(boardId).then( (response:{data:Array<object>}) => {
             pages.value = response.data
         }).catch( (e:any) => {
             pages.value = []
+        })
+    }
+
+    let notes = ref()
+    const refreshNotes = async (boardId:string, pageId:string) => {
+        BoardService.listGrandchildren(boardId, pageId).then( (response:{data:Array<object>}) => {
+            notes.value = response.data
+        }).catch( (e:any) => {
+            notes.value = []
         })
     }
 
@@ -51,11 +60,14 @@ const useBoard = () => {
         board,
         refreshBoard,
 
-        pages,
-        refreshChildren,
-
         addBoardForm,
-        addBoard
+        addBoard,
+
+        pages,
+        refreshPages,
+
+        notes,
+        refreshNotes
     }
 
 }

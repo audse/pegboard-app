@@ -1,5 +1,5 @@
 <template>
-    
+
 <article v-if="board">
 
 <h1>{{ board.name }}</h1>
@@ -38,14 +38,14 @@ const {
     refreshBoard,
 
     pages,
-    refreshChildren
+    refreshPages
 } = useBoard()
 
 const id = route.params.id.toString()
 
 onMounted( () => {
     refreshBoard(id)
-    refreshChildren(id)
+    refreshPages(id)
 })
 
 const {

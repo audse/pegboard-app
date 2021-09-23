@@ -2,17 +2,18 @@ import axios, { AxiosRequestConfig } from 'axios'
 import store from './../store/index.store'
 import Service from './index.service'
 
-class PageService extends Service {
+class NoteService extends Service {
 
-    pageForm = {
+    noteForm = {
         name: '',
-        board: undefined
+        board: undefined,
+        page: undefined
     }
 
     constructor () {
-        super('pages')
+        super('notes')
     }
 
 }
 
-export default new PageService()
+export default new NoteService()

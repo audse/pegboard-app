@@ -11,6 +11,7 @@ def serialize_and_create (serializer, data):
         serialized_request.save()
         return Response(data=serialized_request.data)
     else:
+        print(serialized_request.errors)
         return Response(serialized_request.errors, status=400)
 
 def serialize_and_update ( serializer, object_to_update, data ):

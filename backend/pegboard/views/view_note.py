@@ -24,6 +24,11 @@ class NoteViewSet ( viewsets.ModelViewSet ):
                 get_object_or_404(Page, pk=request.data['page'], user=request.user)
             except:
                 return False
+        if 'board' in request.data.keys():
+            try:
+                get_object_or_404(Page, pk=request.data['page'], user=request.user)
+            except:
+                return False
         return True
 
     def list(self, request):
@@ -52,8 +57,10 @@ class NoteViewSet ( viewsets.ModelViewSet ):
         if self.validate_note(request):
             return serialize_and_create(
                 serializer=self.serializer_class,
-                request=request,
-                identifier='notes',
+                data={
+                    'user':request.user.pk,
+                    **request.data
+                }
             )
         else:
             return Response('An error validating the data occurred.', status=500)

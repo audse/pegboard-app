@@ -22,15 +22,6 @@ const usePage = () => {
         await PageService.create(data)
     }
 
-    // const pages = ref([])
-    // const refreshChildren = async (pageId:string) => {
-    //     PageService.listChildren(pageId).then( (response:{data:Array<object>}) => {
-    //         pages.value = response.data
-    //     }).catch( (e:any) => {
-    //         pages.value = []
-    //     })
-    // }
-
     return {
         page,
         refreshPage,
@@ -39,7 +30,7 @@ const usePage = () => {
         // refreshChildren,
 
         addPageForm,
-        addPage
+        addPage,
     }
 
 }
