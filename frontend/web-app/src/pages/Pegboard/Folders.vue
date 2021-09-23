@@ -2,6 +2,8 @@
 
 <article>
 
+    <h1>Folders</h1>
+
     <form @submit.prevent="addFolder(addFolderForm)">
         <label for="name">Folder Name</label>
         <input v-model="addFolderForm.name" name="name" type="text" />
@@ -12,7 +14,7 @@
         <view-folder :folder="folder" />
     </section>
 
-    <section v-for="board in unsortedBoards" :key="board.id" class="p-2 m-2 border border-gray-300">
+    <section v-for="board in unsortedBoards" :key="board.id" class="p-3 m-3 bg-gray-700">
         {{ board.name }}
     </section>
 
