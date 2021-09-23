@@ -19,9 +19,15 @@ class FolderViewSet ( viewsets.ModelViewSet ):
     serializer_class = FolderSerializer
 
     def list ( self, request ):
-        print('\nTHE USER IS \n', request.user, '\n\n')
         return serialize_queryset(
             queryset=Folder.objects.list(user=request.user),
+            serializer=self.serializer_class,
+        )
+
+    @action(detail=True, url_path='boards')
+    def list_children ( self, request, pk=None ):
+        return serialize_queryset(
+            queryset=Folder.objects.list_children(user=request.user, pk=pk),
             serializer=self.serializer_class,
         )
 
@@ -44,8 +50,10 @@ class FolderViewSet ( viewsets.ModelViewSet ):
     def create ( self, request ):
         return serialize_and_create(
             serializer=self.serializer_class,
-            request=request,
-            identifier='folder'
+            data={
+                'user': request.user.pk,
+                **request.data
+            }
         )
     
     def update ( self, request, pk=None ):

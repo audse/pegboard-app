@@ -4,16 +4,23 @@ import Service from './index.service'
 
 class BoardService extends Service {
 
+    boardForm = {
+        name: '',
+        folder: undefined
+    }
+
     constructor () {
         super('boards')
     }
 
     async listUnsorted () {
         try {
-            return await axios.get(`${this.url}unsorted/`)
+            return await axios.get(`${this.url}unsorted/`, this.config)
         } catch (e:any) {
             throw e
         }
     }
 
 }
+
+export default new BoardService()

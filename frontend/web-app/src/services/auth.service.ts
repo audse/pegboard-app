@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios'
+import axios from 'axios'
 import store from './../store/index.store'
 import Service from './index.service'
 
@@ -22,7 +22,7 @@ class AuthService extends Service {
 
     async signUpWithEmail ( data:SignUpData ) {
         try {
-            return await axios.post(`${this.url}signup/`, data, this.authConfig)
+            return await axios.post(`${this.url}signup/`, data, this.config)
         } catch (e:any) {
             throw e
         }
@@ -30,8 +30,7 @@ class AuthService extends Service {
 
     async signIn ( data:SignInData ) {
         try {
-            console.log(this.authConfig)
-            const requestData:any = await axios.post(`${this.url}login/`, data, this.authConfig)
+            const requestData:any = await axios.post(`${this.url}login/`, data, this.config)
             const token:string = requestData.data.key
             return await this.loadCurrentUser(token)
         } catch (e:any) {
@@ -41,7 +40,7 @@ class AuthService extends Service {
 
     async signOut () {
         try {
-            await axios.post(`${this.url}logout/`, this.authConfig)
+            await axios.post(`${this.url}logout/`, this.config)
             this.updateStore('', null)
             return
         } catch (e:any) {
@@ -54,11 +53,11 @@ class AuthService extends Service {
 
         if ( authToken !== 'null' ) {
 
-            this.authConfig.headers['Authorization'] = `Token ${authToken}`
+            this.config.headers['Authorization'] = `Token ${authToken}`
 
             try {
                 // Get user data
-                const requestData = await axios.get(`${this.url}user/`, this.authConfig)
+                const requestData = await axios.get(`${this.url}user/`, this.config)
                 const currentUser = requestData.data
 
                 // Update storage

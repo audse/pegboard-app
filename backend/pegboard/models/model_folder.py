@@ -32,7 +32,7 @@ class FolderQuerySet ( models.QuerySet ):
                 pk=pk
             )
             return current_folder.boards.all().filter(
-                user__id=user.id,
+                user=user,
             )
         except Exception as e:
             return str(e)

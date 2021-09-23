@@ -5,21 +5,21 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 
 
-def serialize_and_create ( serializer, request, identifier ):
-    serialized_request = serializer(data=request.data, context={'request':request})
+def serialize_and_create (serializer, data):
+    serialized_request = serializer(data=data)
     if serialized_request.is_valid():
         serialized_request.save()
         return Response(data=serialized_request.data)
     else:
-        return Response(status=400)
+        return Response(serialized_request.errors, status=400)
 
-def serialize_and_update ( serializer, object_to_update, request, data , identifier):
-    serialized_request = serializer(object_to_update, data=data, partial=True, context={'request':request})
+def serialize_and_update ( serializer, object_to_update, data ):
+    serialized_request = serializer(object_to_update, data=data, partial=True)
     if serialized_request.is_valid():
         serialized_request.save()
         return Response(data=serialized_request.data)
     else:
-        return Response(status=400)
+        return Response(serialized_request.errors, status=400)
         
 def serialize_query(query_object, serializer):
     return Response(data=serializer(query_object).data)

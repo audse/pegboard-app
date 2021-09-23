@@ -116,10 +116,13 @@ class BoardViewSet ( viewsets.ModelViewSet ):
         )
     
     def create(self, request):
+        print(request.data)
         return serialize_and_create(
             serializer=self.serializer_class,
-            request=request,
-            identifier='board'
+            data={
+                'user': request.user.pk,
+                **request.data
+            }
         )
     
     def update(self, request, pk=None):
