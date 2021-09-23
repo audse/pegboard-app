@@ -6,10 +6,6 @@ backend/pegboard/migrations/__pycache__
 backend/PegboardApp/__pycache__
 backend/pegboard/models/__pycache__
 
-frontend/web-app/.DS_Store
-frontend/web-app/.thumbs.db
-frontend/web-app/node_modules
-frontend/web-app/.vscode
 .DS_Store
 .vscode
 /env
