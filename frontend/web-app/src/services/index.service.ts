@@ -27,7 +27,7 @@ class Service {
         }
     }
 
-    async retrieve ( pk:number ) {
+    async retrieve ( pk:string ) {
         try {
             return await axios.get(`${this.url}${pk}/`, this.config)
         } catch (e:any) {

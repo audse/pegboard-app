@@ -21,6 +21,14 @@ class BoardService extends Service {
         }
     }
 
+    async listChildren (boardId:string) {
+        try {
+            return await axios.get(`${this.url}${boardId}/pages/`, this.config)
+        } catch (e:any) {
+            throw e
+        }
+    }
+
 }
 
 export default new BoardService()

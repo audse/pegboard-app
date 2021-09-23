@@ -10,7 +10,7 @@
     </form>
 
     <section v-for="board in folder.boards" :key="board.id" class="bg-gray-700 p-3 m-5">
-        {{ board.name }}
+        <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }">{{ board.name }}</router-link>
     </section>
 
 </article>
@@ -18,7 +18,7 @@
 </template>
 <script lang="ts">
 
-import { onMounted, watch } from 'vue'
+import { onMounted } from 'vue'
 import useFolder from '../../mixins/useFolder'
 import useBoard from '../../mixins/useBoard'
 
@@ -43,10 +43,6 @@ export default {
         onMounted( () => {
             refreshChildrenOf(props.folder)
         })
-
-        watch( props.folder, (() => {
-            refreshChildrenOf(props.folder)
-        }))
 
         return {
             addBoardForm,

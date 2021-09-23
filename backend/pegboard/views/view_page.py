@@ -48,10 +48,13 @@ class PageViewSet ( viewsets.ModelViewSet ):
         
     def create(self, request):
         if self.validate_page(request):
+            print(request.data)
             return serialize_and_create(
                 serializer=self.serializer_class,
-                request=request,
-                identifier='pages',
+                data={
+                    'user': request.user.pk,
+                    **request.data
+                }
             )
         else:
             return Response('An error validating the data occurred.', status=500)

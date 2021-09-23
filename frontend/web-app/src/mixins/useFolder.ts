@@ -39,9 +39,7 @@ const useFolder = () => {
 
     let addFolderForm:folderForm = reactive({...FolderService.folderForm})
     const addFolder = async (data:folderForm) => {
-        FolderService.create(data).then( () => {
-            refreshFolders()
-        }).catch((e:any) => console.log(e) )
+        await FolderService.create(data)
     }
 
     let editFolderForm:folderForm = reactive({...FolderService.folderForm})

@@ -15,7 +15,7 @@
     </section>
 
     <section v-for="board in unsortedBoards" :key="board.id" class="p-3 m-3 bg-gray-700">
-        {{ board.name }}
+        <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }">{{ board.name }}</router-link>
     </section>
 
     <form @submit.prevent="addBoard(addBoardForm)">
@@ -48,6 +48,7 @@ const {
 const {
     unsortedBoards,
     refreshUnsortedBoards,
+    refreshParent,
 
     addBoardForm,
     addBoard
@@ -57,13 +58,5 @@ onMounted( () => {
     refreshFolders()
     refreshUnsortedBoards()
 })
-
-watch( folders, (() => {
-    refreshChildren()
-}))
-
-watch( unsortedBoards, (() => {
-    refreshFolders()
-}))
 
 </script>
