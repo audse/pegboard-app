@@ -12,6 +12,11 @@ const routes = [
         name: 'Home',
         path: '/', 
         component: Home,
+        meta: {
+            breadcrumb: (route:string) => ([
+                { name: 'Home' },
+            ])
+        }
     },
     
     ...authRoutes,

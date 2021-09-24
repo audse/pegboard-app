@@ -9,7 +9,7 @@ const pegboardRoutes = [
         component: Folders,
         meta: {
             requiresAuth: true,
-            breadcrumb: (route:string) => ([
+            breadcrumb: () => ([
                 { name: 'Home', path: '/' },
                 { name: 'Folders' },
             ])
@@ -21,7 +21,7 @@ const pegboardRoutes = [
         component: Board,
         meta: {
             requiresAuth: true,
-            breadcrumb: (route:string) => ([
+            breadcrumb: (route:{params:{url:string}}) => ([
                 { name: 'Home', path: '/' },
                 { name: 'Folders', path: '/folders' },
                 { name: route.params.url, },

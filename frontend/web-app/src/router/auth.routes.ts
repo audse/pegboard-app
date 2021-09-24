@@ -10,6 +10,10 @@ const authRoutes = [
         component: SignUp,
         meta: {
             requiresUnauth: true,
+            breadcrumb: (route:string) => ([
+                { name: 'Home', path: '/' },
+                { name: 'Sign Up' }
+            ])
         }
     },
     { 
@@ -18,6 +22,10 @@ const authRoutes = [
         component: SignUpSuccess,
         meta: {
             requiresUnauth: true,
+            breadcrumb: (route:string) => ([
+                { name: 'Home', path: '/' },
+                { name: 'Sign Up' }
+            ])
         }
     },
     { 
@@ -26,6 +34,10 @@ const authRoutes = [
         component: SignIn,
         meta: {
             requiresUnauth: true,
+            breadcrumb: (route:string) => ([
+                { name: 'Home', path: '/' },
+                { name: 'Sign In' }
+            ])
         }
     },
 ]
