@@ -44,7 +44,7 @@ class NoteViewSet ( viewsets.ModelViewSet ):
                 serializer=self.serializer_class,
             )
         except Exception as e:
-            return Response(e, status=404)
+            return Response(str(e), status=404)
     
     @action(detail=False, url_path='unsorted')
     def list_unsorted(self, request):
@@ -71,12 +71,10 @@ class NoteViewSet ( viewsets.ModelViewSet ):
                 return serialize_and_update(
                     serializer=self.serializer_class,
                     object_to_update=Note.objects.retrieve(user=request.user, pk=pk),
-                    request=request,
                     data=request.data,
-                    identifier='note'
                 )
             except Exception as e:
-                return Response(e, status=404)
+                return Response(str(e), status=404)
         else:
             return Response('An error validating the data occurred.', status=500)
 
@@ -88,14 +86,12 @@ class NoteViewSet ( viewsets.ModelViewSet ):
             return serialize_and_update(
                 serializer=self.serializer_class,
                 object_to_update=Note.objects.retrieve(user=request.user, pk=pk),
-                request=request,
                 data={
                     'date_archived': timezone.now()
                 },
-                identifier='note',
             )
         except Exception as e:
-            return Response(e, status=404)
+            return Response(str(e), status=404)
 
     @action( methods=['put'], detail=True, url_path='archive' )
     def unarchive ( self, request, pk ):
@@ -103,11 +99,9 @@ class NoteViewSet ( viewsets.ModelViewSet ):
             return serialize_and_update(
                 serializer=self.serializer_class,
                 object_to_update=Note.objects.retrieve(user=request.user, pk=pk),
-                request=request,
                 data={
                     'date_archived': None,
                 },
-                identifier='note',
             )
         except Exception as e:
-            return Response(e, status=404)
+            return Response(str(e), status=404)

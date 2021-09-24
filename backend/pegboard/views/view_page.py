@@ -36,7 +36,7 @@ class PageViewSet ( viewsets.ModelViewSet ):
                 serializer=self.serializer_class,
             )
         except Exception as e:
-            return Response(e, status=404)
+            return Response(str(e), status=404)
         
     
     @action( detail=False, url_path='unsorted' )
@@ -62,16 +62,13 @@ class PageViewSet ( viewsets.ModelViewSet ):
     def update(self, request, pk=None):
         if self.validate_page(request):
             try:
-                page_to_update = get_object_or_404(Page, pk=pk, user=request.user)
                 return serialize_and_update(
                     serializer=self.serializer_class,
                     object_to_update=Page.objects.retrieve(user=request.user, pk=pk),
-                    request=request,
                     data=request.data,
-                    identifier='page'
                 )
             except Exception as e:
-                return Response(e, status=500)
+                return Response(str(e), status=500)
         else:
             return Response('An error validating the data occurred.', status=500)
 
@@ -82,14 +79,12 @@ class PageViewSet ( viewsets.ModelViewSet ):
             return serialize_and_update(
                 serializer=self.serializer_class,
                 object_to_update=Page.objects.retrieve(user=request.user, pk=pk),
-                request=request,
                 data={
                     'date_archived': timezone.now()
                 },
-                identifier='page',
             )
         except Exception as e:
-            return Response(e, status=404)
+            return Response(str(e), status=404)
 
     @action( methods=['put'], detail=True, url_path='archive' )
     def unarchive(self, request, pk):
@@ -97,11 +92,9 @@ class PageViewSet ( viewsets.ModelViewSet ):
             return serialize_and_update(
                 serializer=self.serializer_class,
                 object_to_update=Page.objects.retrieve(user=request.user, pk=pk),
-                request=request,
                 data={
                     'date_archived': None,
                 },
-                identifier='page',
             )
         except Exception as e:
-            return Response(e, status=404)
+            return Response(str(e), status=404)

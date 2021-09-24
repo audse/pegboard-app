@@ -22,15 +22,18 @@ const usePage = () => {
         await PageService.create(data)
     }
 
+    const editPage = async (pageId:string, data:pageForm) => {
+        await PageService.update(pageId, data)
+    }
+
     return {
         page,
         refreshPage,
 
-        // pages,
-        // refreshChildren,
-
         addPageForm,
         addPage,
+
+        editPage,
     }
 
 }

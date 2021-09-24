@@ -4,10 +4,13 @@
 
 {{ note.name }}
 
+<edit-note :note="note" />
+
 </article>
 
 </template>
 <script lang="ts">
+import EditNote from './Edit/EditNote.vue'
 
 export default {
     
@@ -17,6 +20,10 @@ export default {
         note:Object,
     },
 
+    components: { 
+        EditNote
+    },
+    
     setup () {
 
     }

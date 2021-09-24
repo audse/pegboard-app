@@ -20,6 +20,10 @@
         <view-note :note="note" />
     </section>
     
+    <section>
+        <edit-page :page="page" />
+    </section>
+
 </article>
 
 </template>
@@ -31,6 +35,7 @@ import { onMounted } from 'vue'
 
 import useBoard from './../../mixins/useBoard'
 import useNote from './../../mixins/useNote'
+import EditPage from './Edit/EditPage.vue'
 
 
 export default {
@@ -39,6 +44,7 @@ export default {
 
     components: {
         ViewNote,
+        EditPage,
     },
 
     props: {

@@ -24,12 +24,18 @@ const useNote = () => {
         await NoteService.create(data)
     }
 
+    const editNote = async (noteId:string, data:noteForm) => {
+        await NoteService.update(noteId, data)
+    }
+
     return {
         note,
         refreshNote,
 
         addNoteForm,
         addNote,
+
+        editNote,
     }
 
 }
