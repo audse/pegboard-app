@@ -13,6 +13,8 @@
         <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }">{{ board.name }}</router-link>
     </section>
 
+    <edit-folder :folder="folder" />
+
 </article>
 
 </template>
@@ -21,8 +23,10 @@
 import { onMounted } from 'vue'
 import useFolder from '../../mixins/useFolder'
 import useBoard from '../../mixins/useBoard'
+import EditFolder from './Edit/EditFolder.vue'
 
 export default {
+  components: { EditFolder },
     name: 'ViewFolder',
 
     props: {

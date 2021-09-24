@@ -61,9 +61,7 @@ class FolderViewSet ( viewsets.ModelViewSet ):
             return serialize_and_update(
                 serializer=self.serializer_class,
                 object_to_update=Folder.objects.retrieve(user=request.user, pk=pk),
-                request=request,
                 data=request.data,
-                identifier='folder'
             )
         except Exception as e:
             return Response(str(e), status=404)

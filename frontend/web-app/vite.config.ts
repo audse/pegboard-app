@@ -7,6 +7,7 @@ export default defineConfig({
         vue()
     ],
     server: {
-        host: 'localhost'
+        host: 'localhost',
+        port: 3000
     }
 })

@@ -166,12 +166,10 @@ class BoardViewSet ( viewsets.ModelViewSet ):
                 return serialize_and_update(
                     serializer=self.serializer_class,
                     object_to_update=Board.objects.retrieve(user=request.user, pk=pk),
-                    request=request,
                     data=request.data,
-                    identifier='board'
                 )
             except Exception as e:
-                return Response(e, status=404)
+                return Response(str(e), status=404)
         else:
             return Response('An error validating the data occurred.', status=500)
 

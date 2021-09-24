@@ -43,9 +43,9 @@ class Service {
         }
     }
 
-    async update ( pk:number, data:object ) {
+    async update ( pk:string, data:object ) {
         try {
-            return await axios.put(`${this.url}${pk}/`, { data: data }, this.config)
+            return await axios.put(`${this.url}${pk}/`, data=data, this.config)
         } catch (e:any) {
             throw e
         }

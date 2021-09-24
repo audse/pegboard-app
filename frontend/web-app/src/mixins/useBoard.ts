@@ -34,6 +34,10 @@ const useBoard = () => {
         await BoardService.create(data)
     }
 
+    const editBoard = async (boardId: string, data:boardForm) => {
+        await BoardService.update(boardId, data)
+    }
+
     const pages = ref()
     const refreshPages = async (boardId:string) => {
         BoardService.listChildren(boardId).then( (response:{data:Array<object>}) => {
@@ -62,6 +66,8 @@ const useBoard = () => {
 
         addBoardForm,
         addBoard,
+
+        editBoard,
 
         pages,
         refreshPages,
