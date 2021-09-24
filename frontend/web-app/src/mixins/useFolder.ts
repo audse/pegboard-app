@@ -1,19 +1,22 @@
 
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import FolderService from '../services/folder.service'
+import { useStore } from 'vuex'
 
 const useFolder = () => {
 
-    const folders:any = ref(null) 
+    const store = useStore()
+
+    const folders:any = computed( () => store.state.folders.folders )
+    const boards:any = computed( () => store.state.boards.boards )
 
     const refreshFolders = async () => {
-        FolderService.list().then( (response:{data:Array<object>}) => {
-            folders.value = response.data
-        }).catch((e:any) => console.log(e))
+        await FolderService.list()
     }
 
     const refreshChildren = async () => {
         folders.value.map( (folder:any) => {
+            // listChildren(folder.id)
             listChildren(folder.id).then( (response:any) => {
                 console.log(response)
                 folder.boards = response

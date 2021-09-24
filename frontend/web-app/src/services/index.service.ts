@@ -6,6 +6,7 @@ class Service {
     
     url:string = 'http://localhost:8000/api/'
     store:any = store
+    storeName:string = ''
 
     config:AxiosRequestConfig = {
         headers: {
@@ -17,11 +18,14 @@ class Service {
 
     constructor ( url:string ) {
         this.url = `${this.url}${url}/`
+        this.storeName = url
     }
 
     async list () {
         try {
-            return await axios.get(this.url, this.config)
+            const response:{data:object} = await axios.get(this.url, this.config)
+            store.commit(`${this.storeName}/set`, response.data)
+            return response.data
         } catch (e:any) {
             throw e
         }
@@ -37,7 +41,9 @@ class Service {
 
     async create ( data:object ) {
         try {
-            return await axios.post(this.url, data=data, this.config)
+            const response:{data:object} = await axios.post(this.url, data=data, this.config)
+            store.commit(`${this.storeName}/create`, response.data)
+            return response.data
         } catch (e:any) {
             throw e
         }
@@ -45,7 +51,9 @@ class Service {
 
     async update ( pk:string, data:object ) {
         try {
-            return await axios.put(`${this.url}${pk}/`, data=data, this.config)
+            const response:{data:object} = await axios.put(`${this.url}${pk}/`, data=data, this.config)
+            store.commit(`${this.storeName}/update`, response.data)
+            return response.data
         } catch (e:any) {
             throw e
         }
