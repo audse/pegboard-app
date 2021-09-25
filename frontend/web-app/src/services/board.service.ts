@@ -23,7 +23,9 @@ class BoardService extends Service {
 
     async listChildren (boardId:string) {
         try {
-            return await axios.get(`${this.url}${boardId}/pages/`, this.config)
+            const response:{data:Array<object>} = await axios.get(`${this.url}${boardId}/pages/`, this.config)
+            store.commit(`pages/set`, response.data)
+            return response.data
         } catch (e:any) {
             throw e
         }
@@ -31,7 +33,9 @@ class BoardService extends Service {
 
     async listGrandchildren (boardId:string, pageId:string) {
         try {
-            return await axios.get(`${this.url}${boardId}-${pageId}/notes/`, this.config)
+            const response:{data:Array<object>} = await axios.get(`${this.url}${boardId}-${pageId}/notes/`, this.config)
+            store.commit('notes/setByPage', { pageId: pageId, data: response.data })
+            return response.data
         } catch (e:any) {
             throw e
         }
