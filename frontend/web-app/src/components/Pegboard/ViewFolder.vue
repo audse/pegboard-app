@@ -33,11 +33,6 @@ const props = defineProps({
 
 export default {
     name: 'ViewFolder',
-    components: {
-        Card,
-        EditFolder,
-        AddBoard,
-    }
 }
 
 </script>

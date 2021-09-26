@@ -38,12 +38,6 @@ const props = defineProps({
 
 export default {
     name: 'ViewPage',
-    components: {
-        ViewNote,
-        EditPage,
-        AddNote,
-        Card,
-    },
 }
 
 </script>

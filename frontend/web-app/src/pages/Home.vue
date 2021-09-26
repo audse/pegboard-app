@@ -1,31 +1,34 @@
 <template>
 
-<nav>
+<section>
+    <nav>
 
-<section v-if="currentUser">
-    Welcome, {{ currentUser.username }}.
+        <section v-if="currentUser">
+            Welcome, {{ currentUser.username }}.
 
-    <button class="secondary" @click="signOut">Sign Out</button>
+            <button class="secondary" @click="signOut">Sign Out</button>
 
-    <router-link :to="{ name: 'Folders' }">
-        <a>Go To Folders</a>
-    </router-link>
+            <router-link :to="{ name: 'Folders' }">
+                <a>Go To Folders</a>
+            </router-link>
 
+        </section>
+        <section v-else>
+
+        <router-link :to="{ name: 'Sign In' }">
+            <a class="pr-4">Sign In</a>
+        </router-link>
+        <router-link :to="{ name: 'Sign Up' }">
+            <a>Sign Up</a>
+        </router-link>
+
+        </section>
+
+    </nav>
+
+    <h1>Hello world!</h1>
+    
 </section>
-<section v-else>
-
-<router-link :to="{ name: 'Sign In' }">
-    <a class="pr-4">Sign In</a>
-</router-link>
-<router-link :to="{ name: 'Sign Up' }">
-    <a>Sign Up</a>
-</router-link>
-
-</section>
-
-</nav>
-
-<h1>Hello world!</h1>
 
 </template>
 <script lang="ts">
