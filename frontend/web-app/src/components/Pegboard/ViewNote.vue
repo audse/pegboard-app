@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+
 import Card from './../Elements/Card.vue'
-import EditNote from './Edit/EditNote.vue'
+import EditNote from './Forms/Edit/EditNote.vue'
 
 const props = defineProps({
     note:Object,
@@ -18,3 +19,10 @@ const props = defineProps({
 </card>
 
 </template>
+<script lang="ts">
+
+export default {
+    name: 'ViewNote'
+}
+
+</script>

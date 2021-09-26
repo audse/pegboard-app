@@ -2,7 +2,7 @@
 
 import { reactive } from 'vue'
 
-import BoardService from './../../../services/board.service'
+import BoardService from './../../../../services/board.service'
 
 const props = defineProps({
     board: Object,

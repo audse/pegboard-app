@@ -2,7 +2,8 @@
 <script lang="ts" setup>
 
 import ViewPage from '../../components/Pegboard/ViewPage.vue'
-import EditBoard from '../../components/Pegboard/Edit/EditBoard.vue'
+import EditBoard from '../../components/Pegboard/Forms/Edit/EditBoard.vue'
+import AddPage from '../../components/Pegboard/Forms/Add/AddPage.vue'
 
 import BoardService from './../../services/board.service'
 
@@ -34,11 +35,7 @@ onMounted( () => {
     <h2>{{ board.board.description }}</h2>
 
     <section>
-        <!-- <form @submit.prevent="addPage(addPageForm, board.id)">
-            <label for="name">Page Name</label>
-            <input v-model="addPageForm.name" name="name" type="text" />
-            <button type="submit">Add Page</button>
-        </form> -->
+        <add-page :board-id="board.board.id" />
     </section>
 
     <section v-for="page in board.pages" :key="page.id" class="flex">

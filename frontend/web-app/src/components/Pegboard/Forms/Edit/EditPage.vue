@@ -1,3 +1,27 @@
+<script lang="ts" setup>
+
+import { reactive } from 'vue'
+
+import PageService from './../../../../services/page.service'
+
+const props = defineProps({
+    page: Object,
+})
+
+
+interface pageForm {
+    name:string,
+}
+
+let editPageForm:pageForm = reactive({
+    name: props.page.name
+})
+
+const editPage = async (pageId: string, data:pageForm) => {
+    await PageService.update(pageId, data)
+}
+
+</script>
 <template>
     
 <section class="pt-6">
@@ -13,32 +37,8 @@
 
 <script lang="ts">
 
-import { computed } from 'vue'
-
-import usePage from './../../../mixins/usePage'
-
 export default {
-
     name: 'EditPage',
-
-    props: {
-        page: Object,
-    },
-
-    setup ( props:{page:object} ) {
-
-        const {
-            editPage
-        } = usePage()
-
-        const editPageForm = computed( () => Object.assign({}, props.page))
-
-        return {
-            editPage,
-            editPageForm,
-        }
-
-    }
 }
 
 </script>
