@@ -15,7 +15,9 @@ class BoardService extends Service {
 
     async listUnsorted () {
         try {
-            return await axios.get(`${this.url}unsorted/`, this.config)
+            const response = await axios.get(`${this.url}unsorted/`, this.config)
+            store.commit(`${this.storeName}/setByFolder`, { folder:'unsorted', boards:response.data })
+            return response.data
         } catch (e:any) {
             throw e
         }

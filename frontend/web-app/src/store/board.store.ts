@@ -19,26 +19,35 @@ const boardStore = {
     
     getters: {
 
-        getByFolder ( state:boardState, folderId:string ) {
+        getByFolder: (state:boardState) => (folderId:string) => {
             const folderIndex = state.boards.findIndex( (folder:any) => folder.folder === folderId )
             if ( folderIndex !== -1 ) {
                 return state.boards[folderIndex].boards
-            } throw new Error('Folder not found.')
+            }
         },
 
-        getById ( state:boardState, folderId:string='unsorted', boardId:string ) {
+        getById: (state:boardState) => (folderId:string='unsorted', boardId:string) => {
             const folderIndex = state.boards.findIndex( (folder:any) => folder.folder === folderId )
             if ( folderIndex !== -1 ) {
                 const boardIndex = state.boards[folderIndex].boards.findIndex( board => board.id === boardId )
                 if ( boardIndex !== -1 ){
                     return state.boards[folderIndex].boards[boardIndex]
-                } else throw new Error('Board not found.')
-            } else throw new Error('Folder not found.')
+                }
+            }
         }
 
     },
 
     mutations: {
+
+        setByFolder ( state:boardState, folderData:{folder:string, boards:Array<board>} ) {
+            const folderIndex = state.boards.findIndex( (folder:any) => folder.folder === folderData.folder )
+            if ( folderIndex !== -1 ) {
+                state.boards[folderIndex] = folderData
+            } else {
+                state.boards.push(folderData)
+            }
+        },
 
         create ( state:boardState, boardData:board ) {
             const folderId = boardData.folder ? boardData.folder : 'unsorted'

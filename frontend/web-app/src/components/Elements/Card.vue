@@ -32,7 +32,7 @@ export default {
 
 article {
     border-radius: 3.5rem;
-    @apply m-1;
+    @apply m-2;
 }
 
 header, footer, .content {
