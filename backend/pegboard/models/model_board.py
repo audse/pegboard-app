@@ -28,7 +28,7 @@ class BoardQuerySet ( models.QuerySet ):
         except Exception as e:
             return e
 
-    def retrieve_board_and_children(self, user, pk):
+    def retrieve_with_children(self, user, pk):
         try:
             
             response = {
@@ -59,95 +59,6 @@ class BoardQuerySet ( models.QuerySet ):
             return response
         except Exception as e:
             print ('\n\n', 'The Model Error \n\n', e, '\n\n')
-            return e
-
-
-    def list_children(self, user, pk):
-        try:
-            current_board = self.get(
-                Q(user=user) | Q(shared_with=user),
-                date_archived__isnull=True,
-                pk=pk
-            )
-            return current_board.pages.all().filter(
-                date_archived__isnull=True
-            )
-        except Exception as e:
-            return e
-
-    def retrieve_child(self, user, board_pk, page_pk):
-        try:
-            current_board = self.get(
-                Q(user=user) | Q(shared_with=user),
-                date_archived__isnull=True,
-                pk=board_pk
-            )
-            return current_board.pages.all().get(
-                pk=page_pk
-            )
-        except Exception as e:
-            return e
-
-    def list_archived_children(self, user, pk):
-        try:
-            current_board = self.get(
-                Q(user=user) | Q(shared_with=user),
-                date_archived__isnull=True,
-                pk=pk
-            )
-            return current_board.pages.all().filter(
-                date_archived__isnull=False
-            )
-        except Exception as e:
-            return e
-    
-    def list_grandchildren(self, user, board_pk, page_pk):
-        try:
-            current_board = self.get(
-                Q(user=user) | Q(shared_with=user),
-                date_archived__isnull=True,
-                pk=board_pk
-            )
-            current_page = current_board.pages.all().get(
-                date_archived__isnull=True,
-                pk=page_pk
-            )
-            return current_page.notes.all().filter(
-                date_archived__isnull=True
-            )
-        except Exception as e:
-            return e
-    
-    def retrieve_grandchild(self, user, board_pk, page_pk, note_pk):
-        try:
-            current_board = self.get(
-                Q(user=user) | Q(shared_with=user),
-                date_archived__isnull=True,
-                pk=board_pk
-            )
-            current_page = current_board.pages.all().get(
-                pk=page_pk
-            )
-            return current_page.notes.all().get(
-                pk=note_pk
-            )
-        except Exception as e:
-            return e
-    
-    def list_archived_grandchildren(self, user, board_pk, page_pk):
-        try:
-            current_board = self.get(
-                Q(user=user) | Q(shared_with=user),
-                date_archived__isnull=True,
-                pk=board_pk
-            )
-            current_page = current_board.pages.all().get(
-                pk=page_pk
-            )
-            return current_page.notes.all().filter(
-                date_archived__isnull=False
-            )
-        except Exception as e:
             return e
 
     def list_archived(self, user):
@@ -185,26 +96,8 @@ class BoardManager ( models.Manager ):
     def retrieve(self, user, pk):
         return self.get_queryset().retrieve(user, pk)
     
-    def retrieve_board_and_children(self, user, pk):
-        return self.get_queryset().retrieve_board_and_children(user, pk)
-
-    def list_children(self, user, pk):
-        return self.get_queryset().list_children(user, pk)
-        
-    def retrieve_child(self, user, board_pk, page_pk):
-        return self.get_queryset().retrieve_child(user, board_pk, page_pk)
-
-    def list_archived_children(self, user, pk):
-        return self.get_queryset().list_archived_children(user, pk)
-
-    def list_grandchildren(self, user, board_pk, page_pk):
-        return self.get_queryset().list_grandchildren(user, board_pk, page_pk)
-        
-    def retrieve_grandchild(self, user, board_pk, page_pk, note_pk):
-        return self.get_queryset().retrieve_grandchild(user, board_pk, page_pk, note_pk)
-
-    def list_archived_grandchildren(self, user, board_pk, page_pk):
-        return self.get_queryset().list_archived_grandchildren(user, board_pk, page_pk)
+    def retrieve_with_children(self, user, pk):
+        return self.get_queryset().retrieve_with_children(user, pk)
 
     def list_archived(self, user):
         return self.get_queryset().list_archived(user)

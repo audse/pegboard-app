@@ -8,7 +8,6 @@ const props = defineProps({
     page: Object,
 })
 
-
 interface pageForm {
     name:string,
 }
@@ -29,7 +28,7 @@ const editPage = async (pageId: string, data:pageForm) => {
     <form @submit.prevent="editPage(page.id, editPageForm)">
         <label for="name">Page Name</label>
         <input v-model="editPageForm.name" name="name" type="text" />
-        <button type="submit">Submit</button>
+        <button type="submit" class="secondary">Save Edit</button>
     </form>
 </section>
 

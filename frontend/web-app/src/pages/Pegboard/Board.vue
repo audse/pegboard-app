@@ -38,8 +38,8 @@ onMounted( () => {
         <add-page :board-id="board.board.id" />
     </section>
 
-    <section v-for="page in board.pages" :key="page.id" class="flex">
-        <view-page :page="page" />
+    <section class="flex">
+        <view-page v-for="page in board.pages" :key="page.page.id" :page="page" />
     </section>
 
     <edit-board :board="board.board" />

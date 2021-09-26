@@ -26,20 +26,12 @@ nav a {
     @apply px-4
 }
 
-form {
-    @apply p-3
-}
-
-form section {
-    @apply mx-0 my-3
-}
-
 form label {
     @apply font-bold mr-4
 }
 
 form input {
-    @apply  bg-gray-700 p-1 m-2
+    @apply  bg-gray-600 p-1 m-2
 }
 
 button {

@@ -12,7 +12,7 @@ const props = defineProps({
     <header>
         <slot name="header"></slot>
     </header>
-    <section>
+    <section class="content">
         <slot></slot>
     </section>
     <footer>
@@ -32,6 +32,19 @@ export default {
 
 article {
     border-radius: 3.5rem;
+    @apply m-1;
+}
+
+header, footer, .content {
+    @apply px-3 py-1;
+}
+
+header {
+    padding-top: calc( 3.5rem / 2 );
+}
+
+footer {
+    padding-bottom: calc( 3.5rem / 2 );
 }
 
 </style>

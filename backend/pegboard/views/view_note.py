@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.authentication import TokenAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from django.utils import timezone
@@ -15,6 +17,8 @@ from .utils import serialize_and_create, serialize_and_update, serialize_query, 
 
 
 class NoteViewSet ( viewsets.ModelViewSet ):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Note.objects.all()
     serializer_class = NoteSerializer
 

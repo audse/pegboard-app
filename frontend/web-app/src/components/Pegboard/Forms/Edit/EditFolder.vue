@@ -28,7 +28,7 @@ const editFolder = async (folderId: string, data:folderForm) => {
     <form @submit.prevent="editFolder(folder.id, editFolderForm)">
         <label for="name">Folder Name</label>
         <input v-model="editFolderForm.name" name="name" type="text" />
-        <button type="submit">Submit</button>
+        <button type="submit" class="secondary">Save Edit</button>
     </form>
 </section>
 

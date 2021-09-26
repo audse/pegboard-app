@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 
+import Card from '../Elements/Card.vue'
 import ViewNote from './ViewNote.vue'
 import EditPage from './Forms/Edit/EditPage.vue'
 import AddNote from './Forms/Add/AddNote.vue'
-
-import { onMounted } from 'vue'
 
 const props = defineProps({
     page: Object,
@@ -13,26 +12,26 @@ const props = defineProps({
 </script>
 <template>
 
-<article class="bg-gray-800 p-3 m-3">
+<card class="bg-gray-800">
 
-    <section>
+    <template #header>
         <strong>{{ page.page.name }}</strong>
         {{ page.page.description }}
-    </section>
 
-    <section>
-        <add-note :page-id="page.page.id" :board-id="page.page.board" />
-    </section>
+        <section>
+            <add-note :page-id="page.page.id" :board-id="page.page.board" />
+        </section>
+    </template>
 
     <section v-for="note in page.notes" :key="note.id">
         <view-note :note="note" />
     </section>
     
-    <section>
+    <template #footer>
         <edit-page :page="page.page" />
-    </section>
+    </template>
 
-</article>
+</card>
 
 </template>
 <script lang="ts">
@@ -43,6 +42,7 @@ export default {
         ViewNote,
         EditPage,
         AddNote,
+        Card,
     },
 }
 

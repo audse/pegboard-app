@@ -28,7 +28,7 @@ const editBoard = async (boardId: string, data:boardForm) => {
     <form @submit.prevent="editBoard(board.id, editBoardForm)">
         <label for="name">Board Name</label>
         <input v-model="editBoardForm.name" name="name" type="text" />
-        <button type="submit">Submit</button>
+        <button type="submit" class="secondary">Save Edit</button>
     </form>
 </section>
 

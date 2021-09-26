@@ -16,7 +16,7 @@ let editNoteForm:noteForm = reactive({
     name: props.note.name
 })
 
-const editBoard = async (noteId: string, data:noteForm) => {
+const editNote = async (noteId: string, data:noteForm) => {
     await NoteService.update(noteId, data)
 }
 
@@ -28,7 +28,7 @@ const editBoard = async (noteId: string, data:noteForm) => {
     <form @submit.prevent="editNote(note.id, editNoteForm)">
         <label for="name">Note Name</label>
         <input v-model="editNoteForm.name" name="name" type="text" />
-        <button type="submit">Submit</button>
+        <button type="submit" class="secondary">Save Edit</button>
     </form>
 </section>
 

@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.authentication import TokenAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
@@ -12,6 +14,8 @@ from ..serializers import BoardSerializer, PageSerializer, NoteSerializer
 from .utils import serialize_queryset, serialize_query, serialize_and_create, serialize_and_update
 
 class BoardViewSet ( viewsets.ModelViewSet ):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
 
@@ -39,15 +43,15 @@ class BoardViewSet ( viewsets.ModelViewSet ):
             return Response(e, status=404)
     
     @action(detail=True, url_path='board')
-    def retrieve_board_and_children(self, request, pk=None):
+    def retrieve_with_children(self, request, pk=None):
         try:
-            response = Board.objects.retrieve_board_and_children(user=request.user, pk=pk)
+            response = Board.objects.retrieve_with_children(user=request.user, pk=pk)
 
             serialized_response = {
                 'board': BoardSerializer(response['board']).data,
                 'pages': [], # [ {page: xyz, notes: [a, b, c,]}, {} ]
             }
-            
+
             for page in response['pages']:
                 serialized_page = PageSerializer(page['page']).data
 
@@ -65,95 +69,6 @@ class BoardViewSet ( viewsets.ModelViewSet ):
         except Exception as e:
             print('\n\n', e, '\n\n')
             return Response(str(e), status=500)
-
-    
-    @action(detail=True, url_path='pages')
-    def list_children(self, request, pk):
-        try:
-            return serialize_queryset(
-                queryset=Board.objects.list_children(user=request.user, pk=pk),
-                serializer=PageSerializer
-            )
-        except Exception as e:
-            return Response(e, status=404)
-    
-    @action(detail=True, url_path='page')
-    def retrieve_child(self, request, board_pk=None, page_pk=None):
-        try:
-            return serialize_queryset(
-                queryset=Board.objects.retrieve_child(
-                    user=request.user,
-                    board_pk=board_pk,
-                    page_pk=page_pk
-                ),
-                serializer=PageSerializer
-            )
-        except Exception as e:
-            return Response(e, status=404)
-    
-    @action(detail=True, url_path='pages/archived')
-    def list_archived_children(self, request, pk):
-        try:
-            return serialize_queryset(
-                queryset=Board.objects.list_archived_children(request.user, pk),
-                serializer=PageSerializer
-            )
-        except Exception as e:
-            return Response(e, status=404)
-
-    @action(detail=True, url_path='notes')
-    def list_grandchildren(self, request, pk=None):
-        try:
-            pk_list = pk.split('-')
-            board_pk = pk_list[0]
-            page_pk = pk_list[1]
-            return serialize_queryset(
-                queryset=Board.objects.list_grandchildren(
-                    user=request.user,
-                    board_pk=board_pk,
-                    page_pk=page_pk
-                ),
-                serializer=NoteSerializer
-            )
-        except Exception as e:
-            print('\n\nCURRENT ERROR', e, '\n\n')
-            return Response(e, status=404)
-    
-    @action(detail=True, url_path='note')
-    def retrieve_grandchild(self, request, pk):
-        try:
-            pk_list = pk.split('-')
-            board_pk = pk_list[0]
-            page_pk = pk_list[1]
-            note_pk = pk_list[2]
-            return serialize_queryset(
-                queryset=Board.objects.retrieve_grandchild(
-                    user=request.user,
-                    board_pk=board_pk,
-                    page_pk=page_pk,
-                    note_pk=note_pk
-                ),
-                serializer=PageSerializer
-            )
-        except Exception as e:
-            return Response(e, status=404)
-
-    @action(detail=True, url_path='notes/archived')
-    def list_archived_grandchildren(self, request, pk):
-        try:
-            pk_list = pk.split('-')
-            board_pk = pk_list[0]
-            page_pk = pk_list[1]
-            return serialize_queryset(
-                queryset=Board.objects.list_archived_grandchildren(
-                    user=request.user,
-                    board_pk=board_pk,
-                    page_pk=page_pk
-                ),
-                serializer=NoteSerializer
-            )
-        except Exception as e:
-            return Response(e, status=404)
     
     @action( methods=['get'], detail=False, url_path='unsorted')
     def list_unsorted(self, request):

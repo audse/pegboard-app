@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import AddBoard from './Forms/Add/AddBoard.vue'
 
+import Card from './../Elements/Card.vue'
+import AddBoard from './Forms/Add/AddBoard.vue'
 import EditFolder from './Forms/Edit/EditFolder.vue'
 
 const props = defineProps({
@@ -10,22 +11,22 @@ const props = defineProps({
 </script>
 <template>
 
-<article class="bg-gray-800 p-3 m-3">
-    <h2>{{ folder.name }}</h2>
-
-    <section>
+<card class="bg-gray-800">
+    <template #header>
+        <h2>{{ folder.name }}</h2>
         <add-board :folder-id="folder.id" />
-    </section>
+    </template>
 
-    <section v-for="board in folder.boards" :key="board.id" class="bg-gray-700 p-3 m-5">
+    <card v-for="board in folder.boards" :key="board.id" class="bg-gray-700">
         <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }">{{ board.name }}</router-link>
-    </section>
+        {{ board.description }}
+    </card>
 
-    <section>
+    <template #footer>
         <edit-folder :folder="folder" />
-    </section>
+    </template>
 
-</article>
+</card>
 
 </template>
 <script lang="ts">
@@ -33,6 +34,7 @@ const props = defineProps({
 export default {
     name: 'ViewFolder',
     components: {
+        Card,
         EditFolder,
         AddBoard,
     }
