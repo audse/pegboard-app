@@ -38,6 +38,35 @@ class BoardViewSet ( viewsets.ModelViewSet ):
         except Exception as e:
             return Response(e, status=404)
     
+    @action(detail=True, url_path='board')
+    def retrieve_board_and_children(self, request, pk=None):
+        try:
+            response = Board.objects.retrieve_board_and_children(user=request.user, pk=pk)
+
+            serialized_response = {
+                'board': BoardSerializer(response['board']).data,
+                'pages': [], # [ {page: xyz, notes: [a, b, c,]}, {} ]
+            }
+            
+            for page in response['pages']:
+                serialized_page = PageSerializer(page['page']).data
+
+                serialized_notes = []
+                for note in page['notes']:
+                    serialized_notes.append(NoteSerializer(note).data)
+
+                serialized_response['pages'].append({
+                    'page': serialized_page,
+                    'notes': serialized_notes
+                })
+            
+            return Response(serialized_response)
+
+        except Exception as e:
+            print('\n\n', e, '\n\n')
+            return Response(str(e), status=500)
+
+    
     @action(detail=True, url_path='pages')
     def list_children(self, request, pk):
         try:

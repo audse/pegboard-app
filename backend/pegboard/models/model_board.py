@@ -28,6 +28,40 @@ class BoardQuerySet ( models.QuerySet ):
         except Exception as e:
             return e
 
+    def retrieve_board_and_children(self, user, pk):
+        try:
+            
+            response = {
+                'board': None,
+                'pages': [],
+            }
+
+            response['board'] = self.get(
+                Q(user=user) | Q(shared_with=user),
+                date_archived__isnull=True,
+                pk=pk
+            )
+
+            current_pages = response['board'].pages.all().filter(
+                date_archived__isnull=True
+            )
+
+
+            for page in current_pages:
+                all_notes_in_page = page.notes.all().filter(
+                    date_archived__isnull=True
+                )
+                response['pages'].append({
+                    'page': page,
+                    'notes': all_notes_in_page
+                })
+            
+            return response
+        except Exception as e:
+            print ('\n\n', 'The Model Error \n\n', e, '\n\n')
+            return e
+
+
     def list_children(self, user, pk):
         try:
             current_board = self.get(
@@ -150,6 +184,9 @@ class BoardManager ( models.Manager ):
 
     def retrieve(self, user, pk):
         return self.get_queryset().retrieve(user, pk)
+    
+    def retrieve_board_and_children(self, user, pk):
+        return self.get_queryset().retrieve_board_and_children(user, pk)
 
     def list_children(self, user, pk):
         return self.get_queryset().list_children(user, pk)

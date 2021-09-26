@@ -16,7 +16,7 @@ const useBoard = () => {
 
     let board = ref({})
     const refreshBoard = async (boardId:string) => {
-        BoardService.retrieve(boardId).then( (response:{data:object}) => {
+        BoardService.retrieveBoardAndChildren(boardId).then( (response:{data:object}) => {
             board.value = response.data
         })
     }
@@ -38,23 +38,23 @@ const useBoard = () => {
         await BoardService.update(boardId, data)
     }
 
-    const pages = ref()
-    const refreshPages = async (boardId:string) => {
-        BoardService.listChildren(boardId).then( (response:{data:Array<object>}) => {
-            pages.value = response.data
-        }).catch( (e:any) => {
-            pages.value = []
-        })
-    }
+    // const pages = ref()
+    // const refreshPages = async (boardId:string) => {
+    //     BoardService.listChildren(boardId).then( (response:{data:Array<object>}) => {
+    //         pages.value = response.data
+    //     }).catch( (e:any) => {
+    //         pages.value = []
+    //     })
+    // }
 
-    let notes = ref()
-    const refreshNotes = async (boardId:string, pageId:string) => {
-        BoardService.listGrandchildren(boardId, pageId).then( (response:{data:Array<object>}) => {
-            notes.value = response.data
-        }).catch( (e:any) => {
-            notes.value = []
-        })
-    }
+    // let notes = ref()
+    // const refreshNotes = async (boardId:string, pageId:string) => {
+    //     BoardService.listGrandchildren(boardId, pageId).then( (response:{data:Array<object>}) => {
+    //         notes.value = response.data
+    //     }).catch( (e:any) => {
+    //         notes.value = []
+    //     })
+    // }
 
     return {
         unsortedBoards,
@@ -69,11 +69,11 @@ const useBoard = () => {
 
         editBoard,
 
-        pages,
-        refreshPages,
+        // pages,
+        // refreshPages,
 
-        notes,
-        refreshNotes
+        // notes,
+        // refreshNotes
     }
 
 }

@@ -1,62 +1,52 @@
-<template>
-
-<article v-if="board">
-
-    <h1>{{ board.name }}</h1>
-    <h2>{{ board.description }}</h2>
-
-    <section>
-        <form @submit.prevent="addPage(addPageForm, board.id)">
-            <label for="name">Page Name</label>
-            <input v-model="addPageForm.name" name="name" type="text" />
-            <button type="submit">Add Page</button>
-        </form>
-    </section>
-
-    <section v-for="page in pages" :key="page.id" class="flex">
-        <view-page :page="page" />
-    </section>
-
-    <edit-board :board="board" />
-
-</article>
-
-</template>
 
 <script lang="ts" setup>
 
 import ViewPage from '../../components/Pegboard/ViewPage.vue'
 import EditBoard from '../../components/Pegboard/Edit/EditBoard.vue'
 
-import { onMounted, reactive } from 'vue'
-import { useRoute } from 'vue-router'
+import BoardService from './../../services/board.service'
 
-import useBoard from './../../mixins/useBoard'
-import usePage from './../../mixins/usePage'
+import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
 
 const route = useRoute()
 
-const {
-    board,
-    refreshBoard,
-
-    pages,
-    refreshPages
-} = useBoard()
-
 const id = route.params.id.toString()
+
+let board:any = ref({})
+
+const refreshBoard = async (boardId:string) => {
+    BoardService.retrieveBoardAndChildren(boardId).then( (response:any) => {
+        board.value = response.data
+    })
+}
 
 onMounted( () => {
     refreshBoard(id)
-    refreshPages(id)
 })
 
-const {
-    page,
-    refreshPage,
-
-    addPageForm,
-    addPage
-} = usePage()
-
 </script>
+<template>
+
+<article v-if="board?.board">
+
+    <h1>{{ board.board.name }}</h1>
+    <h2>{{ board.board.description }}</h2>
+
+    <section>
+        <!-- <form @submit.prevent="addPage(addPageForm, board.id)">
+            <label for="name">Page Name</label>
+            <input v-model="addPageForm.name" name="name" type="text" />
+            <button type="submit">Add Page</button>
+        </form> -->
+    </section>
+
+    <section v-for="page in board.pages" :key="page.id" class="flex">
+        <view-page :page="page" />
+    </section>
+
+    <edit-board :board="board.board" />
+
+</article>
+
+</template>

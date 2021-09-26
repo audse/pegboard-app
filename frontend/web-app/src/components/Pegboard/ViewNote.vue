@@ -1,32 +1,20 @@
+<script lang="ts" setup>
+import Card from './../Elements/Card.vue'
+import EditNote from './Edit/EditNote.vue'
+
+const props = defineProps({
+    note:Object,
+})
+
+</script>
 <template>
-    
-<article class="bg-gray-700 p-2 m-2">
+
+<card>
 
 {{ note.name }}
 
 <edit-note :note="note" />
 
-</article>
+</card>
 
 </template>
-<script lang="ts">
-import EditNote from './Edit/EditNote.vue'
-
-export default {
-    
-    name: 'ViewNote',
-
-    props: {
-        note:Object,
-    },
-
-    components: { 
-        EditNote
-    },
-    
-    setup () {
-
-    }
-}
-
-</script>

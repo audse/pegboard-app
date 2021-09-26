@@ -1,3 +1,26 @@
+<script lang="ts" setup>
+
+import { reactive } from 'vue'
+
+import BoardService from './../../../services/board.service'
+
+const props = defineProps({
+    board: Object,
+})
+
+interface boardForm {
+    name:string,
+}
+
+let editBoardForm:boardForm = reactive({
+    name: props.board.name
+})
+
+const editBoard = async (boardId: string, data:boardForm) => {
+    await BoardService.update(boardId, data)
+}
+
+</script>
 <template>
     
 <section class="pt-6">
@@ -10,35 +33,10 @@
 </section>
 
 </template>
-
 <script lang="ts">
 
-import { computed, reactive } from 'vue'
-
-import useBoard from './../../../mixins/useBoard'
-
 export default {
-
     name: 'EditBoard',
-
-    props: {
-        board: Object,
-    },
-
-    setup ( props:{board:object} ) {
-
-        const {
-            editBoard
-        } = useBoard()
-
-        const editBoardForm = computed( () => Object.assign({}, props.board))
-
-        return {
-            editBoard,
-            editBoardForm,
-        }
-
-    }
 }
 
 </script>
