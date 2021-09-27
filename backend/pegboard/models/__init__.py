@@ -4,5 +4,6 @@ from .model_board import Board
 from .model_folder import Folder
 from .model_theme import Theme
 from .model_tag import Tag
+from .model_comment import Comment
 from .model_checklist import Checklist
 from .model_color import Color

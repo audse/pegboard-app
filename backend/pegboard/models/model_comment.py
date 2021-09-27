@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Q
 
-class TagQuerySet ( models.QuerySet ):
+class CommentQuerySet ( models.QuerySet ):
 
     def list(self, user):
         return self.filter(
@@ -20,11 +20,11 @@ class TagQuerySet ( models.QuerySet ):
         except Exception as e:
             return e
 
-class TagManager ( models.Manager ):
+class CommentManager ( models.Manager ):
     use_in_migrations = True
 
     def get_queryset(self):
-        return TagQuerySet(self.model, using=self._db)
+        return CommentQuerySet(self.model, using=self._db)
 
     def list(self, user):
         return self.get_queryset().list(user)
@@ -32,25 +32,39 @@ class TagManager ( models.Manager ):
     def retrieve(self, user, pk):
         return self.get_queryset().retrieve(user, pk)
 
-class Tag ( models.Model ):
+class Comment ( models.Model ):
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='comments'
+    )
 
     board = models.ForeignKey(
         'Board',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='tags'
+        related_name='comments'
     )
 
-    color = models.ForeignKey(
-        'Color',
+    page = models.ForeignKey(
+        'Page',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='tags'
+        related_name='comments'
     )
 
-    name = models.CharField(max_length=128)
+    note = models.ForeignKey(
+        'Note',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='comments'
+    )
+
+    content = models.CharField(max_length=128)
 
     def __str__ ( self ):
-        return self.name
+        return '{self.user} {self.content}'

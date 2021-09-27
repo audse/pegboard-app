@@ -3,6 +3,35 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
+from django.db.models import Q
+
+class ChecklistQuerySet ( models.QuerySet ):
+
+    def list(self, user):
+        return self.filter(
+            Q(user=user) | Q(board__user=user) | Q(board__shared_with=user) | Q(page__user=user),
+        )
+
+    def retrieve(self, user, pk):
+        try:
+            return self.get(
+                Q(user=user) | Q(board__user=user) | Q(board__shared_with=user) | Q(page__user=user) | Q(note__user=user),
+                pk=pk
+            )
+        except Exception as e:
+            return e
+
+class ChecklistManager ( models.Manager ):
+    use_in_migrations = True
+
+    def get_queryset(self):
+        return ChecklistQuerySet(self.model, using=self._db)
+
+    def list(self, user):
+        return self.get_queryset().list(user)
+
+    def retrieve(self, user, pk):
+        return self.get_queryset().retrieve(user, pk)
 
 class Checklist ( models.Model ):
 
