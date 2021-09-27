@@ -22,7 +22,7 @@ const editPage = async (pageId: string, data:pageForm) => {
 
 </script>
 <template>
-    
+   
 <section class="pt-6">
     <h3>Edit {{ page.name }}</h3>
     <form @submit.prevent="editPage(page.id, editPageForm)">

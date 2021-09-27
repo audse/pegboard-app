@@ -2,8 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('theme.variables.scss');
+
 body, html, #app {
-    @apply bg-gray-900 text-gray-200
+    background-color: var(--secondary);
+    color: var(--text);
+}
+
+* {
+    box-sizing: border-box;
 }
 
 #app {
@@ -14,8 +21,19 @@ h1 {
     @apply font-bold text-2xl
 }
 
+h1 small {
+    @apply font-light;
+    color: var(--scale-text-3);
+}
+
 h2 {
-    @apply font-semibold text-xl
+    @apply font-semibold text-xl;
+    color: var(--scale-text-5);
+}
+
+h2 small {
+    @apply font-normal;
+    color: var(--scale-text-3);
 }
 
 a {
@@ -31,11 +49,13 @@ form label {
 }
 
 form input {
-    @apply  bg-gray-600 p-1 m-2
+    @apply  bg-gray-600 px-3 py-1 m-2 rounded-full;
+    width: 100%;
 }
 
 button {
-    @apply px-4 py-1 rounded-full font-semibold bg-blue-700 text-blue-100 mx-3
+    @apply px-4 py-1 rounded-full font-semibold bg-blue-700 text-blue-100 mx-2;
+    max-height: fit-content;
 }
 
 button.secondary {

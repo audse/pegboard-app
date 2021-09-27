@@ -55,9 +55,12 @@ onMounted( () => {
         <view-folder v-for="folder in folders" :key="folder.id" :folder="folder" />
     </section>
 
-    <card v-for="board in unsortedBoards" :key="board.id" class="bg-gray-700">
-        <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }">{{ board.name }}</router-link>
-    </card>
+    <section class="mt-12">
+        <h2>Unsorted</h2>
+        <card v-for="board in unsortedBoards" :key="board.id" class="bg-gray-700">
+            <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }">{{ board.name }}</router-link>
+        </card>
+    </section>
 
     <section>
         <add-board />

@@ -10,7 +10,7 @@ const props = defineProps({
 </script>
 <template>
 
-<card class="bg-gray-700">
+<card>
 
     <template #header>
         {{ note.name }}
@@ -18,9 +18,9 @@ const props = defineProps({
 
     <p>{{ note.description }}</p>
 
-    <template #footer>
-        <edit-note :note="note" />
-    </template>
+    <!-- <template #footer> -->
+        <!-- <edit-note :note="note" /> -->
+    <!-- </template> -->
 
 </card>
 

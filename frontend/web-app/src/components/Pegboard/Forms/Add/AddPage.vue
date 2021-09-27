@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 
+import Card from './../../../Elements/Card.vue'
+
 import { reactive } from 'vue'
 
 import PageService from './../../../../services/page.service'
@@ -23,12 +25,17 @@ const addPage = async (boardId: string, data:pageForm) => {
 }
 </script>
 <template>
-    
-<form @submit.prevent="addPage(addPageForm, folder.id)">
-    <label for="name">Page Name</label>
-    <input v-model="addPageForm.name" name="name" type="text" />
-    <button type="submit">Add Page</button>
-</form>
+
+<card no-bg>
+
+    <h2>Add Page</h2>
+
+    <form @submit.prevent="addPage(addPageForm, folder.id)">
+        <!-- <label for="name">Page Name</label> -->
+        <input v-model="addPageForm.name" name="name" type="text" placeholder="Name" />
+        <button type="submit">Add Page</button>
+    </form>
+</card>
 
 </template>
 <script lang="ts">

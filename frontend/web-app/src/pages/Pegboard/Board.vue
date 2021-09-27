@@ -31,18 +31,18 @@ onMounted( () => {
 
 <article v-if="board?.board">
 
-    <h1>{{ board.board.name }}</h1>
-    <h2>{{ board.board.description }}</h2>
-
-    <section>
-        <add-page :board-id="board.board.id" />
-    </section>
+    <h1>
+        {{ board.board.name }}
+        <br />
+        <small>{{ board.board.description }}</small>
+    </h1>
 
     <section class="flex">
-        <view-page v-for="page in board.pages" :key="page.page.id" :page="page" />
+        <view-page v-for="page in board.pages" :key="page.page.id" :page="page" class="w-4/12" />
+        <add-page :board-id="board.board.id" class="w-4/12" />
     </section>
 
-    <edit-board :board="board.board" />
+    <!-- <edit-board :board="board.board" /> -->
 
 </article>
 

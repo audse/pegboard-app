@@ -21,16 +21,16 @@ let addNoteForm:noteForm = reactive({
     page: props.pageId || undefined,
 })
 
-const addBoard = async (boardId: string, data:noteForm) => {
+const addNote = async (data:noteForm) => {
     await NoteService.create(data)
 }
 </script>
 <template>
     
-<form @submit.prevent="addNote(addNoteForm, folder.id)">
-    <label for="name">Note Name</label>
-    <input v-model="addNoteForm.name" name="name" type="text" />
-    <button type="submit">Add Note</button>
+<!-- <h4>Add Note</h4> -->
+<form @submit.prevent="addNote(addNoteForm)" class="flex items-center">
+    <input v-model="addNoteForm.name" name="name" type="text" placeholder="Add Note" />
+    <button type="submit">+</button>
 </form>
 
 </template>

@@ -1,9 +1,14 @@
 <script lang="ts" setup>
 
-const props = defineProps({
+import { computed } from 'vue'
 
+const props = defineProps({
+    noBg: Boolean,
+    border: Boolean,
 })
 
+const bgColor = props.noBg ? 'transparent' : 'var(--scale-secondary-1)'
+const borderStyle = props.border ? '2px solid var(--scale-secondary-3)' : 'transparent'
 
 </script>
 <template>
@@ -32,19 +37,22 @@ export default {
 
 article {
     border-radius: 3.5rem;
-    @apply m-2;
+    @apply my-3;
+
+    background-color: v-bind(bgColor);
+    border: v-bind(borderStyle);
 }
 
 header, footer, .content {
-    @apply px-3 py-1;
+    @apply px-6 py-1;
 }
 
 header {
-    padding-top: calc( 3.5rem / 2 );
+    padding-top: 2rem;
 }
 
 footer {
-    padding-bottom: calc( 3.5rem / 2 );
+    padding-bottom: 2rem;
 }
 
 </style>

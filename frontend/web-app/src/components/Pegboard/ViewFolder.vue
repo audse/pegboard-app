@@ -11,19 +11,19 @@ const props = defineProps({
 </script>
 <template>
 
-<card class="bg-gray-800">
+<card border no-bg>
     <template #header>
         <h2>{{ folder.name }}</h2>
-        <add-board :folder-id="folder.id" />
     </template>
 
-    <card v-for="board in folder.boards" :key="board.id" class="bg-gray-700">
+    <card v-for="board in folder.boards" :key="board.id">
         <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }">{{ board.name }}</router-link>
         {{ board.description }}
     </card>
 
     <template #footer>
-        <edit-folder :folder="folder" />
+        <!-- <edit-folder :folder="folder" /> -->
+        <add-board :folder-id="folder.id" />
     </template>
 
 </card>

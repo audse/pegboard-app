@@ -12,15 +12,14 @@ const props = defineProps({
 </script>
 <template>
 
-<card class="bg-gray-800">
+<card no-bg>
 
     <template #header>
-        <strong>{{ page.page.name }}</strong>
-        {{ page.page.description }}
-
-        <section>
-            <add-note :page-id="page.page.id" :board-id="page.page.board" />
-        </section>
+        <h2>
+            {{ page.page.name }}
+            <br />
+            <small>{{ page.page.description }}</small>
+        </h2>
     </template>
 
     <section v-for="note in page.notes" :key="note.id">
@@ -28,7 +27,8 @@ const props = defineProps({
     </section>
     
     <template #footer>
-        <edit-page :page="page.page" />
+        <!-- <edit-page :page="page.page" /> -->
+        <add-note :page-id="page.page.id" :board-id="page.page.board" />
     </template>
 
 </card>

@@ -19,6 +19,10 @@
 <main class="p-3">
     <slot></slot>
 </main>
+
+<footer class="h-40">
+
+</footer>
 </div>
 
 </template>
