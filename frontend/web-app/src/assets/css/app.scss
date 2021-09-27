@@ -36,6 +36,10 @@ h2 small {
     color: var(--scale-text-3);
 }
 
+h3 {
+    @apply font-semibold text-lg;
+}
+
 a {
     @apply text-blue-500 px-1
 }
@@ -48,13 +52,14 @@ form label {
     @apply font-bold mr-4
 }
 
-form input {
-    @apply  bg-gray-600 px-3 py-1 m-2 rounded-full;
+form input, form textarea {
+    @apply px-3 py-1 my-2 rounded-full;
+    background-color: var(--scale-secondary-2);
     width: 100%;
 }
 
 button {
-    @apply px-4 py-1 rounded-full font-semibold bg-blue-700 text-blue-100 mx-2;
+    @apply px-4 py-1 rounded-full font-semibold bg-blue-700 text-blue-100 m-1;
     max-height: fit-content;
 }
 

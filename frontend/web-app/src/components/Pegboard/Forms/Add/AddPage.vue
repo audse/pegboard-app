@@ -20,7 +20,7 @@ let addPageForm:pageForm = reactive({
     board: props.boardId || undefined
 })
 
-const addPage = async (boardId: string, data:pageForm) => {
+const addPage = async (data:pageForm) => {
     await PageService.create(data)
 }
 </script>
@@ -30,7 +30,7 @@ const addPage = async (boardId: string, data:pageForm) => {
 
     <h2>Add Page</h2>
 
-    <form @submit.prevent="addPage(addPageForm, folder.id)">
+    <form @submit.prevent="addPage(addPageForm)">
         <!-- <label for="name">Page Name</label> -->
         <input v-model="addPageForm.name" name="name" type="text" placeholder="Name" />
         <button type="submit">Add Page</button>

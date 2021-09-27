@@ -36,7 +36,7 @@ export default {
 <style scoped>
 
 article {
-    border-radius: 3.5rem;
+    border-radius: 1rem;
     @apply my-3;
 
     background-color: v-bind(bgColor);
@@ -48,11 +48,11 @@ header, footer, .content {
 }
 
 header {
-    padding-top: 2rem;
+    padding-top: 0.5rem;
 }
 
 footer {
-    padding-bottom: 2rem;
+    padding-bottom: 0.5rem;
 }
 
 </style>
