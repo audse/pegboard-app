@@ -8,12 +8,14 @@ const props = defineProps({
     folder: Object,
 })
 
+console.log(props.folder)
+
 </script>
 <template>
 
 <card border no-bg>
     <template #header>
-        <h2>{{ folder.name }}</h2>
+        <h2>{{ folder.folder.name }}</h2>
     </template>
 
     <card v-for="board in folder.boards" :key="board.id">
@@ -23,7 +25,7 @@ const props = defineProps({
 
     <template #footer>
         <!-- <edit-folder :folder="folder" /> -->
-        <add-board :folder-id="folder.id" />
+        <add-board :folder-id="folder.folder.id" />
     </template>
 
 </card>

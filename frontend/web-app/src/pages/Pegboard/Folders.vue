@@ -14,30 +14,18 @@ import BoardService from './../../services/board.service'
 const store = useStore()
 
 const folders:any = computed( () => store.state.folders.folders )
-
 const refreshFolders = async () => {
-    await FolderService.list()
-}
-
-const refreshChildren = async () => {
-    folders.value.map( (folder:any) => {
-        FolderService.listChildren(folder.id).then( (response:{data:object}) => {
-            folder.boards = response.data
-        }).catch( (e:any) => console.log(e) )
-    })
+    await FolderService.listWithChildren()
 }
 
 const unsortedBoards = computed( () => store.getters['boards/getByFolder']('unsorted') )
-
 const refreshUnsortedBoards = async () => {
     await BoardService.listUnsorted()
 }
 
 onMounted( () => {
-
     refreshUnsortedBoards()
-    refreshFolders().then( () => refreshChildren() )
-
+    refreshFolders()
 })
 
 </script>
@@ -52,7 +40,7 @@ onMounted( () => {
     </section>
 
     <section>
-        <view-folder v-for="folder in folders" :key="folder.id" :folder="folder" />
+        <view-folder v-for="folder in folders" :key="folder.folder.id" :folder="folder" />
     </section>
 
     <section class="mt-12">

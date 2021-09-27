@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
 
 from ..models import Folder
-from ..serializers import FolderSerializer
+from ..serializers import BoardSerializer, FolderSerializer
 
 from .utils import serialize_query, serialize_queryset, serialize_and_create, serialize_and_update
 
@@ -24,12 +24,26 @@ class FolderViewSet ( viewsets.ModelViewSet ):
             serializer=self.serializer_class,
         )
 
-    @action(detail=True, url_path='boards')
-    def list_children ( self, request, pk=None ):
-        return serialize_queryset(
-            queryset=Folder.objects.list_children(user=request.user, pk=pk),
-            serializer=self.serializer_class,
-        )
+    @action(detail=False, url_path='boards/all')
+    def list_with_children(self, request):
+        try:
+            queryset = Folder.objects.list_with_children(user=request.user)
+
+            serialized_queryset = []
+            for item in queryset:
+
+                serialized_boards = []
+                for board in item['boards']:
+                    serialized_boards.append(BoardSerializer(board).data)
+
+                serialized_queryset.append({
+                    'folder': FolderSerializer(item['folder']).data, 
+                    'boards': serialized_boards
+                })
+                
+            return Response(serialized_queryset)
+        except Exception as e:
+            return Response(str(e), status=404)
 
     def retrieve ( self, request, pk=None ):
         try:
@@ -72,11 +86,9 @@ class FolderViewSet ( viewsets.ModelViewSet ):
             return serialize_and_update(
                 serializer=self.serializer_class,
                 object_to_update=Folder.objects.retrieve(user=request.user, pk=pk),
-                request=request,
                 data={
                     'date_archived': timezone.now()
                 },
-                identifier='folder',
             )
         except Exception as e:
             return Response(str(e), status=404)
@@ -87,11 +99,9 @@ class FolderViewSet ( viewsets.ModelViewSet ):
             return serialize_and_update(
                 serializer=self.serializer_class,
                 object_to_update=Folder.objects.retrieve(user=request.user, pk=pk),
-                request=request,
                 data={
                     'date_archived': None,
                 },
-                identifier='folder',
             )
         except Exception as e:
             return Response(str(e), status=404)

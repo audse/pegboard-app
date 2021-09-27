@@ -12,9 +12,11 @@ class FolderService extends Service {
         super('folders')
     }
 
-    async listChildren (folderId:number) {
+    async listWithChildren () {
         try {
-            return await axios.get(`${this.url}${folderId}/boards/`, this.config)
+            const response:{data:Array<object>} = await axios.get(`${this.url}boards/all/`, this.config)
+            store.commit('folders/set', response.data)
+            return response.data
         } catch (e:any) {
             throw e
         }

@@ -123,11 +123,9 @@ class BoardViewSet ( viewsets.ModelViewSet ):
             return serialize_and_update(
                 serializer=self.serializer_class,
                 object_to_update=Board.objects.retrieve(user=request.user, pk=pk),
-                request=request,
                 data={
                     'date_archived': timezone.now()
                 },
-                identifier='board',
             )
         except Exception as e:
             return Response(e, status=404)
@@ -138,11 +136,9 @@ class BoardViewSet ( viewsets.ModelViewSet ):
             return serialize_and_update(
                 serializer=self.serializer_class,
                 object_to_update=Board.objects.retrieve(user=request.user, pk=pk),
-                request=request,
                 data={
                     'date_archived': None,
                 },
-                identifier='board',
             )
         except Exception as e:
             return Response(e, status=404)
