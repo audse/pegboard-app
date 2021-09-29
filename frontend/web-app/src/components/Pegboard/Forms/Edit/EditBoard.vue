@@ -3,39 +3,53 @@
 import { reactive } from 'vue'
 
 import BoardService from './../../../../services/board.service'
+import AddTag from '../Add/AddTag.vue'
 
 const props = defineProps({
     board: Object,
 })
 
-interface boardForm {
-    name:string,
-}
+const editBoardForm = reactive({...props.board})
 
-let editBoardForm:boardForm = reactive({
-    name: props.board.name
-})
-
-const editBoard = async (boardId: string, data:boardForm) => {
+const editBoard = async (boardId: string, data:object) => {
     await BoardService.update(boardId, data)
 }
 
 </script>
 <template>
-    
-<section class="pt-6">
+
+<section>
     <h3>Edit {{ board.name }}</h3>
+
     <form @submit.prevent="editBoard(board.id, editBoardForm)">
-        <label for="name">Board Name</label>
-        <input v-model="editBoardForm.name" name="name" type="text" />
-        <button type="submit" class="secondary">Save Edit</button>
+
+        <section class="pt-4">
+            <label for="name">Name</label>
+            <input v-model="editBoardForm.name" name="name" type="text" />
+        </section>
+
+        <section class="pt-4">
+            <label for="description">Description</label>
+            <textarea v-model="editBoardForm.description" name="description"></textarea>
+        </section>
+
+        <section class="pt-4">
+            <label for="tags">Tags</label>
+            <add-tag :boardId="board.id" />
+        </section>
+
+        <section class="pt-8">
+            <button type="submit" class="secondary">Save Edit</button>
+        </section>
     </form>
+
 </section>
 
 </template>
 <script lang="ts">
 
 export default {
+  components: { AddTag },
     name: 'EditBoard',
 }
 

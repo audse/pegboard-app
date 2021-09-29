@@ -5,7 +5,8 @@ interface board {
 }
 
 interface boardState { 
-    boards: Array< { folder:string, boards:Array<board> } >
+    boards:Array<{ folder:string, boards:Array<board> }>,
+    currentBoard:object,
 }
 
 const boardStore = {
@@ -13,7 +14,8 @@ const boardStore = {
 
     state () {
         return {
-            boards: []
+            boards: [], // list of all boards
+            currentBoard: {},
         }
     },
     
@@ -47,6 +49,10 @@ const boardStore = {
             } else {
                 state.boards.push(folderData)
             }
+        },
+
+        setCurrentBoard (state:boardState, data:object) {
+            state.currentBoard = data
         },
 
         create ( state:boardState, boardData:board ) {

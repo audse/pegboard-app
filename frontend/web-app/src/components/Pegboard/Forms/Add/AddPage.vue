@@ -10,17 +10,12 @@ const props = defineProps({
     boardId: Number,
 })
 
-interface pageForm {
-    name:string,
-    board:number|undefined
-}
-
-let addPageForm:pageForm = reactive({
+let addPageForm = reactive({
     name: '',
     board: props.boardId || undefined
 })
 
-const addPage = async (data:pageForm) => {
+const addPage = async (data:object) => {
     await PageService.create(data)
 }
 </script>

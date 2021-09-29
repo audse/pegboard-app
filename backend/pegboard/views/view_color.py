@@ -8,14 +8,14 @@ from django.shortcuts import get_object_or_404
 
 from django.utils import timezone
 
-from ..models import Board, Color, Page, Note
+from ..models import Board, Color
 from ..serializers import ColorSerializer
 
 from .utils import serialize_queryset, serialize_query, serialize_and_create, serialize_and_update
 
 class ColorViewSet ( viewsets.ModelViewSet ):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     queryset = Color.objects.all()
     serializer_class = ColorSerializer
 
@@ -23,16 +23,6 @@ class ColorViewSet ( viewsets.ModelViewSet ):
         if 'board' in request.data.keys():
             try:
                 get_object_or_404(Board, pk=request.data['board'])
-            except:
-                return False
-        if 'page' in request.data.keys():
-            try:
-                get_object_or_404(Page, pk=request.data['page'])
-            except:
-                return False
-        if 'note' in request.data.keys():
-            try:
-                get_object_or_404(Note, pk=request.data['note'])
             except:
                 return False
         return True

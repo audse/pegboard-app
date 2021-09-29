@@ -8,14 +8,14 @@ from django.shortcuts import get_object_or_404
 
 from django.utils import timezone
 
-from ..models import Board, Tag, Page, Note
+from ..models import Board, Tag, Color
 from ..serializers import TagSerializer
 
 from .utils import serialize_queryset, serialize_query, serialize_and_create, serialize_and_update
 
 class TagViewSet ( viewsets.ModelViewSet ):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
@@ -25,14 +25,9 @@ class TagViewSet ( viewsets.ModelViewSet ):
                 get_object_or_404(Board, pk=request.data['board'])
             except:
                 return False
-        if 'page' in request.data.keys():
+        if 'color' in request.data.keys():
             try:
-                get_object_or_404(Page, pk=request.data['page'])
-            except:
-                return False
-        if 'note' in request.data.keys():
-            try:
-                get_object_or_404(Note, pk=request.data['note'])
+                get_object_or_404(Color, pk=request.data['color'])
             except:
                 return False
         return True

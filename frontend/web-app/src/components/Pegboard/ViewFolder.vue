@@ -8,8 +8,6 @@ const props = defineProps({
     folder: Object,
 })
 
-console.log(props.folder)
-
 </script>
 <template>
 

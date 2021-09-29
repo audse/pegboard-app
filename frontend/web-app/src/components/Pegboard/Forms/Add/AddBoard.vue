@@ -8,17 +8,12 @@ const props = defineProps({
     folderId: Number,
 })
 
-interface boardForm {
-    name:string,
-    folder:number|undefined
-}
-
-let addBoardForm:boardForm = reactive({
+const addBoardForm = reactive({
     name: '',
     folder: props.folderId || undefined
 })
 
-const addBoard = async (boardId: string, data:boardForm) => {
+const addBoard = async (boardId: string, data:object) => {
     await BoardService.create(data)
 }
 

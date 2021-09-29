@@ -2,7 +2,8 @@ from __future__ import unicode_literals
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.authentication import TokenAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
+# from rest_framework.permissions import IsAuthenticated
+from djangochannelsrestframework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 
@@ -15,7 +16,7 @@ from .utils import serialize_queryset, serialize_query, serialize_and_create, se
 
 class BoardViewSet ( viewsets.ModelViewSet ):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
 

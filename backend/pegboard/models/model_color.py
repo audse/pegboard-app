@@ -8,13 +8,13 @@ class ColorQuerySet ( models.QuerySet ):
 
     def list(self, user):
         return self.filter(
-            Q(user=user) | Q(board__user=user) | Q(board__shared_with=user) | Q(page__user=user),
+            Q(user=user) | Q(board__user=user) | Q(board__shared_with=user),
         )
 
     def retrieve(self, user, pk):
         try:
             return self.get(
-                Q(user=user) | Q(board__user=user) | Q(board__shared_with=user) | Q(page__user=user) | Q(note__user=user),
+                Q(user=user) | Q(board__user=user) | Q(board__shared_with=user),
                 pk=pk
             )
         except Exception as e:
@@ -33,6 +33,16 @@ class ColorManager ( models.Manager ):
         return self.get_queryset().retrieve(user, pk)
 
 class Color ( models.Model ):
+
+    objects = ColorManager()
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='colors'
+    )
 
     board = models.ForeignKey(
         'Board',

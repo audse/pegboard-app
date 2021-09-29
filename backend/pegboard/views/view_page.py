@@ -15,7 +15,7 @@ from .utils import serialize_query, serialize_and_create, serialize_and_update, 
 
 class PageViewSet ( viewsets.ModelViewSet ):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     queryset = Page.objects.all()
     serializer_class = PageSerializer
 

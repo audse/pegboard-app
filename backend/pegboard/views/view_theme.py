@@ -10,7 +10,7 @@ from .utils import serialize_queryset, serialize_query
 
 class ThemeViewSet ( viewsets.ModelViewSet ):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     queryset = Theme.objects.all()
     serializer_class = ThemeSerializer
 

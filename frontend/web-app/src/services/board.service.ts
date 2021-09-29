@@ -25,7 +25,9 @@ class BoardService extends Service {
 
     async retrieveBoardAndChildren (boardId:string) {
         try {
-            return await axios.get(`${this.url}${boardId}/board/`, this.config)
+            const response:{data:object} = await axios.get(`${this.url}${boardId}/board/`, this.config)
+            store.commit('boards/setCurrentBoard', response.data)
+            return response.data
         } catch (e:any) {
             throw e
         }

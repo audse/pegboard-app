@@ -14,8 +14,8 @@ from ..serializers import CommentSerializer
 from .utils import serialize_queryset, serialize_query, serialize_and_create, serialize_and_update
 
 class CommentViewSet ( viewsets.ModelViewSet ):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 

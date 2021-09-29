@@ -1,9 +1,10 @@
 from __future__ import unicode_literals
 from rest_framework import viewsets
-from rest_framework.decorators import action, api_view
+from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
+from djangochannelsrestframework.permissions import AllowAny
+from djangochannelsrestframework import decorators
 
 from django.utils import timezone
 
@@ -13,12 +14,13 @@ from ..serializers import BoardSerializer, FolderSerializer
 from .utils import serialize_query, serialize_queryset, serialize_and_create, serialize_and_update
 
 class FolderViewSet ( viewsets.ModelViewSet ):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [AllowAny]
     queryset = Folder.objects.all()
     serializer_class = FolderSerializer
 
     def list ( self, request ):
+        print('\n\n', request.data, '\n\n')
         return serialize_queryset(
             queryset=Folder.objects.list(user=request.user),
             serializer=self.serializer_class,
@@ -43,7 +45,8 @@ class FolderViewSet ( viewsets.ModelViewSet ):
                 
             return Response(serialized_queryset)
         except Exception as e:
-            return Response(str(e), status=404)
+            return Response(str(e))
+            # return Response(str(e), status=404)
 
     def retrieve ( self, request, pk=None ):
         try:
@@ -52,7 +55,8 @@ class FolderViewSet ( viewsets.ModelViewSet ):
                 serializer=self.serializer_class,
             )
         except Exception as e:
-            return Response(str(e), status=404)
+            return Response(str(e))
+            # return Response(str(e), status=404)
 
     @action( methods=['get'], detail=False, url_path='archived' )
     def list_archived ( self, request ):
@@ -78,7 +82,8 @@ class FolderViewSet ( viewsets.ModelViewSet ):
                 data=request.data,
             )
         except Exception as e:
-            return Response(str(e), status=404)
+            return Response(str(e))
+            # return Response(str(e), status=404)
     
     @action( methods=['put'], detail=True, url_path='archive' )
     def archive ( self, request, pk ):

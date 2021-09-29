@@ -4,15 +4,11 @@ import { reactive } from 'vue'
 
 import FolderService from './../../../../services/folder.service'
 
-interface folderForm {
-    name:string,
-}
-
-let addFolderForm:folderForm = reactive({
+const addFolderForm = reactive({
     name: '',
 })
 
-const addFolder = async (boardId: string, data:folderForm) => {
+const addFolder = async (boardId: string, data:object) => {
     await FolderService.create(data)
 }
 

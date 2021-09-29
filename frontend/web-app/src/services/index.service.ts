@@ -23,8 +23,7 @@ class Service {
 
     async list () {
         try {
-            const response:{data:object} = await axios.get(this.url, this.config)
-            store.commit(`${this.storeName}/set`, response.data)
+            const response:{data:Array<object>} = await axios.get(this.url, this.config)
             return response.data
         } catch (e:any) {
             throw e
@@ -33,7 +32,8 @@ class Service {
 
     async retrieve ( pk:string ) {
         try {
-            return await axios.get(`${this.url}${pk}/`, this.config)
+            const response:{data:object} = await axios.get(`${this.url}${pk}/`, this.config)
+            return response.data
         } catch (e:any) {
             throw e
         }
@@ -42,7 +42,6 @@ class Service {
     async create ( data:object ) {
         try {
             const response:{data:object} = await axios.post(this.url, data=data, this.config)
-            store.commit(`${this.storeName}/create`, response.data)
             return response.data
         } catch (e:any) {
             throw e
@@ -52,7 +51,6 @@ class Service {
     async update ( pk:string, data:object ) {
         try {
             const response:{data:object} = await axios.put(`${this.url}${pk}/`, data=data, this.config)
-            store.commit(`${this.storeName}/update`, response.data)
             return response.data
         } catch (e:any) {
             throw e

@@ -34,6 +34,16 @@ class TagManager ( models.Manager ):
 
 class Tag ( models.Model ):
 
+    objects = TagManager()
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='tags'
+    )
+
     board = models.ForeignKey(
         'Board',
         on_delete=models.SET_NULL,

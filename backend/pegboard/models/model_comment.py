@@ -34,6 +34,8 @@ class CommentManager ( models.Manager ):
 
 class Comment ( models.Model ):
 
+    objects = CommentManager()
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,

@@ -10,23 +10,40 @@ import { useStore } from 'vuex'
 
 import FolderService from './../../services/folder.service'
 import BoardService from './../../services/board.service'
+import AuthService from '../../services/auth.service'
 
 const store = useStore()
 
 const folders:any = computed( () => store.state.folders.folders )
 const refreshFolders = async () => {
-    await FolderService.listWithChildren()
+    // await FolderService.listWithChildren()
 }
 
 const unsortedBoards = computed( () => store.getters['boards/getByFolder']('unsorted') )
 const refreshUnsortedBoards = async () => {
-    await BoardService.listUnsorted()
+    // await BoardService.listUnsorted()
 }
 
 onMounted( () => {
     refreshUnsortedBoards()
     refreshFolders()
 })
+
+const ws = new WebSocket("ws://localhost:8000/ws/api/folders")
+ws.onopen = () => {
+    ws.send(JSON.stringify({
+        action: 'list',
+        request_id: new Date().getTime(),
+        data: {
+            token: FolderService.config.headers['Authorization']
+        }
+    }))
+    console.log('open')
+    console.log(FolderService.config.headers['Authorization'])
+}
+ws.onmessage = (event:any) => {
+    console.log(event.data)
+}
 
 </script>
 <template>

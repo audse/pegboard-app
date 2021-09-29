@@ -9,19 +9,13 @@ const props = defineProps({
     pageId: Number,
 })
 
-interface noteForm {
-    name:string,
-    board:number|undefined,
-    page:number|undefined,
-}
-
-let addNoteForm:noteForm = reactive({
+const addNoteForm = reactive({
     name: '',
     board: props.boardId || undefined,
     page: props.pageId || undefined,
 })
 
-const addNote = async (data:noteForm) => {
+const addNote = async (data:object) => {
     await NoteService.create(data)
 }
 </script>

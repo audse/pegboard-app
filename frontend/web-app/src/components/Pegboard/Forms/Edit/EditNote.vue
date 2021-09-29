@@ -8,20 +8,9 @@ const props = defineProps({
     note: Object,
 })
 
-console.log(props.note)
+const editNoteForm = reactive({...props.note})
 
-interface noteForm {
-    name:string,
-    content:string,
-}
-
-let editNoteForm:noteForm = reactive({
-    name: props.note.name,
-    content: props.note.content,
-})
-
-
-const editNote = async (noteId: string, data:noteForm) => {
+const editNote = async (noteId: string, data:object) => {
     await NoteService.update(noteId, data)
 }
 

@@ -8,15 +8,9 @@ const props = defineProps({
     page: Object,
 })
 
-interface pageForm {
-    name:string,
-}
+const editPageForm = reactive({...props.page})
 
-let editPageForm:pageForm = reactive({
-    name: props.page.name
-})
-
-const editPage = async (pageId: string, data:pageForm) => {
+const editPage = async (pageId: string, data:object) => {
     await PageService.update(pageId, data)
 }
 

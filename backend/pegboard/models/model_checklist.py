@@ -35,6 +35,16 @@ class ChecklistManager ( models.Manager ):
 
 class Checklist ( models.Model ):
 
+    objects = ChecklistManager()
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='checklists'
+    )
+
     # Checklists can belong to any of the data types:
     # boards, pages, or notes
     board = models.ForeignKey(

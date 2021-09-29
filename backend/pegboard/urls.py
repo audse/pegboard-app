@@ -1,5 +1,7 @@
-from django.urls import include, path
+from django.urls import include, path, re_path
 from rest_framework import routers
+
+from djangochannelsrestframework.consumers import view_as_consumer
 
 from . import views
 
@@ -11,6 +13,10 @@ router.register(r'pages', views.PageViewSet)
 router.register(r'boards', views.BoardViewSet)
 router.register(r'folders', views.FolderViewSet)
 router.register(r'themes', views.ThemeViewSet)
+router.register(r'colors', views.ColorViewSet)
+router.register(r'tags', views.TagViewSet)
+router.register(r'comment', views.CommentViewSet)
+router.register(r'checklist', views.ChecklistViewSet)
 
 urlpatterns = [
 

@@ -8,15 +8,9 @@ const props = defineProps({
     folder: Object,
 })
 
-interface folderForm {
-    name:string,
-}
+const editFolderForm = reactive({...props.folder})
 
-let editFolderForm:folderForm = reactive({
-    name: props.folder.name
-})
-
-const editFolder = async (folderId: string, data:folderForm) => {
+const editFolder = async (folderId: string, data:object) => {
     await FolderService.update(folderId, data)
 }
 
