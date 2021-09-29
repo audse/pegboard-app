@@ -17,12 +17,20 @@ const editPage = async (pageId: string, data:object) => {
 </script>
 <template>
    
-<section class="pt-6">
+<section>
+
     <h3>Edit {{ page.name }}</h3>
+
     <form @submit.prevent="editPage(page.id, editPageForm)">
-        <label for="name">Page Name</label>
-        <input v-model="editPageForm.name" name="name" type="text" />
-        <button type="submit" class="secondary">Save Edit</button>
+
+        <section class="pt-4 flex items-center">
+            <label for="name" class="flex-none">Page Name</label>
+            <input v-model="editPageForm.name" name="name" type="text" />
+        </section>
+
+        <section class="pt-4">
+            <button type="submit" class="secondary">Save Edit</button>
+        </section>
     </form>
 </section>
 

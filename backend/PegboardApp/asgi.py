@@ -1,3 +1,4 @@
+import os
 from django.urls import path
 from djangochannelsrestframework.consumers import view_as_consumer
 
@@ -8,7 +9,7 @@ from django.core.asgi import get_asgi_application
 
 from pegboard import consumers
 
-# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'PegboardApp.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'PegboardApp.settings')
 
 application = ProtocolTypeRouter({
     'http': get_asgi_application(),

@@ -22,13 +22,13 @@ const editNote = async (noteId: string, data:object) => {
 
     <form @submit.prevent="editNote(note.id, editNoteForm)">
 
-        <section class="pt-4">
-            <label for="name">Name</label>
+        <section class="pt-4 flex items-center">
+            <label for="name" class="flex-none">Name</label>
             <input v-model="editNoteForm.name" name="name" type="text" />
         </section>
 
-        <section class="pt-4">
-            <label for="content">Content</label>
+        <section class="pt-4 flex items-center">
+            <label for="content" class="flex-none">Content</label>
             <textarea v-model="editNoteForm.content" name="content"></textarea>
         </section>
 

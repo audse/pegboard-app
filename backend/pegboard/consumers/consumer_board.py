@@ -49,6 +49,15 @@ class BoardConsumer(AsyncWebsocketConsumer):
                     'type': 'send_retrieve_with_children',
                 }
             )
+        
+        # if action == 'put':
+        #     self.put(text_data_json)
+        #     await self.channel_layer.group_send(
+        #         self.board_group_name,
+        #         {
+        #             'type': 'send_put',
+        #         }
+        #     )
 
     async def send_retrieve_with_children(self, event):
         await self.send(text_data=json.dumps({

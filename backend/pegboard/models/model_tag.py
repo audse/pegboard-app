@@ -13,10 +13,10 @@ class TagQuerySet ( models.QuerySet ):
 
     def retrieve(self, user, pk):
         try:
-            return self.get(
+            return self.filter(
                 Q(user=user) | Q(board__user=user) | Q(board__shared_with=user) | Q(page__user=user) | Q(note__user=user),
                 pk=pk
-            )
+            )[0]
         except Exception as e:
             return e
 

@@ -23,10 +23,10 @@ class BoardQuerySet ( models.QuerySet ):
     
     def retrieve(self, user, pk):
         try:
-            return self.get(
+            return self.filter(
                 Q(user=user) | Q(shared_with=user),
                 pk=pk
-            )
+            )[0]
         except Exception as e:
             return e
 
@@ -42,7 +42,7 @@ class BoardQuerySet ( models.QuerySet ):
                 Q(user=user) | Q(shared_with=user),
                 date_archived__isnull=True,
                 pk=pk
-            ).distinct()[0]
+            )[0]
 
             current_pages = response['board'].pages.all().filter(
                 date_archived__isnull=True
@@ -60,7 +60,6 @@ class BoardQuerySet ( models.QuerySet ):
             
             return response
         except Exception as e:
-            print ('\n\n', 'Model Error\n\n', e, '\n\n')
             return e
 
     def list_archived(self, user):

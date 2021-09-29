@@ -23,13 +23,13 @@ const editBoard = async (boardId: string, data:object) => {
 
     <form @submit.prevent="editBoard(board.id, editBoardForm)">
 
-        <section class="pt-4">
-            <label for="name">Name</label>
+        <section class="pt-4 flex items-center">
+            <label for="name" class="flex-none">Name</label>
             <input v-model="editBoardForm.name" name="name" type="text" />
         </section>
 
-        <section class="pt-4">
-            <label for="description">Description</label>
+        <section class="pt-4 flex items-center">
+            <label for="description" class="flex-none">Description</label>
             <textarea v-model="editBoardForm.description" name="description"></textarea>
         </section>
 
@@ -49,7 +49,6 @@ const editBoard = async (boardId: string, data:object) => {
 <script lang="ts">
 
 export default {
-  components: { AddTag },
     name: 'EditBoard',
 }
 
