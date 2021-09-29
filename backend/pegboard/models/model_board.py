@@ -7,6 +7,8 @@ from django.utils.text import slugify
 from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 from django.db.models import Q
+import channels.layers
+from asgiref.sync import async_to_sync
 
 from .utils import DISPLAY_CHOICES
 
@@ -36,11 +38,11 @@ class BoardQuerySet ( models.QuerySet ):
                 'pages': [],
             }
 
-            response['board'] = self.get(
+            response['board'] = self.filter(
                 Q(user=user) | Q(shared_with=user),
                 date_archived__isnull=True,
                 pk=pk
-            )
+            ).distinct()[0]
 
             current_pages = response['board'].pages.all().filter(
                 date_archived__isnull=True
@@ -58,7 +60,7 @@ class BoardQuerySet ( models.QuerySet ):
             
             return response
         except Exception as e:
-            print ('\n\n', 'The Model Error \n\n', e, '\n\n')
+            print ('\n\n', 'Model Error\n\n', e, '\n\n')
             return e
 
     def list_archived(self, user):
@@ -182,6 +184,17 @@ def save_date_updated(sender, instance, **kwargs):
     post_save.connect(save_date_updated, sender=sender)
 
 m2m_changed.connect(save_shared_with, sender=Board.shared_with.through)    
+
+@receiver(post_save, sender=Board)
+def update_consumer(sender, instance, **kwargs):
+    channel_layer = channels.layers.get_channel_layer()
+    group_name = 'board-'+str(instance.id)+'-'+instance.url
+    async_to_sync(channel_layer.group_send)(
+        group_name,
+        {
+            'type': 'update'
+        }
+    )
 
 # TODO model_board.py
 # @ custom color palette ArrayField (for labels, etc.)

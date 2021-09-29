@@ -16,11 +16,12 @@ const store = useStore()
 const route = useRoute()
 
 const id = route.params.id.toString()
+const url = route.params.url
 
 const board = computed( () => store.state.boards.currentBoard )
 
 const refreshBoard = async (boardId:string) => {
-    await BoardService.retrieveBoardAndChildren(boardId)
+    // await BoardService.retrieveBoardAndChildren(boardId)
 }
 
 onMounted( () => {
@@ -28,6 +29,21 @@ onMounted( () => {
 })
 
 const showEditModal = ref(false)
+
+const connection = new WebSocket(`ws://localhost:8000/ws/api/boards/${id}/${url}`)
+
+connection.onopen = () => {
+    connection.send(JSON.stringify({
+        action: 'retrieveWithChildren'
+    }))
+}
+
+connection.onmessage = (event:{data:string}) => {
+    const data:{action:string,response:object} = JSON.parse(event.data)
+    if (data.action === 'retrieveWithChildren') {
+        store.commit('boards/setCurrentBoard', data.response)
+    }
+}
 
 </script>
 <template>

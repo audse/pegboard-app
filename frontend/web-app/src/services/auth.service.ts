@@ -30,7 +30,7 @@ class AuthService extends Service {
 
     async signIn ( data:SignInData ) {
         try {
-            const requestData:any = await axios.post(`${this.url}login/`, data, this.config)
+            const requestData:any = await axios.post(`${this.url}login/`, data)
             const token:string = requestData.data.key
             return await this.loadCurrentUser(token)
         } catch (e:any) {

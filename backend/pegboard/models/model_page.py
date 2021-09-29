@@ -7,6 +7,8 @@ from django.utils.text import slugify
 from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 from django.db.models import Q
+import channels.layers
+from asgiref.sync import async_to_sync
 
 class PageQuerySet ( models.QuerySet ):
 
@@ -112,6 +114,18 @@ def save_date_updated(sender, instance, **kwargs):
     instance.save()
 
     post_save.connect(save_date_updated, sender=sender)
+
+@receiver(post_save, sender=Page)
+def update_board_consumer(sender, instance, **kwargs):
+    if instance.board:
+        channel_layer = channels.layers.get_channel_layer()
+        group_name = 'board-'+str(instance.board.id)+'-'+instance.board.url
+        async_to_sync(channel_layer.group_send)(
+            group_name,
+            {
+                'type': 'update'
+            }
+        )
 
 # TODO model_page.py
 # [ ] implement children, parents
