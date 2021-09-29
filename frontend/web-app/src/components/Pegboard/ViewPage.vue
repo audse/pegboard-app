@@ -20,7 +20,7 @@ const showEditModal = ref(false)
 <card no-bg>
 
     <template #header>
-        <span class="flex">
+        <span class="flex items-center">
             <h2 class="flex-grow">
                 {{ page.page.name }}
                 <br />
@@ -29,7 +29,7 @@ const showEditModal = ref(false)
             <button @click="showEditModal=!showEditModal" class="secondary">Edit</button>
 
             <modal :show="showEditModal" @hide="showEditModal=false">
-                <edit-page :page="page.page" />
+                <edit-page :page="page.page" @save="showEditModal=false" />
             </modal>
         </span>
     </template>
@@ -39,7 +39,7 @@ const showEditModal = ref(false)
     </section>
     
     <template #footer>
-        <add-note :page-id="page.page.id" :board-id="page.page.board" />
+        <add-note :page-id="page.page.id" :board-id="page.page.board.id" />
     </template>
 
 </card>

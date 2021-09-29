@@ -23,7 +23,7 @@ const showEditModal = ref(false)
     </section>
 
     <modal :show="showEditModal" @hide="showEditModal=false">
-        <edit-note :note="note" />
+        <edit-note :note="note" @save="showEditModal=false" />
     </modal>
 
     <!-- <template #footer> -->

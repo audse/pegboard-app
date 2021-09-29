@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 
+import Expandable from './../../../Elements/Expandable.vue'
+import Tag from './../../../Elements/Tag.vue'
 import AddColor from './../Add/AddColor.vue'
 
 import { onMounted, ref } from 'vue'
@@ -8,7 +10,7 @@ import { useStore } from 'vuex'
 import ColorService from '../../../../services/color.service'
 
 const props = defineProps({
-    modelValue: String,
+    modelValue: Number,
     boardId: Number,
 })
 
@@ -27,12 +29,14 @@ onMounted(() => refreshColors())
 <template>
 
 <section>
-    <span v-for="color in colors" :key="color.id" @click="this.$emit('update:modelValue', color.color)">
-        {{ color.name }}
-    </span>
+    
+    <tag v-for="color in colors" :key="color.id" @click="this.$emit('update:modelValue', color.id)" :label="color.name" :color="color.color" :class="modelValue===color.id?'selected':''" />
     <br />
-    <label for="color">Selected: {{ modelValue }}</label>
-    <add-color :boardId="boardId" />
+
+    <expandable class="py-4">
+        <template #label>Create New Color</template>
+        <add-color :boardId="boardId" />
+    </expandable>
 </section>
 
 </template>
@@ -43,3 +47,11 @@ export default {
 }
 
 </script>
+
+<style scoped>
+
+.selected {
+    border: 2px solid red;
+}
+
+</style>

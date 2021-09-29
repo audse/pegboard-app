@@ -5,7 +5,7 @@ from channels.auth import login
 from rest_framework.authentication import TokenAuthentication
 
 from ..models import Board
-from ..serializers import BoardSerializer, PageSerializer, NoteSerializer
+from ..serializers import BoardSerializer, PageSerializer, NoteSerializer, TagSerializer, ColorSerializer
 from ..views import BoardViewSet
 
 class BoardConsumer(AsyncWebsocketConsumer):
@@ -37,7 +37,6 @@ class BoardConsumer(AsyncWebsocketConsumer):
         )
 
     async def receive(self, text_data):
-        print('something happened!')
 
         text_data_json = json.loads(text_data)
         action = text_data_json['action']
@@ -81,6 +80,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
             original_response = Board.objects.retrieve_with_children(user=self.user, pk=self.board_id)
             response = {
                 'board': BoardSerializer(original_response['board']).data,
+                'tags': [],
                 'pages': [], # [ {page: xyz, notes: [a, b, c,]}, {} ]
             }
 
@@ -90,13 +90,21 @@ class BoardConsumer(AsyncWebsocketConsumer):
                 serialized_notes = []
                 for note in page['notes']:
                     serialized_notes.append(NoteSerializer(note).data)
+                    
 
                 response['pages'].append({
                     'page': serialized_page,
                     'notes': serialized_notes
                 })
             
+            for tag in original_response['tags']:
+                serialized_tag = TagSerializer(tag).data
+                serialized_tag['color'] = ColorSerializer(tag.color).data
+                response['tags'].append(serialized_tag)
+
+            
         except Exception as e:
+            print(e)
             response = str(e)
 
         return response

@@ -8,7 +8,7 @@ import AddPage from '../../components/Pegboard/Forms/Add/AddPage.vue'
 
 import BoardService from './../../services/board.service'
 
-import { onMounted, computed, ref } from 'vue'
+import { computed, onBeforeUnmount, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 
@@ -19,14 +19,6 @@ const id = route.params.id.toString()
 const url = route.params.url
 
 const board = computed( () => store.state.boards.currentBoard )
-
-const refreshBoard = async (boardId:string) => {
-    // await BoardService.retrieveBoardAndChildren(boardId)
-}
-
-onMounted( () => {
-    refreshBoard(id)
-})
 
 const showEditModal = ref(false)
 
@@ -44,6 +36,11 @@ connection.onmessage = (event:{data:string}) => {
         store.commit('boards/setCurrentBoard', data.response)
     }
 }
+
+onBeforeUnmount( () => {
+    connection.close()
+    store.commit('boards/setCurrentBoard', {})
+})
 
 </script>
 <template>
@@ -66,7 +63,7 @@ connection.onmessage = (event:{data:string}) => {
     </section>
 
     <modal :show="showEditModal" @hide="showEditModal=false">
-        <edit-board :board="board.board" />
+        <edit-board :board="board.board" :tags="board.tags" @save="showEditModal=false" />
     </modal>
 
 </article>

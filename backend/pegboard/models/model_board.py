@@ -35,6 +35,7 @@ class BoardQuerySet ( models.QuerySet ):
             
             response = {
                 'board': None,
+                'tags': None,
                 'pages': [],
             }
 
@@ -44,10 +45,11 @@ class BoardQuerySet ( models.QuerySet ):
                 pk=pk
             )[0]
 
+            response['tags'] = response['board'].tags.all()
+
             current_pages = response['board'].pages.all().filter(
                 date_archived__isnull=True
             )
-
 
             for page in current_pages:
                 all_notes_in_page = page.notes.all().filter(

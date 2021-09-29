@@ -12,17 +12,18 @@ const props = defineProps({
 
 const addTagForm = reactive({
     name: '',
+    color: undefined,
     board: props.boardId || undefined
 })
 
-const addTag = async (tagId: string, data:object) => {
+const addTag = async (data:object) => {
     await TagService.create(data)
 }
 
 </script>
 <template>
 
-<form @submit.prevent="addTag(addTagForm, folder.id)">
+<form @submit.prevent="addTag(addTagForm)">
     <section class="flex items-center">
         <label for="name" class="flex-none">Tag Name</label>
         <input v-model="addTagForm.name" name="name" type="text" placeholder="Tag Name" />

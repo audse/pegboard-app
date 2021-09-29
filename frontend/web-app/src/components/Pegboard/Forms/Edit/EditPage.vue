@@ -28,8 +28,13 @@ const editPage = async (pageId: string, data:object) => {
             <input v-model="editPageForm.name" name="name" type="text" />
         </section>
 
+        <section class="pt-4 flex items-center">
+            <label for="description" class="flex-none">Page Description</label>
+            <textarea v-model="editPageForm.description" name="description" type="text" />
+        </section>
+
         <section class="pt-4">
-            <button type="submit" class="secondary">Save Edit</button>
+            <button type="submit" @click="this.$emit('save')" class="secondary">Save Edit</button>
         </section>
     </form>
 </section>

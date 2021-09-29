@@ -1,12 +1,16 @@
 <script lang="ts" setup>
 
+import Tag from './../../../Elements/Tag.vue'
+import Expandable from './../../../Elements/Expandable.vue'
+import AddTag from '../Add/AddTag.vue'
+
 import { reactive } from 'vue'
 
 import BoardService from './../../../../services/board.service'
-import AddTag from '../Add/AddTag.vue'
 
 const props = defineProps({
     board: Object,
+    tags: Array,
 })
 
 const editBoardForm = reactive({...props.board})
@@ -35,11 +39,19 @@ const editBoard = async (boardId: string, data:object) => {
 
         <section class="pt-4">
             <label for="tags">Tags</label>
-            <add-tag :boardId="board.id" />
+            
+            <section class="pt-4">
+                <tag v-for="tag in tags" :key="tag.id" :label="tag.name" :color="tag.color.color" />
+            </section>
+
+            <expandable class="pt-4">
+                <template #label>Add Tag</template>
+                <add-tag :boardId="board.id" />
+            </expandable>
         </section>
 
         <section class="pt-8">
-            <button type="submit" class="secondary">Save Edit</button>
+            <button type="submit" @click="this.$emit('save')" class="secondary">Save Edit</button>
         </section>
     </form>
 

@@ -8,8 +8,8 @@ class ColorQuerySet ( models.QuerySet ):
 
     def list(self, user):
         return self.filter(
-            Q(user=user) | Q(board__user=user) | Q(board__shared_with=user),
-        )
+            ( Q(user=user) | Q(board__user=user) | Q(board__shared_with=user) ),
+        ).distinct()
 
     def retrieve(self, user, pk):
         try:

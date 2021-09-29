@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 
+import SelectTags from '../Select/SelectTags.vue'
+
 import { reactive } from 'vue'
 
 import NoteService from './../../../../services/note.service'
@@ -32,8 +34,13 @@ const editNote = async (noteId: string, data:object) => {
             <textarea v-model="editNoteForm.content" name="content"></textarea>
         </section>
 
+        <section class="pt-4 flex items-center">
+            <label for="tags" class="flex-none">Add Tags</label>
+            <select-tags v-model="editNoteForm.tags" />
+        </section>
+
         <section class="pt-8">
-            <button type="submit" class="secondary">Save Edit</button>
+            <button type="submit" @click="this.$emit('save')" class="secondary">Save Edit</button>
         </section>
     </form>
 
