@@ -33,7 +33,7 @@ export default {
 <style scoped>
 
 .tag {
-    @apply px-3 py-1 mx-1 my-3 font-semibold uppercase text-sm rounded-full;
+    @apply px-3 py-1 mx-1 my-3 font-semibold uppercase text-xs rounded-full;
     background-color: v-bind('bgColor');
     color: v-bind('textColor');
     letter-spacing: 1pt;

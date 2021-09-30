@@ -7,10 +7,7 @@ from users.serializers import UserSerializer
 class BoardSerializer ( serializers.ModelSerializer ):
     model = Board
 
-    folder = FolderSerializer()
-    user = UserSerializer()
-    shared_with = UserSerializer(many=True)
-
     class Meta:
         model = Board
         fields = '__all__'
+        depth = 2

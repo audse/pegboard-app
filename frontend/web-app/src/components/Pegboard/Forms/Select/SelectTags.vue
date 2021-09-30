@@ -25,20 +25,24 @@ const selectedTags = computed({
     }
 })
 
-const updateSelectedTags = (tagId:number, array:Array<number>) => {
-    const index = array.indexOf(tagId)
+const updateSelectedTags = (tag:{id:number}, array:Array<object>) => {
+    const index = array.findIndex( (entry:{id:number}) => entry.id === tag.id )
     if ( index === -1 ) {
-        array.push(tagId)
+        array.push(tag)
     } else {
         array.splice(index, 1)
     }
+}
+
+const tagInSelected = (tag:{id:number}, array:Array<object>) => {
+    return array.findIndex( (entry:{id:number}) => entry.id === tag.id ) !== -1
 }
 
 </script>
 <template>
 
 <section>
-    <tag v-for="tag in tags" :key="tag.id" @click="updateSelectedTags(tag.id, selectedTags)" :label="tag.name" :color="tag.color.color" :class="modelValue.indexOf(tag.id)!==-1?'selected tag':'tag'" />
+    <tag v-for="tag in tags" :key="tag.id" @click="updateSelectedTags(tag, selectedTags)" :label="tag.name" :color="tag.color.color" :class="tagInSelected(tag, selectedTags)?'selected tag':'tag'" />
 </section>
 
 </template>

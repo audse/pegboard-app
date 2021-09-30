@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 
 import Card from './../Elements/Card.vue'
+import Tag from './../Elements/Tag.vue'
 import Modal from './../Elements/Modal.vue'
 import EditNote from './Forms/Edit/EditNote.vue'
 
@@ -16,6 +17,8 @@ const showEditModal = ref(false)
 <template>
 
 <card>
+    
+    <tag v-for="tag in note.tags" :key="tag.id" :label="tag.name" :color="tag.color.color" />
 
     <section class="flex items-center">
         <strong class="flex-grow">{{ note.name }}</strong>
@@ -26,9 +29,6 @@ const showEditModal = ref(false)
         <edit-note :note="note" @save="showEditModal=false" />
     </modal>
 
-    <!-- <template #footer> -->
-        <!-- <edit-note :note="note" /> -->
-    <!-- </template> -->
 
 </card>
 

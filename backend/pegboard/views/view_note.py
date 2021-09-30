@@ -8,7 +8,7 @@ from rest_framework.response import Response
 
 from django.utils import timezone
 
-from ..models import Note, Page
+from ..models import Note, Page, Board
 from ..serializers import NoteSerializer
 
 from .utils import serialize_and_create, serialize_and_update, serialize_query, serialize_queryset
@@ -18,19 +18,19 @@ from .utils import serialize_and_create, serialize_and_update, serialize_query, 
 
 class NoteViewSet ( viewsets.ModelViewSet ):
     authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     queryset = Note.objects.all()
     serializer_class = NoteSerializer
 
     def validate_note(self, request):
         if 'page' in request.data.keys():
             try:
-                get_object_or_404(Page, pk=request.data['page'], user=request.user)
+                get_object_or_404(Page, pk=request.data['page']['id'], user=request.user)
             except:
                 return False
         if 'board' in request.data.keys():
             try:
-                get_object_or_404(Page, pk=request.data['page'], user=request.user)
+                get_object_or_404(Board, pk=request.data['board']['id'], user=request.user)
             except:
                 return False
         return True

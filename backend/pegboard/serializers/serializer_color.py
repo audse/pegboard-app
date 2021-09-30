@@ -6,4 +6,4 @@ class ColorSerializer ( serializers.ModelSerializer ):
     model = Color
     class Meta:
         model = Color
-        fields = '__all__'
+        fields = ['id', 'name', 'color']

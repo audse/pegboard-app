@@ -48,15 +48,6 @@ class BoardConsumer(AsyncWebsocketConsumer):
                     'type': 'send_retrieve_with_children',
                 }
             )
-        
-        # if action == 'put':
-        #     self.put(text_data_json)
-        #     await self.channel_layer.group_send(
-        #         self.board_group_name,
-        #         {
-        #             'type': 'send_put',
-        #         }
-        #     )
 
     async def send_retrieve_with_children(self, event):
         await self.send(text_data=json.dumps({
@@ -80,31 +71,18 @@ class BoardConsumer(AsyncWebsocketConsumer):
             original_response = Board.objects.retrieve_with_children(user=self.user, pk=self.board_id)
             response = {
                 'board': BoardSerializer(original_response['board']).data,
-                'tags': [],
-                'pages': [], # [ {page: xyz, notes: [a, b, c,]}, {} ]
+                'tags': TagSerializer(original_response['tags'], many=True).data,
+                'pages': [],
             }
 
             for page in original_response['pages']:
-                serialized_page = PageSerializer(page['page']).data
-
-                serialized_notes = []
-                for note in page['notes']:
-                    serialized_notes.append(NoteSerializer(note).data)
-                    
 
                 response['pages'].append({
-                    'page': serialized_page,
-                    'notes': serialized_notes
+                    'page': PageSerializer(page['page']).data,
+                    'notes': NoteSerializer(page['notes'], many=True).data
                 })
-            
-            for tag in original_response['tags']:
-                serialized_tag = TagSerializer(tag).data
-                serialized_tag['color'] = ColorSerializer(tag.color).data
-                response['tags'].append(serialized_tag)
 
-            
         except Exception as e:
-            print(e)
             response = str(e)
 
         return response

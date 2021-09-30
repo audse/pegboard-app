@@ -23,7 +23,7 @@ class BoardViewSet ( viewsets.ModelViewSet ):
     def validate_board(self, request):
         if 'folder' in request.data.keys():
             try:
-                get_object_or_404(Folder, pk=request.data['folder'], user=request.user)
+                get_object_or_404(Folder, pk=request.data['folder']['id'], user=request.user)
             except:
                 return False
         return True
@@ -107,6 +107,7 @@ class BoardViewSet ( viewsets.ModelViewSet ):
     
     def update(self, request, pk=None):
         if self.validate_board(request):
+            print(request.data)
             try:
                 return serialize_and_update(
                     serializer=self.serializer_class,
