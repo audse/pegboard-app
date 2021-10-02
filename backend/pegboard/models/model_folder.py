@@ -25,37 +25,6 @@ class FolderQuerySet ( models.QuerySet ):
         except Exception as e:
             return e
     
-    def list_with_children(self, user):
-        try:
-            folders = self.filter(
-                user=user,
-                date_archived__isnull=True,
-            )
-            folders_and_children = []
-            for folder in folders:
-                folders_and_children.append({ 
-                    'folder': folder, 
-                    'boards': folder.boards.all().filter(
-                        user=user,
-                        date_archived__isnull=True
-                    )
-                })
-            return folders_and_children
-        except Exception as e:
-            return e
-    
-    def list_children(self, user, pk):
-        try:
-            current_folder = self.get(
-                user=user,
-                pk=pk
-            )
-            return current_folder.boards.all().filter(
-                user=user,
-            )
-        except Exception as e:
-            return e
-
     def list_archived(self, user):
         return self.filter(
             user=user,
@@ -71,14 +40,8 @@ class FolderManager ( models.Manager ):
     def list(self, user):
         return self.get_queryset().list(user)
 
-    def list_with_children(self, user):
-        return self.get_queryset().list_with_children(user)
-
     def retrieve(self, user, pk):
         return self.get_queryset().retrieve(user, pk)
-
-    def list_children(self, user, pk):
-        return self.get_queryset().list_children(user, pk)
 
     def list_archived(self, user):
         return self.get_queryset().list_archived(user)

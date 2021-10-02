@@ -12,16 +12,6 @@ class FolderService extends Service {
         super('folders')
     }
 
-    async listWithChildren () {
-        try {
-            const response:{data:Array<object>} = await axios.get(`${this.url}boards/all/`, this.config)
-            store.commit('folders/set', response.data)
-            return response.data
-        } catch (e:any) {
-            throw e
-        }
-    }
-
 }
 
 export default new FolderService()

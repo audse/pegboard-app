@@ -5,7 +5,7 @@ import ViewFolder from '../../components/Pegboard/ViewFolder.vue'
 import AddFolder from '../../components/Pegboard/Forms/Add/AddFolder.vue'
 import AddBoard from '../../components/Pegboard/Forms/Add/AddBoard.vue'
 
-import { onMounted, computed, ref } from 'vue'
+import { onMounted, computed, ref, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
 
 import FolderService from './../../services/folder.service'
@@ -14,17 +14,17 @@ import AuthService from '../../services/auth.service'
 
 const store = useStore()
 
-const folders:any = computed( () => store.state.folders.folders )
+const folders:any = computed( () => store.state.folders.items )
 const refreshFolders = async () => {
-    await FolderService.listWithChildren()
+    await FolderService.list()
 }
 
-const unsortedBoards = computed( () => store.getters['boards/getByFolder']('unsorted') )
+const unsortedBoards = computed( () => store.state.boards.items )
 const refreshUnsortedBoards = async () => {
     await BoardService.listUnsorted()
 }
 
-onMounted( () => {
+onBeforeMount( () => {
     refreshUnsortedBoards()
     refreshFolders()
 })
@@ -41,7 +41,7 @@ onMounted( () => {
     </section>
 
     <section>
-        <view-folder v-for="folder in folders" :key="folder.folder.id" :folder="folder" />
+        <view-folder v-for="folder in folders" :key="folder.id" :folder="folder" />
     </section>
 
     <section class="mt-12">
