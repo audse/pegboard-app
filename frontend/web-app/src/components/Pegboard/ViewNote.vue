@@ -5,6 +5,7 @@ import Tag from './../Elements/Tag.vue'
 import Modal from './../Elements/Modal.vue'
 import EditNote from './Forms/Edit/EditNote.vue'
 import ViewChecklist from './ViewChecklist.vue'
+import ViewComments from './ViewComments.vue'
 
 import { ref } from 'vue'
 
@@ -33,6 +34,10 @@ const showEditModal = ref(false)
     <modal :show="showEditModal" @hide="showEditModal=false">
         <edit-note :note="note" @save="showEditModal=false" />
     </modal>
+
+    <template #footer>
+        <view-comments :note-id="note.id" :comments="note.comments" />
+    </template>
 
 
 </card>

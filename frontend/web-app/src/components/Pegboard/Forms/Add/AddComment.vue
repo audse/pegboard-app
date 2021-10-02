@@ -12,28 +12,23 @@ const props = defineProps({
 
 const addCommentForm = reactive({
     content: '',
-    board: props.boardId || undefined,
-    page: props.pageId || undefined,
-    note: props.noteId || undefined,
+    board: props.boardId || null,
+    page: props.pageId || null,
+    note: props.noteId || null,
 })
 
 const addComment = async (data:object) => {
     await CommentService.create(data)
+    addCommentForm.content = ''
 }
 
 </script>
 <template>
 
-<card no-bg>
-
-    <h2>Add Comment</h2>
-
-    <form @submit.prevent="addComment(addCommentForm)">
-        <input v-model="addCommentForm.content" name="name" type="text" placeholder="Comment..." />
-        <button type="submit">+</button>
-    </form>
-
-</card>
+<form @submit.prevent="addComment(addCommentForm)" class="flex items-center">
+    <input v-model="addCommentForm.content" name="name" type="text" placeholder="Comment" class="dark" />
+    <button type="submit" class="secondary">Send</button>
+</form>
 
 </template>
 <script lang="ts">

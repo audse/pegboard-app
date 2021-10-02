@@ -15,13 +15,13 @@ const borderStyle = props.border ? '2px solid var(--scale-secondary-3)' : 'trans
 
 <div class="wrapper">
 <article>
-    <header>
+    <header v-if="this.$slots.header">
         <slot name="header"></slot>
     </header>
-    <section class="content">
+    <section class="content" v-if="this.$slots.default">
         <slot></slot>
     </section>
-    <footer>
+    <footer v-if="this.$slots.footer">
         <slot name="footer"></slot>
     </footer>
 </article>
@@ -49,7 +49,7 @@ article {
 }
 
 header, footer, .content {
-    @apply px-6 py-1;
+    @apply px-6 py-2;
 }
 
 header {

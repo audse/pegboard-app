@@ -23,9 +23,9 @@ const addNote = async (data:object) => {
 <template>
     
 <!-- <h4>Add Note</h4> -->
-<form @submit.prevent="addNote(addNoteForm)" class="flex items-center">
+<form @submit.prevent="addNote(addNoteForm)" class="flex items-center mx-2">
     <input v-model="addNoteForm.name" name="name" type="text" placeholder="Add Note" />
-    <button type="submit" class="secondary">+</button>
+    <button type="submit" class="secondary px-0 ml-2">+</button>
 </form>
 
 </template>

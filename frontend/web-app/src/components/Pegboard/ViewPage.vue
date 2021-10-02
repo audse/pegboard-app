@@ -3,6 +3,7 @@
 import Card from '../Elements/Card.vue'
 import Modal from '../Elements/Modal.vue'
 import ViewNote from './ViewNote.vue'
+import ViewComments from './ViewComments.vue'
 import EditPage from './Forms/Edit/EditPage.vue'
 import AddNote from './Forms/Add/AddNote.vue'
 
@@ -32,6 +33,8 @@ const showEditModal = ref(false)
                 <edit-page :page="page" @save="showEditModal=false" />
             </modal>
         </span>
+
+        <view-comments :page-id="page.id" :comments="page.comments" />
     </template>
 
     <section v-for="note in page.notes" :key="note.id">
@@ -39,7 +42,7 @@ const showEditModal = ref(false)
     </section>
     
     <template #footer>
-        <add-note :page-id="page.id" />
+        <add-note :page-id="page.id" class="pb-8" />
     </template>
 
 </card>
