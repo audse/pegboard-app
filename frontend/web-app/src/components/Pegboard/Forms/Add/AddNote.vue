@@ -11,8 +11,8 @@ const props = defineProps({
 
 const addNoteForm = reactive({
     name: '',
-    board: props.boardId || undefined,
-    page: props.pageId || undefined,
+    board: props.boardId || null,
+    page: props.pageId || null,
 })
 
 const addNote = async (data:object) => {

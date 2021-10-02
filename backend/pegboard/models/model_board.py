@@ -29,7 +29,7 @@ class BoardQuerySet ( models.QuerySet ):
                 pk=pk
             )[0]
         except Exception as e:
-            return e
+            raise e
 
     def list_archived(self, user):
         return self.filter(

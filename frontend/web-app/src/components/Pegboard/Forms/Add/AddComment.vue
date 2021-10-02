@@ -4,37 +4,42 @@ import { reactive } from 'vue'
 
 import CommentService from './../../../../services/comment.service'
 
-// const props = defineProps({
-//     boardId: Number,
-// })
+const props = defineProps({
+    boardId:Number,
+    pageId:Number,
+    noteId:Number,
+})
 
-// let addPageForm = reactive({
-//     name: '',
-//     board: props.boardId || undefined
-// })
+const addCommentForm = reactive({
+    content: '',
+    board: props.boardId || undefined,
+    page: props.pageId || undefined,
+    note: props.noteId || undefined,
+})
 
-// const addPage = async (data:object) => {
-//     await PageService.create(data)
-// }
+const addComment = async (data:object) => {
+    await CommentService.create(data)
+}
+
 </script>
 <template>
 
 <card no-bg>
-<!-- 
-    <h2>Add Page</h2>
 
-    <form @submit.prevent="addPage(addPageForm)">
-        <label for="name">Page Name</label> 
-        <input v-model="addPageForm.name" name="name" type="text" placeholder="Name" />
-        <button type="submit">Add Page</button>
-    </form> -->
+    <h2>Add Comment</h2>
+
+    <form @submit.prevent="addComment(addCommentForm)">
+        <input v-model="addCommentForm.content" name="name" type="text" placeholder="Comment..." />
+        <button type="submit">+</button>
+    </form>
+
 </card>
 
 </template>
 <script lang="ts">
 
 export default {
-    name: 'AddPage'
+    name: 'AddComment'
 }
 
 </script>

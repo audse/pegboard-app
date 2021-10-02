@@ -2,10 +2,12 @@
 
 import Modal from './../../components/Elements/Modal.vue'
 import ViewPage from '../../components/Pegboard/ViewPage.vue'
+import ViewNote from '../../components/Pegboard/ViewNote.vue'
 import EditBoard from '../../components/Pegboard/Forms/Edit/EditBoard.vue'
 import AddPage from '../../components/Pegboard/Forms/Add/AddPage.vue'
+import AddNote from '../../components/Pegboard/Forms/Add/AddNote.vue'
 
-import { computed, onBeforeUnmount, ref } from 'vue'
+import { computed, onBeforeUnmount, ref, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 
@@ -52,7 +54,6 @@ onBeforeUnmount( () => {
             <button @click="showEditModal=!showEditModal" class="secondary">Edit</button>
         </small>
     </h1>
-    
 
     <section class="flex">
         <view-page v-for="page in board.pages" :key="page.id" :page="page" class="w-4/12" />
@@ -62,6 +63,16 @@ onBeforeUnmount( () => {
     <modal :show="showEditModal" @hide="showEditModal=false">
         <edit-board :board="board" :tags="board.tags" @save="showEditModal=false" />
     </modal>
+
+    <article v-if="board.notes" class="mt-8">
+        <section class="flex items-center">
+            <h3 class="mr-4">Unsorted Notes</h3>
+            <add-note :board-id="board.id" class="w-4/12" />
+        </section>
+        <section class="flex items-center">
+            <view-note v-for="note in board.notes" :key="note.id" :note="note" class="w-4/12 m-4" />
+        </section>
+    </article>
 
 </article>
 

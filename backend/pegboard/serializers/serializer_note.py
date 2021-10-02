@@ -1,15 +1,18 @@
 from rest_framework import serializers
 
 from . import *
-from ..models import Note
+from ..models import Note, Board, Page
 
 class NoteSerializer ( serializers.ModelSerializer ):
     model = Note
 
-    tags = TagSerializer(many=True)
+    board = serializers.PrimaryKeyRelatedField(queryset=Board.objects.all(), allow_null=True)
+    page = serializers.PrimaryKeyRelatedField(queryset=Page.objects.all(), allow_null=True)
+
+    tags = TagSerializer(many=True, required=False)
     
-    comments = CommentSerializer(many=True)
-    checklists = ChecklistSerializer(many=True)
+    comments = CommentSerializer(many=True, required=False)
+    checklists = ChecklistSerializer(many=True, required=False)
 
     class Meta:
         model = Note
@@ -19,6 +22,7 @@ class NoteSerializer ( serializers.ModelSerializer ):
 
     def update(self, instance, validated_data):
 
+        instance.user = validated_data.get('user', instance.user)
         instance.name = validated_data.get('name', instance.name)
         instance.content = validated_data.get('content', instance.content)
         

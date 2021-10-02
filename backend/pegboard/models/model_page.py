@@ -25,7 +25,7 @@ class PageQuerySet ( models.QuerySet ):
                 pk=pk
             )[0]
         except Exception as e:
-            return e
+            raise e
 
     def list_unsorted(self, user):
         return self.filter(

@@ -16,7 +16,7 @@ from .utils import serialize_queryset, serialize_query, serialize_and_create, se
 
 class BoardViewSet ( viewsets.ModelViewSet ):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
 

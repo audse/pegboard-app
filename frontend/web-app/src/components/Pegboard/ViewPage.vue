@@ -39,7 +39,7 @@ const showEditModal = ref(false)
     </section>
     
     <template #footer>
-        <add-note :page-id="page.id" :board-id="page.board.id" />
+        <add-note :page-id="page.id" />
     </template>
 
 </card>

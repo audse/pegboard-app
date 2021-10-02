@@ -14,28 +14,32 @@ from ..serializers import CommentSerializer
 from .utils import serialize_queryset, serialize_query, serialize_and_create, serialize_and_update
 
 class CommentViewSet ( viewsets.ModelViewSet ):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
     def validate_comment(self, request):
-        if 'board' in request.data.keys():
-            try:
-                get_object_or_404(Board, pk=request.data['board'])
-            except:
-                return False
-        if 'page' in request.data.keys():
-            try:
-                get_object_or_404(Page, pk=request.data['page'])
-            except:
-                return False
-        if 'note' in request.data.keys():
-            try:
-                get_object_or_404(Note, pk=request.data['note'])
-            except:
-                return False
-        return True
+
+        validated_foreign_keys = {
+            'board': None,
+            'page': None,
+            'note': None,
+        }
+
+        if 'board' in request.data.keys() and request.data['board'] is not None:
+            get_object_or_404(Board, pk=request.data['board'])
+            validated_foreign_keys['board'] = request.data['board']
+            
+        if 'page' in request.data.keys() and request.data['page'] is not None:
+            get_object_or_404(Page, pk=request.data['page'])
+            validated_foreign_keys['page'] = request.data['page']
+                
+        if 'note' in request.data.keys() and request.data['note'] is not None:
+            get_object_or_404(Note, pk=request.data['note'])
+            validated_foreign_keys['note'] = request.data['note']
+
+        return validated_foreign_keys
     
     def list(self, request):
         return serialize_queryset(
@@ -53,26 +57,29 @@ class CommentViewSet ( viewsets.ModelViewSet ):
             return Response(e, status=404)
     
     def create(self, request):
-        if self.validate_comment(request):
+        try:
+            validated_foreign_keys = self.validate_comment(request)
             return serialize_and_create(
                 serializer=self.serializer_class,
                 data={
                     'user': request.user.pk,
-                    **request.data
+                    **request.data,
+                    **validated_foreign_keys
                 }
             )
-        else:
-            return Response('An error validating the data occurred.', status=500)
+        except Exception as e:
+            return Response(str(e), status=500)
     
     def update(self, request, pk=None):
-        if self.validate_comment(request):
-            try:
-                return serialize_and_update(
-                    serializer=self.serializer_class,
-                    object_to_update=Comment.objects.retrieve(user=request.user, pk=pk),
-                    data=request.data,
-                )
-            except Exception as e:
-                return Response(str(e), status=404)
-        else:
-            return Response('An error validating the data occurred.', status=500)
+        try:
+            validated_foreign_keys = self.validate_comment(request)
+            return serialize_and_update(
+                serializer=self.serializer_class,
+                object_to_update=Comment.objects.retrieve(user=request.user, pk=pk),
+                data={
+                    **request.data,
+                    **validated_foreign_keys,
+                }
+            )
+        except Exception as e:
+            return Response(str(e), status=404)

@@ -18,28 +18,35 @@ from .utils import serialize_and_create, serialize_and_update, serialize_query, 
 
 class NoteViewSet ( viewsets.ModelViewSet ):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+
     queryset = Note.objects.all()
     serializer_class = NoteSerializer
 
     def validate_note(self, request):
-        if 'page' in request.data.keys():
-            try:
-                get_object_or_404(Page, pk=request.data['page']['id'], user=request.user)
-            except:
-                return False
-        if 'board' in request.data.keys():
-            try:
-                get_object_or_404(Board, pk=request.data['board']['id'], user=request.user)
-            except:
-                return False
-        return True
+        validated_foreign_keys = {
+            'board': None,
+            'page': None
+        }
+
+        if 'board' in request.data.keys() and request.data['board'] is not None:
+            Board.objects.retrieve(pk=request.data['board'], user=request.user)
+            validated_foreign_keys['board'] = request.data['board']
+
+        if 'page' in request.data.keys() and request.data['page'] is not None:
+            Page.objects.retrieve(pk=request.data['page'], user=request.user)
+            validated_foreign_keys['page'] = request.data['page']
+
+        return validated_foreign_keys
 
     def list(self, request):
-        return serialize_queryset(
-            queryset=Note.objects.list(user=request.user),
-            serializer=self.serializer_class,
-        )
+        try:
+            return serialize_queryset(
+                queryset=Note.objects.list(user=request.user),
+                serializer=self.serializer_class,
+            )
+        except Exception as e:
+            print('Error listing notes:', e)
+            return Response(str(e), status=404)
 
     def retrieve(self, request, pk=None):
         try:
@@ -48,6 +55,7 @@ class NoteViewSet ( viewsets.ModelViewSet ):
                 serializer=self.serializer_class,
             )
         except Exception as e:
+            print('Error retrieving note:', e)
             return Response(str(e), status=404)
     
     @action(detail=False, url_path='unsorted')
@@ -58,31 +66,34 @@ class NoteViewSet ( viewsets.ModelViewSet ):
         )
 
     def create(self, request):
-        if self.validate_note(request):
+        try:
+            validated_foreign_keys = self.validate_note(request)
             return serialize_and_create(
                 serializer=self.serializer_class,
                 data={
-                    'user':request.user.pk,
-                    **request.data
-                }
+                    **request.data,
+                    **validated_foreign_keys
+                },
+                user=request.user
             )
-        else:
-            return Response('An error validating the data occurred.', status=500)
+        except Exception as e:
+            print('Error creating note:', e)
+            return Response(str(e), status=500)
     
     def update(self, request, pk=None):
-        if self.validate_note(request):
-            try:
-                return serialize_and_update(
-                    serializer=self.serializer_class,
-                    object_to_update=Note.objects.retrieve(user=request.user, pk=pk),
-                    data=request.data,
-                )
-            except Exception as e:
-                return Response(str(e), status=404)
-        else:
-            return Response('An error validating the data occurred.', status=500)
-
-        
+        try:
+            validated_foreign_keys = self.validate_note(request)
+            return serialize_and_update(
+                serializer=self.serializer_class,
+                object_to_update=Note.objects.retrieve(user=request.user, pk=pk),
+                data={
+                    **request.data,
+                    **validated_foreign_keys
+                }
+            )
+        except Exception as e:
+            print('Error updating note:', e)
+            return Response(str(e), status=404) 
     
     @action( methods=['put'], detail=True, url_path='archive' )
     def archive ( self, request, pk ):

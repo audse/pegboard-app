@@ -8,9 +8,6 @@ from ..models import Tag
 class TagSerializer ( serializers.ModelSerializer ):
     model = Tag
 
-    id = serializers.IntegerField()
-    color = ColorSerializer()
-
     class Meta:
         model = Tag
         fields = ['id', 'name', 'color']

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db.models import Q
 
@@ -24,7 +25,7 @@ class CommentManager ( models.Manager ):
     use_in_migrations = True
 
     def get_queryset(self):
-        return CommentQuerySet(self.model, using=self._db)
+        return CommentQuerySet(self.model, using=self._db).filter(date_archived__isnull=True)
 
     def list(self, user):
         return self.get_queryset().list(user)
@@ -68,5 +69,12 @@ class Comment ( models.Model ):
 
     content = models.CharField(max_length=128)
 
+    date_created = models.DateTimeField('date created', default=timezone.now)
+    date_edited = models.DateTimeField('date edited', blank=True, null=True)
+    date_archived = models.DateTimeField('date archived', blank=True, null=True)
+
     def __str__ ( self ):
-        return '{self.user} {self.content}'
+        if self.date_archived != None:
+            return '{self.user} - {self.content}'
+        else:
+            return '(Archived) {self.user} - {self.content}'

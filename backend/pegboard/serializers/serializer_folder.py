@@ -7,7 +7,7 @@ class FolderSerializer ( serializers.ModelSerializer ):
 
     model = Folder
 
-    boards = BoardSerializer(many=True)
+    boards = BoardSerializer(many=True, required=False)
 
     class Meta:
         model = Folder
