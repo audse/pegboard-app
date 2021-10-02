@@ -54,23 +54,22 @@ onBeforeUnmount( () => {
             <button @click="showEditModal=!showEditModal" class="secondary">Edit</button>
         </small>
     </h1>
+    <add-page :board-id="board.id" />
 
-    <section class="flex">
-        <view-page v-for="page in board.pages" :key="page.id" :page="page" class="w-4/12" />
-        <add-page :board-id="board.id" class="w-4/12" />
+    <section class="flex flex-wrap">
+        <view-page v-for="page in board.pages" :key="page.id" :page="page" class="flex-none w-4/12" />
     </section>
 
     <modal :show="showEditModal" @hide="showEditModal=false">
         <edit-board :board="board" :tags="board.tags" @save="showEditModal=false" />
     </modal>
 
-    <article v-if="board.notes" class="mt-8">
-        <section class="flex items-center">
-            <h3 class="mr-4">Unsorted Notes</h3>
+    <article v-if="board.notes?.length > 0" class="mt-8">
+        <section class="flex items-center pl-2">
             <add-note :board-id="board.id" class="w-4/12" />
         </section>
-        <section class="flex items-center">
-            <view-note v-for="note in board.notes" :key="note.id" :note="note" class="w-4/12 m-4" />
+        <section class="flex items-center flex-wrap">
+            <view-note v-for="note in board.notes" :key="note.id" :note="note" class="box-border w-4/12 flex-none" />
         </section>
     </article>
 

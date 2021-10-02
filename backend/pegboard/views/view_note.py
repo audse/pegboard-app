@@ -50,16 +50,14 @@ class NoteViewSet ( viewsets.ModelViewSet ):
     def create(self, request):
         return serialize_and_create(
             serializer=self.serializer_class,
-            user=request.user,
-            data=request.data
+            request=request,
         )
     
     def update(self, request, pk=None):
         return serialize_and_update(
             serializer=self.serializer_class,
             object_to_update=Note.objects.retrieve(user=request.user, pk=pk),
-            user=request.user,
-            data=request.data
+            request=request,
         )
     
     @action( methods=['put'], detail=True, url_path='archive' )

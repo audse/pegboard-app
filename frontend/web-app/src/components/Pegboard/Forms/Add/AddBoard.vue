@@ -15,6 +15,7 @@ const addBoardForm = reactive({
 
 const addBoard = async (boardId: string, data:object) => {
     await BoardService.create(data)
+    addBoardForm.name = ''
 }
 
 </script>

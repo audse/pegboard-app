@@ -10,27 +10,24 @@ const props = defineProps({
     boardId: Number,
 })
 
-let addPageForm = reactive({
+const addPageForm = reactive({
     name: '',
-    board: props.boardId || undefined
+    board: props.boardId || null,
 })
 
-const addPage = async (data:object) => {
+const addPage = async (data:{name:string,board:number}) => {
+    data.board = props.boardId
     await PageService.create(data)
+    addPageForm.name = ''
 }
 </script>
 <template>
 
-<card no-bg>
-
-    <h2>Add Page</h2>
-
-    <form @submit.prevent="addPage(addPageForm)">
-        <!-- <label for="name">Page Name</label> -->
-        <input v-model="addPageForm.name" name="name" type="text" placeholder="Name" />
-        <button type="submit">Add Page</button>
-    </form>
-</card>
+<form @submit.prevent="addPage(addPageForm)" class="flex items-center p-2 my-2">
+    <label for="name" class="flex-none">Add Page</label>
+    <input v-model="addPageForm.name" name="name" type="text" placeholder="Name" />
+    <button type="submit">+</button>
+</form>
 
 </template>
 <script lang="ts">

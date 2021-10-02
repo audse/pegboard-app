@@ -1,15 +1,16 @@
 from rest_framework import serializers
 
 from . import *
-from users.serializers import UserSerializer
-from ..models import Page
+from ..models import Page, Board
 
 class PageSerializer ( serializers.ModelSerializer ):
     
     model = Page
 
-    notes = NoteSerializer(many=True, required=False)
+    board = serializers.PrimaryKeyRelatedField(queryset=Board.objects.all(), allow_null=True)
 
+    notes = NoteSerializer(many=True, required=False)
+    
     comments = CommentSerializer(many=True, required=False)
 
     class Meta:

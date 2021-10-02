@@ -13,17 +13,23 @@ const props = defineProps({
 
 <card border no-bg>
     <template #header>
-        <h2>{{ folder.name }}</h2>
+        <h2 class="py-4">{{ folder.name }}</h2>
     </template>
 
     <card v-for="board in folder.boards" :key="board.id">
-        <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }">{{ board.name }}</router-link>
+        
+        <template #header>
+            <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }">
+                {{ board.name }}
+            </router-link>
+        </template>
+
         {{ board.description }}
     </card>
 
     <template #footer>
         <!-- <edit-folder :folder="folder" /> -->
-        <add-board :folder-id="folder.id" />
+        <add-board :folder-id="folder.id" class="pt-4" />
     </template>
 
 </card>

@@ -18,7 +18,6 @@ const showEditModal = ref(false)
 <template>
 
 <card>
-    
     <tag v-for="tag in note.tags" :key="tag.id" :label="tag.name" :color="tag.color.color" />
 
     <section class="flex items-center">

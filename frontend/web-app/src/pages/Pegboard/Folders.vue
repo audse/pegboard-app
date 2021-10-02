@@ -33,7 +33,7 @@ onBeforeMount( () => {
 <template>
 
 <article>
-
+    
     <h1>Folders</h1>
 
     <section>
@@ -45,8 +45,8 @@ onBeforeMount( () => {
     </section>
 
     <section class="mt-12">
-        <h2>Unsorted</h2>
-        <card v-for="board in unsortedBoards" :key="board.id" class="bg-gray-700">
+        <h2 class="py-4">Unsorted</h2>
+        <card v-for="board in unsortedBoards" :key="board.id">
             <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }">{{ board.name }}</router-link>
         </card>
     </section>

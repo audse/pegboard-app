@@ -15,7 +15,7 @@ const emits = defineEmits([
 
 const store = useStore()
 
-const tags = computed( () => store.state.boards.currentBoard?.tags )
+const tags = computed( () => store.state.boards.current?.tags )
 
 const selectedTags = computed({
     get () {

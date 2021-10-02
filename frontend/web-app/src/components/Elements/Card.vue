@@ -13,6 +13,7 @@ const borderStyle = props.border ? '2px solid var(--scale-secondary-3)' : 'trans
 </script>
 <template>
 
+<div class="wrapper">
 <article>
     <header>
         <slot name="header"></slot>
@@ -24,6 +25,7 @@ const borderStyle = props.border ? '2px solid var(--scale-secondary-3)' : 'trans
         <slot name="footer"></slot>
     </footer>
 </article>
+</div>
 
 </template>
 <script lang="ts">
@@ -35,9 +37,12 @@ export default {
 </script>
 <style scoped>
 
+.wrapper {
+    @apply p-2;
+}
+
 article {
     border-radius: 1rem;
-    @apply my-3;
 
     background-color: v-bind(bgColor);
     border: v-bind(borderStyle);
@@ -48,11 +53,11 @@ header, footer, .content {
 }
 
 header {
-    padding-top: 0.5rem;
+    @apply pt-4;
 }
 
 footer {
-    padding-bottom: 0.5rem;
+    @apply pb-4;
 }
 
 </style>

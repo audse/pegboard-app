@@ -17,6 +17,7 @@ const addNoteForm = reactive({
 
 const addNote = async (data:object) => {
     await NoteService.create(data)
+    addNoteForm.name = ''
 }
 </script>
 <template>
@@ -24,7 +25,7 @@ const addNote = async (data:object) => {
 <!-- <h4>Add Note</h4> -->
 <form @submit.prevent="addNote(addNoteForm)" class="flex items-center">
     <input v-model="addNoteForm.name" name="name" type="text" placeholder="Add Note" />
-    <button type="submit">+</button>
+    <button type="submit" class="secondary">+</button>
 </form>
 
 </template>
