@@ -13,13 +13,14 @@ class ChecklistQuerySet ( models.QuerySet ):
         )
 
     def retrieve(self, user, pk):
-        try:
-            return self.get(
+        result = self.filter(
                 Q(user=user) | Q(board__user=user) | Q(board__shared_with=user) | Q(page__user=user) | Q(note__user=user),
                 pk=pk
-            )
-        except Exception as e:
-            return e
+            ).first()
+        if result is not None:
+            return result
+        else:
+            raise FileNotFoundError
 
 class ChecklistManager ( models.Manager ):
     use_in_migrations = True

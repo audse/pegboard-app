@@ -4,28 +4,74 @@ from django.shortcuts import get_object_or_404
 
 from rest_framework.response import Response
 
+from ..models import Board, Page, Note, Color
 
-def serialize_and_create (serializer, data, user):
-    serialized_request = serializer(data=data)
+def validate_foreign_keys (user, data):
 
-    if serialized_request.is_valid():
-        serialized_request.save(user=user)
-        return Response(data=serialized_request.data)
+    # Check to make sure that every foreign key entered
+    # links to a real object.
+    # If not, raises exception (built-in) so use with try/catch
 
-    else:
-        print('Error serializing request:', serialized_request.errors)
-        return Response(serialized_request.errors, status=400)
+    foreign_keys = {
+        'board': Board,
+        'page': Page,
+        'note': Note,
+        'color': Color
+    }
 
-def serialize_and_update ( serializer, object_to_update, data ):
-    serialized_request = serializer(object_to_update, data=data, partial=True)
+    validated_keys = {}
+    request_keys = data.keys()
 
-    if serialized_request.is_valid():
-        serialized_request.save()
-        return Response(data=serialized_request.data)
+    for key in foreign_keys.keys():
+        if key in request_keys and data[key] is not None:
+            foreign_keys[key].objects.retrieve(pk=data[key], user=user)
+            validated_keys[key] = data[key]
 
-    else:
-        print('Error serializing request:', serialized_request.errors)
-        return Response(serialized_request.errors, status=400)
+    return validated_keys
+
+def serialize_and_create (serializer, request):
+    try:
+        validated_foreign_keys = validate_foreign_keys(request.user, request.data)
+        serialized_request = serializer(
+            data={
+                **request.data,
+                **validated_foreign_keys
+            }
+        )
+
+        if serialized_request.is_valid():
+            serialized_request.save(user=request.user)
+            return Response(data=serialized_request.data)
+
+        else:
+            print('Error serializing request:', serialized_request.errors)
+            return Response(serialized_request.errors, status=400)
+
+    except Exception as e:
+        return Response(str(e), status=500)
+
+def serialize_and_update(serializer, object_to_update, request):
+    try:
+        validated_foreign_keys = validate_foreign_keys(request.user, request.data)
+        serialized_request = serializer(
+            object_to_update,
+            partial=True,
+            data={
+                **request.data,
+                **validated_foreign_keys
+            }
+        )
+
+        if serialized_request.is_valid():
+            serialized_request.save()
+            return Response(data=serialized_request.data)
+
+        else:
+            print('Error serializing request:', serialized_request.errors)
+            return Response(serialized_request.errors, status=400)
+
+    except Exception as e:
+        return Response(str(e), status=500)
         
 def serialize_query(query_object, serializer):
     return Response(data=serializer(query_object).data)

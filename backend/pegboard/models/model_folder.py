@@ -17,13 +17,14 @@ class FolderQuerySet ( models.QuerySet ):
         )
 
     def retrieve(self, user, pk):
-        try:
-            return self.get(
+        result = self.filter(
                 user=user,
                 pk=pk
-            )
-        except Exception as e:
-            return e
+            ).first()
+        if result is not None:
+            return result
+        else:
+            raise FileNotFoundError
     
     def list_archived(self, user):
         return self.filter(

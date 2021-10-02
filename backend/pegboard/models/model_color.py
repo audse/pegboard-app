@@ -12,13 +12,14 @@ class ColorQuerySet ( models.QuerySet ):
         ).distinct()
 
     def retrieve(self, user, pk):
-        try:
-            return self.filter(
+        result = self.filter(
                 Q(user=user) | Q(board__user=user) | Q(board__shared_with=user),
                 pk=pk
-            )[0]
-        except Exception as e:
-            return e
+            ).first()
+        if result is not None:
+            return result
+        else:
+            raise FileNotFoundError
 
 class ColorManager ( models.Manager ):
     use_in_migrations = True

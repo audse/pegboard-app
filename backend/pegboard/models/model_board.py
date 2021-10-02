@@ -22,14 +22,15 @@ class BoardQuerySet ( models.QuerySet ):
         )
     
     def retrieve(self, user, pk, not_archived=True):
-        try:
-            return self.filter(
+        result = self.filter(
                 Q(user=user) | Q(shared_with=user),
                 date_archived__isnull=not_archived,
                 pk=pk
-            )[0]
-        except Exception as e:
-            raise e
+            ).first()
+        if result is not None:
+            return result
+        else:
+            raise FileNotFoundError
 
     def list_archived(self, user):
         return self.filter(

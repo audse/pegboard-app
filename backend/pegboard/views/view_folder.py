@@ -13,6 +13,7 @@ from .utils import serialize_query, serialize_queryset, serialize_and_create, se
 
 class FolderViewSet ( viewsets.ModelViewSet ):
     authentication_classes = [TokenAuthentication]
+
     queryset = Folder.objects.all()
     serializer_class = FolderSerializer
 
@@ -42,21 +43,15 @@ class FolderViewSet ( viewsets.ModelViewSet ):
     def create ( self, request ):
         return serialize_and_create(
             serializer=self.serializer_class,
-            data={
-                'user': request.user.pk,
-                **request.data
-            }
+            request=request,
         )
     
     def update ( self, request, pk=None ):
-        try:
-            return serialize_and_update(
-                serializer=self.serializer_class,
-                object_to_update=Folder.objects.retrieve(user=request.user, pk=pk),
-                data=request.data,
-            )
-        except Exception as e:
-            return Response(str(e))
+        return serialize_and_update(
+            serializer=self.serializer_class,
+            object_to_update=Folder.objects.retrieve(user=request.user, pk=pk),
+            request=request,
+        )
     
     @action( methods=['put'], detail=True, url_path='archive' )
     def archive ( self, request, pk ):
