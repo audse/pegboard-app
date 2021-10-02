@@ -5,7 +5,10 @@ from users.serializers import UserSerializer
 from ..models import Page
 
 class PageSerializer ( serializers.ModelSerializer ):
+    
     model = Page
+
+    notes = NoteSerializer(many=True)
 
     class Meta:
         model = Page

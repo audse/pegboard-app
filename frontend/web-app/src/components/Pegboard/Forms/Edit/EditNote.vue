@@ -7,6 +7,7 @@ import AddChecklist from '../Add/AddChecklist.vue'
 import { reactive, ref } from 'vue'
 
 import NoteService from './../../../../services/note.service'
+import ChecklistService from './../../../../services/checklist.service'
 
 const props = defineProps({
     note: Object,
@@ -15,18 +16,20 @@ const props = defineProps({
 const editNoteForm = reactive({
     name: props.note.name,
     content: props.note.content,
-    tags: props.note.tags
+    tags: props.note.tags,
+    checklists: props.note.checklists
 })
 
-const editNote = async (noteId: string, data:any, noteHasChecklist:boolean) => {
-    if (noteHasChecklist) {
-        // ChecklistService.create(checklistData...)
+const editNote = async (noteId: string, data:any) => {
+    if ( newChecklist.value ) {
+        console.log(newChecklist.value)
+        ChecklistService.create(newChecklist.value)
     }
     await NoteService.update(noteId, data)
 }
 
-const hasChecklist = ref(false)
-const updateHasChecklist = (event:{value:boolean}) => hasChecklist.value = event.value
+const newChecklist = ref(null)
+const updateChecklist = (event:object) => newChecklist.value = event
 
 </script>
 <template>
@@ -34,7 +37,7 @@ const updateHasChecklist = (event:{value:boolean}) => hasChecklist.value = event
 <section>
     <h3>Edit {{ note.name }}</h3>
 
-    <form @submit.prevent="editNote(note.id, editNoteForm, hasChecklist)">
+    <form @submit.prevent="editNote(note.id, editNoteForm)">
 
         <section class="pt-6 flex items-center">
             <label for="name" class="flex-none">Name</label>
@@ -52,7 +55,7 @@ const updateHasChecklist = (event:{value:boolean}) => hasChecklist.value = event
         </section>
 
         <section class="pt-10">
-            <add-checklist @has-checklist="updateHasChecklist" />
+            <add-checklist :noteId="note.id" @update-checklist="updateChecklist" />
         </section>
 
         <section class="pt-8">

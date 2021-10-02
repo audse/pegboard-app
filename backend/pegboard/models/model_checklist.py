@@ -71,7 +71,7 @@ class Checklist ( models.Model ):
 
     name = models.CharField(max_length=128, blank=True)
 
-    check_items = ArrayField(
+    items = ArrayField(
         models.JSONField(null=False, default=dict),
         blank=True,
         null=True

@@ -21,46 +21,13 @@ class BoardQuerySet ( models.QuerySet ):
             date_archived__isnull=True,
         )
     
-    def retrieve(self, user, pk):
+    def retrieve(self, user, pk, not_archived=True):
         try:
             return self.filter(
                 Q(user=user) | Q(shared_with=user),
+                date_archived__isnull=not_archived,
                 pk=pk
             )[0]
-        except Exception as e:
-            return e
-
-    def retrieve_with_children(self, user, pk):
-        try:
-            
-            response = {
-                'board': None,
-                'tags': None,
-                'pages': [],
-            }
-
-            response['board'] = self.filter(
-                Q(user=user) | Q(shared_with=user),
-                date_archived__isnull=True,
-                pk=pk
-            )[0]
-
-            response['tags'] = response['board'].tags.all()
-
-            current_pages = response['board'].pages.all().filter(
-                date_archived__isnull=True
-            )
-
-            for page in current_pages:
-                all_notes_in_page = page.notes.all().filter(
-                    date_archived__isnull=True
-                )
-                response['pages'].append({
-                    'page': page,
-                    'notes': all_notes_in_page
-                })
-            
-            return response
         except Exception as e:
             return e
 
@@ -96,11 +63,8 @@ class BoardManager ( models.Manager ):
     def list(self, user):
         return self.get_queryset().list(user)
 
-    def retrieve(self, user, pk):
+    def retrieve(self, user, pk, not_archived=True):
         return self.get_queryset().retrieve(user, pk)
-    
-    def retrieve_with_children(self, user, pk):
-        return self.get_queryset().retrieve_with_children(user, pk)
 
     def list_archived(self, user):
         return self.get_queryset().list_archived(user)
@@ -116,22 +80,22 @@ class Board ( models.Model ):
 
     user = models.ForeignKey(
         User,
-        on_delete = models.CASCADE,
-        related_name = 'boards'
+        on_delete=models.CASCADE,
+        related_name='boards'
     )
 
     shared_with = models.ManyToManyField(
         User,
         blank=True,
-        related_name = 'shared_boards',
+        related_name='shared_boards',
     )
 
     folder = models.ForeignKey(
         'Folder',
-        on_delete = models.SET_NULL,
-        blank = True,
-        null = True,
-        related_name = 'boards'
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='boards'
     )
     
     name = models.CharField(max_length=128)

@@ -2,10 +2,13 @@ from rest_framework import serializers
 
 from . import *
 from ..models import Board
-from users.serializers import UserSerializer
     
 class BoardSerializer ( serializers.ModelSerializer ):
+
     model = Board
+    
+    pages = PageSerializer(many=True)
+    checklists = ChecklistSerializer(many=True)
 
     class Meta:
         model = Board

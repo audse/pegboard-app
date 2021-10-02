@@ -23,16 +23,6 @@ class BoardService extends Service {
         }
     }
 
-    async retrieveBoardAndChildren (boardId:string) {
-        try {
-            const response:{data:object} = await axios.get(`${this.url}${boardId}/board/`, this.config)
-            store.commit('boards/setCurrentBoard', response.data)
-            return response.data
-        } catch (e:any) {
-            throw e
-        }
-    }
-
 }
 
 export default new BoardService()

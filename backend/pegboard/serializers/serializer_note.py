@@ -7,6 +7,7 @@ class NoteSerializer ( serializers.ModelSerializer ):
     model = Note
 
     tags = TagSerializer(many=True)
+    checklists = ChecklistSerializer(many=True)
 
     class Meta:
         model = Note

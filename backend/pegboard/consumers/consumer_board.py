@@ -5,7 +5,7 @@ from channels.auth import login
 from rest_framework.authentication import TokenAuthentication
 
 from ..models import Board
-from ..serializers import BoardSerializer, PageSerializer, NoteSerializer, TagSerializer, ColorSerializer
+from ..serializers import BoardSerializer, PageSerializer, TagSerializer, ChecklistSerializer
 from ..views import BoardViewSet
 
 class BoardConsumer(AsyncWebsocketConsumer):
@@ -20,7 +20,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
 
         self.board_group_name = 'board-'+str(self.board_id)+'-'+self.board_url
 
-        self.board_with_children = await self.retrieve_with_children()
+        self.board = await self.retrieve()
 
         await self.channel_layer.group_add(
             self.board_group_name,
@@ -41,48 +41,32 @@ class BoardConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         action = text_data_json['action']
 
-        if action == 'retrieveWithChildren':
+        if action == 'retrieve':
             await self.channel_layer.group_send(
                 self.board_group_name,
                 {
-                    'type': 'send_retrieve_with_children',
+                    'type': 'send_retrieve',
                 }
             )
 
-    async def send_retrieve_with_children(self, event):
+    async def send_retrieve(self, event):
         await self.send(text_data=json.dumps({
-            'action': 'retrieveWithChildren',
-            'response': self.board_with_children
+            'action': 'retrieve',
+            'response': self.board
         }))
 
     async def update(self, event):
-        self.board_with_children = await self.retrieve_with_children()
+        self.board = await self.retrieve()
         await self.channel_layer.group_send(
             self.board_group_name,
             {
-                'type': 'send_retrieve_with_children',
+                'type': 'send_retrieve',
             }
         )
 
     @database_sync_to_async
-    def retrieve_with_children(self):
-        response = None
+    def retrieve(self):
         try:
-            original_response = Board.objects.retrieve_with_children(user=self.user, pk=self.board_id)
-            response = {
-                'board': BoardSerializer(original_response['board']).data,
-                'tags': TagSerializer(original_response['tags'], many=True).data,
-                'pages': [],
-            }
-
-            for page in original_response['pages']:
-
-                response['pages'].append({
-                    'page': PageSerializer(page['page']).data,
-                    'notes': NoteSerializer(page['notes'], many=True).data
-                })
-
+            return BoardSerializer(Board.objects.retrieve(user=self.user, pk=self.board_id)).data
         except Exception as e:
-            response = str(e)
-
-        return response
+            return str(e)

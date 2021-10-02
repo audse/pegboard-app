@@ -26,13 +26,14 @@ const connection = new WebSocket(`ws://localhost:8000/ws/api/boards/${id}/${url}
 
 connection.onopen = () => {
     connection.send(JSON.stringify({
-        action: 'retrieveWithChildren'
+        action: 'retrieve'
     }))
 }
 
 connection.onmessage = (event:{data:string}) => {
     const data:{action:string,response:object} = JSON.parse(event.data)
-    if (data.action === 'retrieveWithChildren') {
+    if (data.action === 'retrieve') {
+        console.log(data.response)
         store.commit('boards/setCurrentBoard', data.response)
     }
 }
@@ -45,25 +46,25 @@ onBeforeUnmount( () => {
 </script>
 <template>
 
-<article v-if="board?.board">
+<article v-if="board">
 
     <h1>
-        {{ board.board.name }}
+        {{ board.name }}
         <br />
         <small class="flex">
-            <span class="flex-grow">{{ board.board.description }}</span>
+            <span class="flex-grow">{{ board.description }}</span>
             <button @click="showEditModal=!showEditModal" class="secondary">Edit</button>
         </small>
     </h1>
     
 
     <section class="flex">
-        <view-page v-for="page in board.pages" :key="page.page.id" :page="page" class="w-4/12" />
-        <add-page :board-id="board.board.id" class="w-4/12" />
+        <view-page v-for="page in board.pages" :key="page.id" :page="page" class="w-4/12" />
+        <add-page :board-id="board.id" class="w-4/12" />
     </section>
 
     <modal :show="showEditModal" @hide="showEditModal=false">
-        <edit-board :board="board.board" :tags="board.tags" @save="showEditModal=false" />
+        <edit-board :board="board" :tags="board.tags" @save="showEditModal=false" />
     </modal>
 
 </article>

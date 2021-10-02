@@ -15,8 +15,8 @@ router.register(r'folders', views.FolderViewSet)
 router.register(r'themes', views.ThemeViewSet)
 router.register(r'colors', views.ColorViewSet)
 router.register(r'tags', views.TagViewSet)
-router.register(r'comment', views.CommentViewSet)
-router.register(r'checklist', views.ChecklistViewSet)
+router.register(r'comments', views.CommentViewSet)
+router.register(r'checklists', views.ChecklistViewSet)
 
 urlpatterns = [
 
