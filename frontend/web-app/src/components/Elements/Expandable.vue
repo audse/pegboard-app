@@ -22,6 +22,13 @@ const show = ref(false)
 </article>
 
 </template>
+<script lang="ts">
+
+export default {
+    name: 'Expandable'
+}
+
+</script>
 <style scoped>
 
 
