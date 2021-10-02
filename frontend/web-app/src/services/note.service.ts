@@ -4,12 +4,6 @@ import Service from './index.service'
 
 class NoteService extends Service {
 
-    noteForm = {
-        name: '',
-        board: undefined,
-        page: undefined
-    }
-
     constructor () {
         super('notes')
     }

@@ -4,11 +4,6 @@ import Service from './index.service'
 
 class PageService extends Service {
 
-    pageForm = {
-        name: '',
-        board: undefined
-    }
-
     constructor () {
         super('pages')
     }

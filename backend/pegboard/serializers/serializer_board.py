@@ -8,6 +8,8 @@ class BoardSerializer ( serializers.ModelSerializer ):
     model = Board
     
     pages = PageSerializer(many=True)
+
+    comments = CommentSerializer(many=True)
     checklists = ChecklistSerializer(many=True)
 
     class Meta:

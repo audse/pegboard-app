@@ -3,12 +3,7 @@ import store from './../store/index.store'
 import Service from './index.service'
 
 class BoardService extends Service {
-
-    boardForm = {
-        name: '',
-        folder: undefined
-    }
-
+    
     constructor () {
         super('boards')
     }

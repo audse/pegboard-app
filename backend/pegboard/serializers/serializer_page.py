@@ -10,6 +10,8 @@ class PageSerializer ( serializers.ModelSerializer ):
 
     notes = NoteSerializer(many=True)
 
+    comments = CommentSerializer(many=True)
+
     class Meta:
         model = Page
         fields = '__all__'
