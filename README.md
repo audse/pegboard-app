@@ -19,6 +19,7 @@ The core principle of Pegboard is to organize the way you would in real life- an
 ## Features
 * Organize your ideas into notes, pages, boards, and folders for ultimate flexibility.
 * Automatically generate color themes (or pick from our presets) to give each board a different vibe (and pick a site-wide theme to your taste).
+* Work on a team (or a family!) - collaborate in realtime on a shared board.
 
 ### Roadmap
 Pegboard is currently still under development. In the future, there are plans to implement the following features:
