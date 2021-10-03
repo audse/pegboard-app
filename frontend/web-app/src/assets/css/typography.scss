@@ -1,0 +1,39 @@
+h1, h2, h3, h4, h5, h6 {
+    padding: none;
+    margin: none;
+}
+
+h1 {
+    @apply text-2xl font-bold;
+    line-height: 1.1;
+}
+
+h2 {
+    @apply text-xl font-medium;
+    color: var(--scale-text-4);
+    line-height: 1.2;
+}
+
+h3 {
+    @apply text-lg font-medium;
+    color: var(--scale-text-4);
+    line-height: 1.3;
+}
+
+h4 {
+    @apply text-lg font-normal;
+    color: var(--scale-text-3);
+    line-height: 1.3;
+}
+
+h5 {
+    @apply text-base font-semibold;
+    color: var(--scale-text-4);
+    line-height: 1.4;
+}
+
+h5 {
+    @apply text-base font-medium;
+    color: var(--scale-text-3);
+    line-height: 1.4;
+}

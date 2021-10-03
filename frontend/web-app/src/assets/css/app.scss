@@ -2,54 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('theme.variables.scss');
+@import 'theme.variables.scss';
+@import 'typography.scss';
 
 body, html, #app {
-    background-color: var(--secondary);
+    background-color: var(--scale-secondary-3);
     color: var(--text);
+    height: 100%;
 }
 
 * {
     box-sizing: border-box;
-}
-
-#app {
-    @apply px-6;
-}
-
-h1 {
-    @apply font-bold text-2xl;
-}
-
-h1 small {
-    @apply font-light;
-    color: var(--scale-text-3);
-}
-
-h2 {
-    @apply font-semibold text-xl;
-    color: var(--scale-text-5);
-}
-
-h2 small {
-    @apply font-normal;
-    color: var(--scale-text-3);
-}
-
-h3 {
-    @apply font-semibold text-lg;
+    font-family: 'Fira Sans', sans-serif;
+    line-height: 1.6;
 }
 
 a {
-    @apply text-blue-500 px-1
-}
-
-nav a {
-    @apply px-4
+    color: var(--info);
 }
 
 form label {
-    @apply font-bold mr-4
+    @apply font-bold mr-4;
 }
 
 form input, form textarea {
@@ -63,10 +36,13 @@ form input.dark {
 }
 
 button {
-    @apply px-4 py-1 rounded-full font-semibold bg-blue-700 text-blue-100 m-1;
+    @apply px-4 py-1 rounded-full font-semibold m-1;
+    background-color: var(--emphasis);
+    color: var(--text);
     max-height: fit-content;
 }
 
 button.secondary {
-    @apply bg-transparent text-blue-500
+    @apply bg-transparent;
+    color: var(--emphasis);
 }

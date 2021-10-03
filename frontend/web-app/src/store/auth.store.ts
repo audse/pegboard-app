@@ -2,6 +2,9 @@
 interface AuthState {
     currentUser:object|null,
     token:string,
+    preferences:{
+        sidebarHidden:boolean,
+    }
 }
 
 const authStore = {
@@ -11,12 +14,15 @@ const authStore = {
         return {
             currentUser: null,
             token: '',
+            preferences: {
+                sidebarHidden: false,
+            }
         }
     },
 
     getters: {
 
-        isAuthenticated ( state:AuthState ) {
+        isAuthenticated: ( state:AuthState ) => {
             return state.currentUser !== null
         }
 
@@ -24,12 +30,16 @@ const authStore = {
 
     mutations: {
 
-        setToken ( state:AuthState, newToken:string ) {
+        setToken: ( state:AuthState, newToken:string ) => {
             state.token = newToken
         },
 
-        setCurrentUser ( state:AuthState, newUser:object ) {
+        setCurrentUser: ( state:AuthState, newUser:object ) => {
             state.currentUser = newUser
+        },
+
+        setSidebarHiddenPreference: ( state:AuthState, preference:boolean ) => {
+            state.preferences.sidebarHidden = preference
         }
 
     },

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 
+import Page from './../../layouts/Page.layout.vue'
 import Modal from './../../components/Elements/Modal.vue'
 import ViewPage from '../../components/Pegboard/ViewPage.vue'
 import ViewNote from '../../components/Pegboard/ViewNote.vue'
@@ -44,17 +45,21 @@ onBeforeUnmount( () => {
 </script>
 <template>
 
-<article v-if="board">
+<page v-if="board">
+    <template #header>
 
-    <h1>
-        {{ board.name }}
-        <br />
-        <small class="flex">
+        <h1>
+            {{ board.name }}
+            <br />
+        </h1>
+        <h3 class="flex">
             <span class="flex-grow">{{ board.description }}</span>
             <button @click="showEditModal=!showEditModal" class="secondary">Edit</button>
-        </small>
-    </h1>
-    <add-page :board-id="board.id" />
+        </h3>
+
+        <add-page :board-id="board.id" />
+
+    </template>
 
     <section class="flex flex-wrap">
         <view-page v-for="page in board.pages" :key="page.id" :page="page" class="flex-none w-4/12" />
@@ -73,6 +78,6 @@ onBeforeUnmount( () => {
         </section>
     </article>
 
-</article>
+</page>
 
 </template>

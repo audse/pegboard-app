@@ -22,11 +22,10 @@ const showEditModal = ref(false)
 
     <template #header>
         <span class="flex items-center">
-            <h2 class="flex-grow">
-                {{ page.name }}
-                <br />
-                <small>{{ page.description }}</small>
-            </h2>
+            <span class="flex-grow">
+                <h3 class="pt-3 pb-1">{{ page.name }}</h3>
+                <h4>{{ page.description }}</h4>
+            </span>
             <button @click="showEditModal=!showEditModal" class="secondary">Edit</button>
 
             <modal :show="showEditModal" @hide="showEditModal=false">

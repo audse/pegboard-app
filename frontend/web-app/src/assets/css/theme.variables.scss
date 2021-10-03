@@ -4,6 +4,9 @@
     --text: #EAEBF0;
 
     --emphasis: #e24a96;
+    --info: #1e87ff;
+    --warning: #d3a43f;
+    --negative: #40396d;
 
     --scale-text-1: #424056;
     --scale-text-2: #5A586C;
@@ -17,3 +20,45 @@
     --scale-secondary-4: #1F1D30;
     --scale-secondary-5: #1D1B2E;
 }
+
+.text-primary { color: var(--primary); }
+.text-secondary { color: var(--secondary); }
+.text-text { color: var(--text); }
+
+.text-emphasis { color: var(--emphasis); }
+.text-info { color: var(--info); }
+.text-warning { color: var(--warning); }
+.text-negative { color: var(--negative); }
+
+.text-scale-text-1 { color: var(--scale-text-1); }
+.text-scale-text-2 { color: var(--scale-text-2); }
+.text-scale-text-3 { color: var(--scale-text-3); }
+.text-scale-text-4 { color: var(--scale-text-4); }
+.text-scale-text-5 { color: var(--scale-text-5); }
+
+.text-scale-secondary-1 { color: var(--scale-secondary-1); }
+.text-scale-secondary-2 { color: var(--scale-secondary-2); }
+.text-scale-secondary-3 { color: var(--scale-secondary-3); }
+.text-scale-secondary-4 { color: var(--scale-secondary-4); }
+.text-scale-secondary-5 { color: var(--scale-secondary-5); }
+
+.background-primary { background-color: var(--primary); }
+.background-secondary { background-color: var(--secondary); }
+.background-text { background-color: var(--text); }
+
+.background-emphasis { background-color: var(--emphasis); }
+.background-info { background-color: var(--info); }
+.background-warning { background-color: var(--warning); }
+.background-negative { background-color: var(--negative); }
+
+.background-scale-text-1 { background-color: var(--scale-text-1); }
+.background-scale-text-2 { background-color: var(--scale-text-2); }
+.background-scale-text-3 { background-color: var(--scale-text-3); }
+.background-scale-text-4 { background-color: var(--scale-text-4); }
+.background-scale-text-5 { background-color: var(--scale-text-5); }
+
+.background-scale-secondary-1 { background-color: var(--scale-secondary-1); }
+.background-scale-secondary-2 { background-color: var(--scale-secondary-2); }
+.background-scale-secondary-3 { background-color: var(--scale-secondary-3); }
+.background-scale-secondary-4 { background-color: var(--scale-secondary-4); }
+.background-scale-secondary-5 { background-color: var(--scale-secondary-5); }

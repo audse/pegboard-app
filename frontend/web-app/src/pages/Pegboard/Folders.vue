@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 
+import Page from './../../layouts/Page.layout.vue'
 import Card from './../../components/Elements/Card.vue'
 import ViewFolder from '../../components/Pegboard/ViewFolder.vue'
 import AddFolder from '../../components/Pegboard/Forms/Add/AddFolder.vue'
@@ -32,13 +33,15 @@ onBeforeMount( () => {
 </script>
 <template>
 
-<article>
+<page>
     
-    <h1>Folders</h1>
+    <template #header>
+        <h1>Folders</h1>
 
-    <section>
-        <add-folder />
-    </section>
+        <section>
+            <add-folder />
+        </section>
+    </template>
 
     <section>
         <view-folder v-for="folder in folders" :key="folder.id" :folder="folder" />
@@ -55,6 +58,6 @@ onBeforeMount( () => {
         <add-board />
     </section>
 
-</article>
+</page>
 
 </template>

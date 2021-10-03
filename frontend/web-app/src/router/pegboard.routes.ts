@@ -22,7 +22,6 @@ const pegboardRoutes = [
         meta: {
             requiresAuth: true,
             breadcrumb: (route:{params:{url:string}}) => ([
-                { name: 'Home', path: '/' },
                 { name: 'Folders', path: '/folders' },
                 { name: route.params.url, },
             ])
