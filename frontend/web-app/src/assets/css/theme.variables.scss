@@ -1,64 +1,44 @@
+
 :root {
-    --primary: #2A273F;
-    --secondary: #1B192B;
-    --text: #EAEBF0;
+    --primary: #282c38;
+    --secondary: #111213;
+    --text: #f3f7ff;
 
-    --emphasis: #e24a96;
-    --info: #1e87ff;
+    --emphasis: #f855a6;
+    --emphasis-opacity-50: #f855a623;
+    --emphasis-opacity-100: #f855a63d;
+    --emphasis-opacity-300: #f855a66e;
+    --emphasis-opacity-500: #f855a68c;
+    --emphasis-opacity-700: #f855a6b4;
+    --emphasis-opacity-900: #f855a6d3;
+    --emphasis-opacity-950: #f855a6e5;
+
+    --info: #678afd;
     --warning: #d3a43f;
-    --negative: #40396d;
+    --error: #40396d;
 
-    --scale-text-1: #424056;
-    --scale-text-2: #5A586C;
-    --scale-text-3: #8A8998;
-    --scale-text-4: #D2D3DA;
-    --scale-text-5: #BFC2C5;
+    --scale-text-100: #535f79;
+    
+    --scale-text-300: #6a7692;
+    --scale-text-300-opacity-50: #6a769223;
+    --scale-text-300-opacity-100: #6a76923d;
+    --scale-text-300-opacity-300: #6a76926e;
 
-    --scale-secondary-1: #29263D;
-    --scale-secondary-2: #27243A;
-    --scale-secondary-3: #232035;
-    --scale-secondary-4: #1F1D30;
-    --scale-secondary-5: #1D1B2E;
+    --scale-text-500: #8692b1;
+    --scale-text-500-opacity-50: #8692b123;
+    --scale-text-500-opacity-100: #8692b13d;
+    --scale-text-500-opacity-300: #8692b16e;
+
+    --scale-text-700: #b6bfd4;
+    --scale-text-700-opacity-50: #b6bfd423;
+    --scale-text-700-opacity-100: #b6bfd43d;
+    --scale-text-700-opacity-300: #b6bfd46e;
+
+    --scale-text-900: #d1d7e4;
+
+    --scale-secondary-100: #242831;
+    --scale-secondary-300: #20232b;
+    --scale-secondary-500: #1d1f25;
+    --scale-secondary-700: #191b1f;
+    --scale-secondary-900: #151719;
 }
-
-.text-primary { color: var(--primary); }
-.text-secondary { color: var(--secondary); }
-.text-text { color: var(--text); }
-
-.text-emphasis { color: var(--emphasis); }
-.text-info { color: var(--info); }
-.text-warning { color: var(--warning); }
-.text-negative { color: var(--negative); }
-
-.text-scale-text-1 { color: var(--scale-text-1); }
-.text-scale-text-2 { color: var(--scale-text-2); }
-.text-scale-text-3 { color: var(--scale-text-3); }
-.text-scale-text-4 { color: var(--scale-text-4); }
-.text-scale-text-5 { color: var(--scale-text-5); }
-
-.text-scale-secondary-1 { color: var(--scale-secondary-1); }
-.text-scale-secondary-2 { color: var(--scale-secondary-2); }
-.text-scale-secondary-3 { color: var(--scale-secondary-3); }
-.text-scale-secondary-4 { color: var(--scale-secondary-4); }
-.text-scale-secondary-5 { color: var(--scale-secondary-5); }
-
-.background-primary { background-color: var(--primary); }
-.background-secondary { background-color: var(--secondary); }
-.background-text { background-color: var(--text); }
-
-.background-emphasis { background-color: var(--emphasis); }
-.background-info { background-color: var(--info); }
-.background-warning { background-color: var(--warning); }
-.background-negative { background-color: var(--negative); }
-
-.background-scale-text-1 { background-color: var(--scale-text-1); }
-.background-scale-text-2 { background-color: var(--scale-text-2); }
-.background-scale-text-3 { background-color: var(--scale-text-3); }
-.background-scale-text-4 { background-color: var(--scale-text-4); }
-.background-scale-text-5 { background-color: var(--scale-text-5); }
-
-.background-scale-secondary-1 { background-color: var(--scale-secondary-1); }
-.background-scale-secondary-2 { background-color: var(--scale-secondary-2); }
-.background-scale-secondary-3 { background-color: var(--scale-secondary-3); }
-.background-scale-secondary-4 { background-color: var(--scale-secondary-4); }
-.background-scale-secondary-5 { background-color: var(--scale-secondary-5); }

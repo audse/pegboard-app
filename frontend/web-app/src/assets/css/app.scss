@@ -1,12 +1,22 @@
+@import 'theme.variables.scss';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import 'theme.variables.scss';
 @import 'typography.scss';
+@import 'buttons.scss';
+
+:root {
+    --ggs: 0.65;
+}
+
+.gg-home-alt {
+    transform: scale(0.8, 0.7);
+}
 
 body, html, #app {
-    background-color: var(--scale-secondary-3);
+    background-color: var(--scale-secondary-500);
     color: var(--text);
     height: 100%;
 }
@@ -26,23 +36,15 @@ form label {
 }
 
 form input, form textarea {
-    @apply px-3 py-1 my-2 rounded-full;
-    background-color: var(--scale-secondary-2);
+    @apply px-6 py-1 my-1 rounded-3xl placeholder-scale-text-300;
+    background: var(--scale-secondary-300);
     width: 100%;
 }
 
-form input.dark {
-    background-color: rgba(0, 0, 0, 0.25);
+form input:focus-visible, form textarea:focus-visible {
+    outline-color: var(--info);
 }
 
-button {
-    @apply px-4 py-1 rounded-full font-semibold m-1;
-    background-color: var(--emphasis);
-    color: var(--text);
-    max-height: fit-content;
-}
-
-button.secondary {
-    @apply bg-transparent;
-    color: var(--emphasis);
+form textarea {
+    @apply py-3;
 }

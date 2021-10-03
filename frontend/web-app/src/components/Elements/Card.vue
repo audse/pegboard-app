@@ -7,8 +7,8 @@ const props = defineProps({
     border: Boolean,
 })
 
-const bgColor = props.noBg ? 'transparent' : 'var(--scale-secondary-1)'
-const borderStyle = props.border ? '2px solid var(--scale-secondary-3)' : 'transparent'
+const bgColor = props.noBg ? 'transparent' : 'var(--scale-secondary-100)'
+const borderStyle = props.border ? '2px solid var(--scale-secondary-700)' : 'transparent'
 
 </script>
 <template>

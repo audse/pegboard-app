@@ -10,8 +10,8 @@ const pegboardRoutes = [
         meta: {
             requiresAuth: true,
             breadcrumb: () => ([
-                { name: 'Home', path: '/' },
-                { name: 'Folders' },
+                { name: 'home', path: '/', icon: 'home-alt' },
+                { name: 'folders', icon: 'folder' },
             ])
         }
     },
@@ -22,8 +22,9 @@ const pegboardRoutes = [
         meta: {
             requiresAuth: true,
             breadcrumb: (route:{params:{url:string}}) => ([
-                { name: 'Folders', path: '/folders' },
-                { name: route.params.url, },
+                { name: 'home', path: '/', icon: 'home-alt' },
+                { name: 'folders', path: '/folders', icon: 'folder' },
+                { name: route.params.url, icon: 'clipboard' },
             ])
         }
     },

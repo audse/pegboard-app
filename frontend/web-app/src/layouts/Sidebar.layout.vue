@@ -19,15 +19,15 @@ watch( hidden, () => {
 </script>
 <template>
     
-<aside :class="[hidden?'w-8':'w-80', 'sidebar background-scale-secondary-1 flex']">
+<aside :class="[hidden?'w-10':'w-72', 'sidebar bg-scale-secondary-100']">
 
-    <section v-if="!hidden" class="w-72 flex flex-col justify-between overflow-hidden h-full flex-none">
+    <section v-if="!hidden" class="w-72 sidebar-main flex flex-col justify-between overflow-hidden h-full flex-none">
 
         <section v-if="isAuthenticated" class="pt-6">
-            <h3 class="pb-1 px-4">Pegboard</h3>
-            <h4 class="px-4">
+            <h3 class="pb-1 px-4 text-text">Pegboard</h3>
+            <h4 class="px-4 text-scale-text-4">
                 Welcome, 
-                <strong class="font-normal text-scale-text-4">{{ currentUser?.username }}</strong>.
+                <strong class="font-normal">{{ currentUser?.username }}</strong>.
             </h4>
 
             <ul class="pt-4 routes">
@@ -46,7 +46,7 @@ watch( hidden, () => {
         </section>
 
     </section>
-    <section @click="hidden=!hidden" class="flex items-center justify-center h-full md:hidden lg:flex sidebar-hidden">
+    <section @click="hidden=!hidden" class="w-10 absolute right-0 top-0 flex items-center justify-center h-full md:hidden lg:flex sidebar-hidden">
         <button class="sidebar-hidden-button pb-10">
             <i v-if="hidden" class="gg-chevron-double-right"></i>
             <i v-if="!hidden" class="gg-chevron-double-left"></i>
@@ -66,12 +66,23 @@ export default {
 <style scoped>
 
 .sidebar {
-    border-right: 1px solid var(--secondary);
+    @apply border-primary border-r;
+    isolation: isolate;
+}
+
+.sidebar-main {
+    z-index: 1;
+}
+
+.sidebar-hidden {
+    z-index: 10;
+    height: 100%;
 }
 
 .sidebar-hidden:hover {
-    background: var(--scale-secondary-2);
-    transition: background 200ms;
+    @apply backdrop-filter backdrop-invert-5;
+    transition: all 100ms;
+    transition-delay: 25ms;
 }
 
 .sidebar-hidden-button {
@@ -98,7 +109,8 @@ export default {
 }
 
 .active {
-    background: var(--scale-secondary-3);
+    @apply border-l-4 border-emphasis;
+    transition: border 250ms;
 }
 
 </style>

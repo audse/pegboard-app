@@ -5,7 +5,7 @@
 
 <article>
 
-    <header class="header pl-6 pr-10 pt-8 pb-4 background-scale-secondary-1 shadow-sm">
+    <header class="header pl-6 pr-10 pt-8 pb-4 bg-scale-secondary-100 shadow-sm">
         <slot name="header" />
     </header>
 

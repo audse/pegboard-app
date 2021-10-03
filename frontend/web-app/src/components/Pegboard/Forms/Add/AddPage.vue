@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 
+import CoButton from './../../../Elements/Button.vue'
 import Card from './../../../Elements/Card.vue'
 
 import { reactive } from 'vue'
@@ -12,6 +13,7 @@ const props = defineProps({
 
 const addPageForm = reactive({
     name: '',
+    description: '',
     board: props.boardId || null,
 })
 
@@ -23,10 +25,19 @@ const addPage = async (data:{name:string,board:number}) => {
 </script>
 <template>
 
-<form @submit.prevent="addPage(addPageForm)" class="flex items-center p-2 my-2">
-    <label for="name" class="flex-none">Add Page</label>
-    <input v-model="addPageForm.name" name="name" type="text" placeholder="Name" />
-    <button type="submit">+</button>
+<form @submit.prevent="addPage(addPageForm)">
+
+    <section class="flex items-center">
+        <label for="name" class="flex-none block w-24">Name</label>
+        <input v-model="addPageForm.name" name="name" type="text" placeholder="Name" class="bg-scale-secondary-900" />
+    </section>
+
+    <section class="flex items-center">
+        <label for="description" class="flex-none block w-24">Description</label>
+        <textarea v-model="addPageForm.description" name="description" type="text" placeholder="Description" class="bg-scale-secondary-900" />
+    </section>
+
+    <co-button type="submit" light color="emphasis">+ Add Page</co-button>
 </form>
 
 </template>

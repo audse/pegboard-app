@@ -1,0 +1,153 @@
+
+button {
+    @apply px-4 py-1 rounded-lg font-semibold text-base;
+    transform-origin: top center;
+    background-color: var(--emphasis);
+    color: var(--text);
+    max-height: fit-content;
+}
+
+button:hover {
+    transform: translateY(-1.5pt);
+}
+
+button:active {
+    transform: scale(0.975, 0.975);
+    transition: transform 1s;
+}
+
+button.outline-emphasis {
+    background: transparent;
+    color: var(--emphasis);
+    border: 1.25pt solid var(--emphasis);
+}
+
+button.outline-emphasis:hover {
+    background: var(--emphasis-opacity-50);
+    transition: background 200ms;
+}
+
+button.light-emphasis {
+    background: var(--emphasis-opacity-50);
+    color: var(--emphasis);
+}
+
+button.light-emphasis:hover {
+    background: var(--emphasis-opacity-100);
+    transition: background 200ms;
+}
+
+button.subtle-emphasis {
+    background: transparent;
+    color: var(--emphasis);
+}
+
+button.subtle-emphasis:hover {
+    background: var(--emphasis-opacity-50);
+    transition: background 200ms;
+}
+
+/*
+*  SCALE TEXT 300
+*/
+
+button.outline-scale-text-300 {
+    background: transparent;
+    color: var(--scale-text-300);
+    border: 1.25pt solid var(--scale-text-300);
+}
+
+button.outline-scale-text-300:hover {
+    background: var(--scale-text-300-opacity-50);
+    transition: background 200ms;
+}
+
+button.light-scale-text-300 {
+    background: var(--scale-text-300-opacity-50);
+    color: var(--scale-text-300);
+}
+
+button.light-scale-text-300:hover {
+    background: var(--scale-text-300-opacity-100);
+    transition: background 200ms;
+}
+
+button.subtle-scale-text-300 {
+    background: transparent;
+    color: var(--scale-text-300);
+}
+
+button.subtle-scale-text-300:hover {
+    background: var(--scale-text-300-opacity-50);
+    transition: background 200ms;
+}
+
+/*
+*  SCALE TEXT 500
+*/
+
+button.outline-scale-text-500 {
+    background: transparent;
+    color: var(--scale-text-500);
+    border: 1.25pt solid var(--scale-text-500);
+}
+
+button.outline-scale-text-500:hover {
+    background: var(--scale-text-500-opacity-50);
+    transition: background 200ms;
+}
+
+button.light-scale-text-500 {
+    background: var(--scale-text-500-opacity-50);
+    color: var(--scale-text-500);
+}
+
+button.light-scale-text-500:hover {
+    background: var(--scale-text-500-opacity-100);
+    transition: background 200ms;
+}
+
+button.subtle-scale-text-500 {
+    background: transparent;
+    color: var(--scale-text-500);
+}
+
+button.subtle-scale-text-500:hover {
+    background: var(--scale-text-500-opacity-50);
+    transition: background 200ms;
+}
+
+/*
+*  SCALE TEXT 700
+*/
+
+button.outline-scale-text-700 {
+    background: transparent;
+    color: var(--scale-text-700);
+    border: 1.25pt solid var(--scale-text-700);
+}
+
+button.outline-scale-text-700:hover {
+    background: var(--scale-text-700-opacity-50);
+    transition: background 200ms;
+}
+
+button.light-scale-text-700 {
+    background: var(--scale-text-700-opacity-50);
+    color: var(--scale-text-700);
+}
+
+button.light-scale-text-700:hover {
+    background: var(--scale-text-700-opacity-100);
+    transition: background 200ms;
+}
+
+button.subtle-scale-text-700 {
+    background: transparent;
+    color: var(--scale-text-700);
+}
+
+button.subtle-scale-text-700:hover {
+    background: var(--scale-text-700-opacity-50);
+    transition: background 200ms;
+}
