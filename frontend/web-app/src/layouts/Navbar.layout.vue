@@ -12,25 +12,33 @@ const breadcrumbs = computed( () => {
 </script>
 <template>
 
-<nav class="pl-6 pr-10 pt-8 pb-4 bg-scale-secondary-100 flex items-center">
+<toolbar align-top class="px-4 lg:pl-6 lg:pr-10 pt-8 pb-4 bg-scale-secondary-100">
 
-    <slot></slot>
+    <template #icon>
+        <slot />
+    </template>
 
-    <div v-for="link of breadcrumbs" :key="link.name">
+    <template #default>
+    <div v-for="link of breadcrumbs" :key="link.name" class="mb-2 lg:my-0">
+
         <span v-if="link.path" class="flex items-center">
-            <router-link :to="link.path" class="pl-4 lg:pl-0 flex items-center">
-                <i :class="[`gg-${link.icon}`, 'flex-1 block mr-1 pt-1']"></i>
-                {{ link.name }}
+            <router-link :to="link.path" class="flex items-center mx-1">
+                <co-button :icon="link.icon" subtle color="scale-text-500">
+                    {{ link.name }}
+                </co-button>
             </router-link>
+
             <span class="sm opacity-30 px-3 flex-1"> / </span>
         </span>
-        <span v-else class="flex items-center">
-            <i :class="[`gg-${link.icon}`, 'flex-1 block mr-1 pt-1']"></i>
-            {{ link.name }}
+        <span v-else class="flex items-center mx-1">
+            <co-button :icon="link.icon" light color="scale-text-700">
+                {{ link.name }}
+            </co-button>
         </span>
     </div>
-    
-</nav>
+    </template>
+
+</toolbar>
 
 </template>
 <script lang="ts">

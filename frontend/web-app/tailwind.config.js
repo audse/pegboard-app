@@ -3,6 +3,8 @@ module.exports = {
     darkMode: false, // or 'media' or 'class'
     theme: {
         colors: {
+            'main': 'var(--primary)',
+            'second': 'var(--secondary)',
             'text': 'var(--text)',
             'emphasis': 'var(--emphasis)',
 
@@ -46,7 +48,12 @@ module.exports = {
       themes: [
         { 'colors': {
             'primary': 'var(--primary)',
+            'primary-focus': 'var(--primary)',
+            'primary-content': 'var(--text)',
+
             'secondary': 'var(--secondary)',
+            'secondary-focus': 'var(--secondary)',
+            'secondary-content': 'var(--text)',
 
             'info': 'var(--info)',
             'warning': 'var(--warning)',

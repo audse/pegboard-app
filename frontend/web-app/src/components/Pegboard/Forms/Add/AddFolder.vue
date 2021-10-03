@@ -16,10 +16,19 @@ const addFolder = async (boardId: string, data:object) => {
 </script>
 <template> 
 
-<form @submit.prevent="addFolder(addFolderForm)" class="flex items-center">
-    <label for="name" class="flex-none">Folder Name</label>
-    <input v-model="addFolderForm.name" name="name" type="text" placeholder="Folder Name" />
-    <button type="submit" class="flex-none">Add Folder</button>
+<form @submit.prevent="addFolder(addFolderForm)">
+
+    <section class="flex items-center">
+        <label for="name" class="flex-none block w-24">Name</label>
+        <input v-model="addFolderForm.name" name="name" type="text" placeholder="Name" class="bg-main" />
+    </section>
+
+    <section class="flex items-center">
+        <label for="description" class="flex-none block w-24">Description</label>
+        <textarea v-model="addFolderForm.description" name="description" type="text" placeholder="Description" class="bg-main" />
+    </section>
+
+    <co-button type="submit" light color="emphasis" icon="math-plus"> Add Folder</co-button>
 </form>
 
 </template>

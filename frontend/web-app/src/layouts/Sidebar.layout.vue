@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 
+import FolderListWidget from './../components/Pegboard/Widgets/FolderListWidget.vue'
+
 import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 
@@ -19,20 +21,33 @@ watch( hidden, () => {
 </script>
 <template>
     
-<aside :class="[hidden?'w-10':'w-72', 'sidebar bg-scale-secondary-100']">
+<aside :class="[hidden?'lg:w-10 w-72':'w-72', 'sidebar bg-main']">
 
     <section v-if="!hidden" class="w-72 sidebar-main flex flex-col justify-between overflow-hidden h-full flex-none">
 
         <section v-if="isAuthenticated" class="pt-6">
             <h3 class="pb-1 px-4 text-text">Pegboard</h3>
-            <h4 class="px-4 text-scale-text-4">
+            <h4 class="px-4 text-scale-text-700">
                 Welcome, 
                 <strong class="font-normal">{{ currentUser?.username }}</strong>.
             </h4>
 
             <ul class="pt-4 routes">
-                <li><router-link class="route" active-class="active" to="/">Home</router-link></li>
-                <li><router-link class="route" active-class="active" to="/folders">Folders</router-link></li>
+                <li class="mx-4 my-1">
+                    <router-link class="route" v-slot="{ isActive }" to="/">
+                        <co-button :subtle="!isActive" :light="isActive" :color="isActive?'emphasis':'scale-text-500'" icon="home-alt">Home</co-button>
+                    </router-link>
+                </li>
+                <li class="mx-4 my-1">
+                    <router-link class="route" v-slot="{ isActive }" to="/folders">
+                        <co-button :subtle="!isActive" :light="isActive" :color="isActive?'emphasis':'scale-text-500'" icon="folder">Folders</co-button>
+                    </router-link>
+                </li>
+
+                <div class="border-t-2 opacity-50 border-second mx-4 mt-6" />
+
+                <folder-list-widget />
+            
             </ul>
         </section>
         <section v-else>
@@ -46,7 +61,7 @@ watch( hidden, () => {
         </section>
 
     </section>
-    <section @click="hidden=!hidden" class="w-10 absolute right-0 top-0 flex items-center justify-center h-full md:hidden lg:flex sidebar-hidden">
+    <section @click="hidden=!hidden" class="w-10 absolute right-0 top-0 items-center justify-center h-full hidden lg:flex sidebar-hidden">
         <button class="sidebar-hidden-button pb-10">
             <i v-if="hidden" class="gg-chevron-double-right"></i>
             <i v-if="!hidden" class="gg-chevron-double-left"></i>
@@ -102,15 +117,6 @@ export default {
 
 .routes {
     @apply flex flex-col w-full;
-}
-
-.route {
-    @apply block px-4 py-2 w-full;
-}
-
-.active {
-    @apply border-l-4 border-emphasis;
-    transition: border 250ms;
 }
 
 </style>

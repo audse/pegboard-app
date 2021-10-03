@@ -1,43 +1,60 @@
 <script lang="ts" setup>
 
-import Page from './../../layouts/Page.layout.vue'
-import Modal from './../../components/Elements/Modal.vue'
-import Toolbar from './../../components/Elements/Toolbar.vue'
-import CoButton from './../../components/Elements/Button.vue'
 import ViewPage from '../../components/Pegboard/ViewPage.vue'
 import ViewNote from '../../components/Pegboard/ViewNote.vue'
 import EditBoard from '../../components/Pegboard/Forms/Edit/EditBoard.vue'
 import AddPage from '../../components/Pegboard/Forms/Add/AddPage.vue'
 import AddNote from '../../components/Pegboard/Forms/Add/AddNote.vue'
 
-import { computed, onBeforeUnmount, ref, reactive } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const store = useStore()
 const route = useRoute()
+const router = useRouter()
 
-const id = route.params.id.toString()
-const url = route.params.url
+let id = route.params.id
+let url = route.params.url
 
 const board = computed( () => store.state.boards.current )
 
 const showEditModal = ref(false)
+const showAddPageForm = ref(false)
 
-const connection = new WebSocket(`ws://localhost:8000/ws/api/boards/${id}/${url}`)
+let connectionUrl = `ws://localhost:8000/ws/api/boards/${id}/${url}`
+let connection = new WebSocket(connectionUrl)
 
-connection.onopen = () => {
+const openConnection = () => {
     connection.send(JSON.stringify({
         action: 'retrieve'
     }))
 }
 
-connection.onmessage = (event:{data:string}) => {
+const getConnectionMssage =  (event:{data:string}) => {
     const data:{action:string,response:object} = JSON.parse(event.data)
     if (data.action === 'retrieve') {
         store.commit('boards/setCurrent', data.response)
     }
 }
+
+connection.onopen = () => openConnection()
+connection.onmessage = (connectionEvent) => getConnectionMssage(connectionEvent)
+
+watch(route, () => {
+    console.log(route.path, route.params)
+
+    id = route.params.id
+    url = route.params.url
+    connectionUrl = `ws://localhost:8000/ws/api/boards/${id}/${url}`
+
+    connection.close()
+    connection = new WebSocket(connectionUrl)
+    
+    connection.onopen = () => openConnection()
+    connection.onmessage = (connectionEvent) => getConnectionMssage(connectionEvent)
+
+})
 
 onBeforeUnmount( () => {
     connection.close()
@@ -50,29 +67,52 @@ onBeforeUnmount( () => {
 <page v-if="board">
     <template #header>
 
-        <h1 class="pb-1">
-            {{ board.name }}
-        </h1>
-        <h2 class="flex font-light">
-            <span class="flex-grow">{{ board.description }}</span>
-            <button @click="showEditModal=!showEditModal" class="secondary">Edit</button>
-        </h2>
+        <toolbar>
 
-        <toolbar class="mt-4">
-            <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }" v-slot="{ isActive }">
-                <co-button :light="isActive" :subtle="!isActive" :color="isActive?'scale-text-700':'scale-text-500'">Kanban</co-button>
+            <h1 class="pb-1">
+                {{ board.name }}
+                <h2 class="font-light text-xl text-scale-text-700">
+                    {{ board.description }}
+                </h2>
+            </h1>
+
+            <template #right>
+                <co-button @click="showEditModal=!showEditModal" subtle color="scale-text-500" class="flex-none px-4 py-4 ml-4">
+                    <i class="gg-options icon-lg"></i>
+                </co-button>
+            </template>
+
+        </toolbar>
+
+        <toolbar class="mt-4" wrap>
+            <router-link :to="{ name: 'Board', params: { id: id, url: url } }" v-slot="{ isActive }">
+                <co-button :light="isActive" :subtle="!isActive" :color="isActive?'emphasis':'scale-text-500'">Kanban</co-button>
             </router-link>
 
-            <router-link :to="{ name: 'Board', params: { id: 0, url: board.url } }" v-slot="{ isActive }">
-                <co-button :light="isActive" :subtle="!isActive" :color="isActive?'scale-text-700':'scale-text-500'">Calendar</co-button>
+            <router-link to="/" v-slot="{ isActive }">
+                <co-button :light="isActive" :subtle="!isActive" :color="isActive?'emphasis':'scale-text-500'">Calendar</co-button>
             </router-link>
 
             <template #right>
-                <co-button light color="emphasis">+ Add Page</co-button>
+                <co-button @click="showAddPageForm=!showAddPageForm" outline color="scale-text-500" class="hidden lg:block">
+                    <i class="gg-user icon-lg" style="margin: 4px 0"></i>
+                </co-button>
+                <co-button @click="showAddPageForm=!showAddPageForm" color="emphasis" class="flex items-center pl-2 my-2 lg:my-0">
+                    <transition name="scale" mode="out-in">
+                        <i v-if="!showAddPageForm" class="gg-math-plus block flex-none mr-2"></i>
+                        <i v-else class="gg-math-minus block flex-none mr-2"></i>
+                    </transition>
+
+                    Add Page
+                </co-button>
             </template>
         </toolbar>
 
-        <!-- <add-page :board-id="board.id" /> -->
+        <section>
+            <expandable :to-show="showAddPageForm">
+                <add-page :board-id="board.id" class="mt-6 p-4 rounded-2xl bg-scale-secondary-700" />
+            </expandable>
+        </section>
 
     </template>
 
@@ -94,6 +134,7 @@ onBeforeUnmount( () => {
     </article>
 
 </page>
+<page v-else></page>
 
 </template>
 <style scoped>

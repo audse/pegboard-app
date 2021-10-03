@@ -3,22 +3,24 @@
 import { computed } from 'vue'
 
 const props = defineProps({
-    noBg: Boolean,
-    border: Boolean,
+    bg:String,
+    border:String,
+    centerContent:Boolean,
+    hover:Boolean,
 })
 
-const bgColor = props.noBg ? 'transparent' : 'var(--scale-secondary-100)'
-const borderStyle = props.border ? '2px solid var(--scale-secondary-700)' : 'transparent'
+const bgColor = computed( () => props.bg ? `var(--${props.bg})` : 'transparent' )
+const borderStyle = props.border ? `1.5pt solid var(--${props.border})` : 'transparent'
 
 </script>
 <template>
 
-<div class="wrapper">
+<div :class="['wrapper', hover?'wrapper-hover':'']">
 <article>
     <header v-if="this.$slots.header">
         <slot name="header"></slot>
     </header>
-    <section class="content" v-if="this.$slots.default">
+    <section :class="['content', centerContent?'center-content':'']" v-if="this.$slots.default">
         <slot></slot>
     </section>
     <footer v-if="this.$slots.footer">
@@ -39,10 +41,15 @@ export default {
 
 .wrapper {
     @apply p-2;
+    transition: transform 200ms;
+}
+
+.wrapper-hover:hover {
+    transform: scale(1.025, 1.025);
 }
 
 article {
-    border-radius: 1rem;
+    @apply shadow-md rounded-2xl;
 
     background-color: v-bind(bgColor);
     border: v-bind(borderStyle);
@@ -52,8 +59,12 @@ header, footer, .content {
     @apply px-6 py-2;
 }
 
+.center-content {
+    @apply flex items-center justify-center;
+}
+
 header {
-    @apply pt-4;
+    @apply pt-6;
 }
 
 footer {

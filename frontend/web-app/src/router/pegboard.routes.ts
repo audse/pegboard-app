@@ -21,7 +21,7 @@ const pegboardRoutes = [
         component: Board,
         meta: {
             requiresAuth: true,
-            breadcrumb: (route:{params:{url:string}}) => ([
+            breadcrumb: (route:{params:{id:number,url:string}}) => ([
                 { name: 'home', path: '/', icon: 'home-alt' },
                 { name: 'folders', path: '/folders', icon: 'folder' },
                 { name: route.params.url, icon: 'clipboard' },

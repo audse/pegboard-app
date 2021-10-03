@@ -1,14 +1,14 @@
 
 button {
     @apply px-4 py-1 rounded-lg font-semibold text-base;
-    transform-origin: top center;
     background-color: var(--emphasis);
     color: var(--text);
     max-height: fit-content;
 }
 
 button:hover {
-    transform: translateY(-1.5pt);
+    transform: scale(1.025, 1.025);
+    transition: transform 300ms;
 }
 
 button:active {
@@ -16,33 +16,72 @@ button:active {
     transition: transform 1s;
 }
 
-button.outline-emphasis {
+/*
+*  TEXT
+*/
+
+.outline-text {
+    background: transparent;
+    color: var(--text);
+    border: 1.25pt solid var(--text);
+}
+
+.outline-text:hover {
+    background: var(--text-opacity-50);
+    transition: background 200ms;
+}
+
+.light-text {
+    background: var(--text-opacity-50);
+    color: var(--text);
+}
+
+.light-text:hover {
+    background: var(--text-opacity-100);
+    transition: background 200ms;
+}
+
+.subtle-text {
+    background: transparent;
+    color: var(--text);
+}
+
+.subtle-text:hover {
+    background: var(--text-opacity-50);
+    transition: background 200ms;
+}
+
+/*
+*  EMPHASIS
+*/
+
+.outline-emphasis {
     background: transparent;
     color: var(--emphasis);
     border: 1.25pt solid var(--emphasis);
 }
 
-button.outline-emphasis:hover {
+.outline-emphasis:hover {
     background: var(--emphasis-opacity-50);
     transition: background 200ms;
 }
 
-button.light-emphasis {
+.light-emphasis {
     background: var(--emphasis-opacity-50);
     color: var(--emphasis);
 }
 
-button.light-emphasis:hover {
+.light-emphasis:hover {
     background: var(--emphasis-opacity-100);
     transition: background 200ms;
 }
 
-button.subtle-emphasis {
+.subtle-emphasis {
     background: transparent;
     color: var(--emphasis);
 }
 
-button.subtle-emphasis:hover {
+.subtle-emphasis:hover {
     background: var(--emphasis-opacity-50);
     transition: background 200ms;
 }
@@ -51,33 +90,33 @@ button.subtle-emphasis:hover {
 *  SCALE TEXT 300
 */
 
-button.outline-scale-text-300 {
+.outline-scale-text-300 {
     background: transparent;
     color: var(--scale-text-300);
     border: 1.25pt solid var(--scale-text-300);
 }
 
-button.outline-scale-text-300:hover {
+.outline-scale-text-300:hover {
     background: var(--scale-text-300-opacity-50);
     transition: background 200ms;
 }
 
-button.light-scale-text-300 {
+.light-scale-text-300 {
     background: var(--scale-text-300-opacity-50);
     color: var(--scale-text-300);
 }
 
-button.light-scale-text-300:hover {
+.light-scale-text-300:hover {
     background: var(--scale-text-300-opacity-100);
     transition: background 200ms;
 }
 
-button.subtle-scale-text-300 {
+.subtle-scale-text-300 {
     background: transparent;
     color: var(--scale-text-300);
 }
 
-button.subtle-scale-text-300:hover {
+.subtle-scale-text-300:hover {
     background: var(--scale-text-300-opacity-50);
     transition: background 200ms;
 }
@@ -86,33 +125,33 @@ button.subtle-scale-text-300:hover {
 *  SCALE TEXT 500
 */
 
-button.outline-scale-text-500 {
+.outline-scale-text-500 {
     background: transparent;
     color: var(--scale-text-500);
     border: 1.25pt solid var(--scale-text-500);
 }
 
-button.outline-scale-text-500:hover {
+.outline-scale-text-500:hover {
     background: var(--scale-text-500-opacity-50);
     transition: background 200ms;
 }
 
-button.light-scale-text-500 {
+.light-scale-text-500 {
     background: var(--scale-text-500-opacity-50);
     color: var(--scale-text-500);
 }
 
-button.light-scale-text-500:hover {
+.light-scale-text-500:hover {
     background: var(--scale-text-500-opacity-100);
     transition: background 200ms;
 }
 
-button.subtle-scale-text-500 {
+.subtle-scale-text-500 {
     background: transparent;
     color: var(--scale-text-500);
 }
 
-button.subtle-scale-text-500:hover {
+.subtle-scale-text-500:hover {
     background: var(--scale-text-500-opacity-50);
     transition: background 200ms;
 }
@@ -121,33 +160,33 @@ button.subtle-scale-text-500:hover {
 *  SCALE TEXT 700
 */
 
-button.outline-scale-text-700 {
+.outline-scale-text-700 {
     background: transparent;
     color: var(--scale-text-700);
     border: 1.25pt solid var(--scale-text-700);
 }
 
-button.outline-scale-text-700:hover {
+.outline-scale-text-700:hover {
     background: var(--scale-text-700-opacity-50);
     transition: background 200ms;
 }
 
-button.light-scale-text-700 {
+.light-scale-text-700 {
     background: var(--scale-text-700-opacity-50);
     color: var(--scale-text-700);
 }
 
-button.light-scale-text-700:hover {
+.light-scale-text-700:hover {
     background: var(--scale-text-700-opacity-100);
     transition: background 200ms;
 }
 
-button.subtle-scale-text-700 {
+.subtle-scale-text-700 {
     background: transparent;
     color: var(--scale-text-700);
 }
 
-button.subtle-scale-text-700:hover {
+.subtle-scale-text-700:hover {
     background: var(--scale-text-700-opacity-50);
     transition: background 200ms;
 }

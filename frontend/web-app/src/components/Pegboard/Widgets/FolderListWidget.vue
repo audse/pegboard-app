@@ -29,22 +29,49 @@ onBeforeMount( () => {
 <ul>
 
     <li v-for="folder in folders" :key="folder.id">
-        {{ folder.name }}
         <ul>
-            <li v-for="board in folder.boards" :key="board.id">
-                <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }">
+        <li class="px-4 pt-6 pb-1 font-medium uppercase ls tracking-widest text-emphasis">
+            {{ folder.name }}
+        </li>
+        <li v-for="board in folder.boards" :key="board.id" class="pl-4 pr-4 w-full">
+            <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }" v-slot="{ isActive }">
+                <co-button icon="layout-grid" :subtle="!isActive" :light="isActive" :color="isActive ? 'emphasis' : 'text'" class="w-full py-2 px-4">
                     {{ board.name }}
-                </router-link>
-            </li>
+                </co-button>
+            </router-link>
+        </li>
         </ul>
     </li>
 
-    <li v-for="board in unsortedBoards" :key="board.id">
-        <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }">
-            {{ board.name }}
+    <li class="px-4 pt-6 pb-1 font-medium uppercase ls tracking-widest text-scale-text-500">
+        Unsorted
+    </li>
+    <li v-for="board in unsortedBoards" :key="board.id" class="pl-4 pr-4 w-full">
+        <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }" v-slot="{ isActive }">
+            <co-button icon="layout-grid" :subtle="!isActive" :light="isActive" :color="isActive ? 'emphasis' : 'text'" class="w-full py-2 px-4">
+                {{ board.name }}
+            </co-button>
         </router-link>
     </li>
 
 </ul>
 
 </template>
+<script lang="ts">
+
+export default {
+    name: 'folder-list-widget',
+}
+
+</script>
+<style scoped>
+
+.uppercase {
+    font-size: 0.8em;
+}
+
+.border-emphasis {
+    transition: all 250ms;
+}
+
+</style>

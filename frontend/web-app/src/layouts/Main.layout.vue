@@ -7,14 +7,15 @@ import Sidebar from './Sidebar.layout.vue'
 <template>
 
 <div class="drawer drawer-mobile h-full">
-    <input id="sidebar" type="checkbox" class="drawer-toggle"> 
 
+    <input id="sidebar-drawer" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content">
 
         <navbar>
-            <input id="sidebar" type="checkbox" class="drawer-toggle" />
-            <label for="sidebar" class="drawer-button lg:hidden">
-                <i class="gg-menu text-lg text-scale-text-4"></i>
+            <label for="sidebar-drawer" class="lg:hidden drawer-button w-auto">
+                <span class=" block subtle-text rounded-lg px-2 py-4">
+                    <i class="gg-menu icon-lg text-scale-text-4"></i>
+                </span>
             </label>
         </navbar>
         
@@ -28,7 +29,7 @@ import Sidebar from './Sidebar.layout.vue'
     </div> 
 
     <div class="drawer-side shadow-sm h-full">
-        <label for="sidebar" class="drawer-overlay"></label> 
+        <label for="sidebar-drawer" class="drawer-overlay"></label> 
         <sidebar class="shadow" />
     </div>
 

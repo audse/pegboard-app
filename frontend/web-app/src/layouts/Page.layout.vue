@@ -5,11 +5,11 @@
 
 <article>
 
-    <header class="header pl-6 pr-10 pt-8 pb-4 bg-scale-secondary-100 shadow-sm">
+    <header class="header px-4 lg:pl-6 lg:pr-10 pt-8 pb-4 bg-scale-secondary-100 shadow-sm">
         <slot name="header" />
     </header>
 
-    <section>
+    <section class="lg:pl-6 lg:pr-10 pt-8">
         <slot />
     </section>
 

@@ -4,12 +4,15 @@ import { computed } from 'vue'
 
 const props = defineProps({
 
+    for:String,
+
     color:String,
 
     outline:Boolean,
     light:Boolean,
     subtle:Boolean,
     round:Boolean,
+    icon:String
 })
 
 const classList = computed( () => {
@@ -19,6 +22,7 @@ const classList = computed( () => {
     if (props.light) classString += 'light'
     if (props.subtle) classString += 'subtle'
     if (props.color) classString += `-${props.color}`
+    if (props.icon) classString += ' flex items-center '
     return classString
 })
 
@@ -26,7 +30,8 @@ const classList = computed( () => {
 <template>
 
 <button v-wave="{initialOpacity:0.3}" :class="classList">
-    <slot />
+    <i :class="`gg-${icon} icon-md flex-none block mr-2`"></i>
+    <slot /> 
 </button>
 
 </template>
