@@ -20,6 +20,10 @@ const editNoteForm = reactive({
     checklists: props.note.checklists
 })
 
+
+const newChecklist = ref(null)
+const updateChecklist = (event:object) => newChecklist.value = event
+
 const editNote = async (noteId: string, data:any) => {
     if ( newChecklist.value ) {
         console.log(newChecklist.value)
@@ -28,8 +32,9 @@ const editNote = async (noteId: string, data:any) => {
     await NoteService.update(noteId, data)
 }
 
-const newChecklist = ref(null)
-const updateChecklist = (event:object) => newChecklist.value = event
+const archiveNote = async(noteId:number) => {
+    await NoteService.archive(noteId)
+}
 
 </script>
 <template>
@@ -60,6 +65,10 @@ const updateChecklist = (event:object) => newChecklist.value = event
 
         <section class="pt-8">
             <button type="submit" @click="this.$emit('save')" class="secondary">Save Edit</button>
+        </section>
+
+        <section class="pt-8">
+            <button @click.prevent="archiveNote(note.id);this.$emit('save')" class="bg-transparent text-red-500">Archive</button>
         </section>
     </form>
 

@@ -3,6 +3,10 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Q
+import channels.layers
+from asgiref.sync import async_to_sync
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class ColorQuerySet ( models.QuerySet ):
 
@@ -58,3 +62,18 @@ class Color ( models.Model ):
 
     def __str__ ( self ):
         return self.name
+
+
+@receiver(post_save, sender=Color)
+def update_board_consumer(sender, instance, **kwargs):
+    if instance.board:
+
+        channel_layer = channels.layers.get_channel_layer()
+        group_name = 'board-'+str(instance.board.id)+'-'+instance.board.url
+
+        async_to_sync(channel_layer.group_send)(
+            group_name,
+            {
+                'type': 'update'
+            }
+        )

@@ -5,6 +5,7 @@ import Expandable from './../../../Elements/Expandable.vue'
 import AddTag from '../Add/AddTag.vue'
 
 import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
 
 import BoardService from './../../../../services/board.service'
 
@@ -13,10 +14,17 @@ const props = defineProps({
     tags: Array,
 })
 
+const router = useRouter()
+
 const editBoardForm = reactive({...props.board})
 
-const editBoard = async (boardId: string, data:object) => {
+const editBoard = async (boardId:number, data:object) => {
     await BoardService.update(boardId, data)
+}
+
+const archiveBoard = async(boardId:number) => {
+    await BoardService.archive(boardId)
+    router.push('/folders')
 }
 
 </script>
@@ -52,6 +60,10 @@ const editBoard = async (boardId: string, data:object) => {
 
         <section class="pt-8">
             <button type="submit" @click="this.$emit('save')" class="secondary">Save Edit</button>
+        </section>
+
+        <section class="pt-8">
+            <button @click.prevent="archiveBoard(board.id);this.$emit('save')" class="bg-transparent text-red-500">Archive</button>
         </section>
     </form>
 

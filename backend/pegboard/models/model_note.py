@@ -37,20 +37,13 @@ class NoteQuerySet ( models.QuerySet ):
             board__isnull=True,
             date_archived__isnull=True,
         )
-    
-    def list__unsorted_by_board(self, user, board_pk):
-        return self.filter(
-            Q(user=user) | Q(board__user=user) | Q(board__shared_with=user),
-            page__isnull=True,
-            board__pk=board_pk,
-            date_archived__isnull=True,
-        )
+        
 
 class NoteManager ( models.Manager ):
     use_in_migrations = True
 
     def get_queryset(self):
-        return NoteQuerySet(self.model, using=self._db)
+        return NoteQuerySet(self.model, using=self._db).filter(date_archived__isnull=True)
 
     def list(self, user):
         return self.get_queryset().list(user)
@@ -60,9 +53,6 @@ class NoteManager ( models.Manager ):
 
     def list_unsorted(self, user):
         return self.get_queryset().list_unsorted(user)
-
-    def list_unsorted_by_board(self, user, board_pk):
-        return self.get_queryset().list_unsorted_by_board(user, board_pk)
 
 
 class Note ( models.Model ):
@@ -149,9 +139,18 @@ def save_date_updated(sender, instance, **kwargs):
 
 @receiver(post_save, sender=Note)
 def update_board_consumer(sender, instance, **kwargs):
-    if instance.board:
+    if instance.board or instance.page:
+
         channel_layer = channels.layers.get_channel_layer()
-        group_name = 'board-'+str(instance.board.id)+'-'+instance.board.url
+        group_name = 'board-'
+
+        if instance.board:
+            group_name += str(instance.board.id)+'-'+instance.board.url
+        elif instance.page and instance.page.board:
+            group_name += str(instance.page.board.id)+'-'+instance.page.board.url
+        else:
+            return
+
         async_to_sync(channel_layer.group_send)(
             group_name,
             {

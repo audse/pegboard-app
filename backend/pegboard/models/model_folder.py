@@ -13,7 +13,6 @@ class FolderQuerySet ( models.QuerySet ):
     def list(self, user):
         return self.filter(
             user=user,
-            date_archived__isnull=True,
         )
 
     def retrieve(self, user, pk):
@@ -25,18 +24,12 @@ class FolderQuerySet ( models.QuerySet ):
             return result
         else:
             raise FileNotFoundError
-    
-    def list_archived(self, user):
-        return self.filter(
-            user=user,
-            date_archived__isnull=False,
-        )
 
 class FolderManager ( models.Manager ):
     use_in_migrations = True
 
     def get_queryset(self):
-        return FolderQuerySet(self.model, using=self._db)
+        return FolderQuerySet(self.model, using=self._db).filter(date_archived__isnull=True)
 
     def list(self, user):
         return self.get_queryset().list(user)
@@ -44,8 +37,6 @@ class FolderManager ( models.Manager ):
     def retrieve(self, user, pk):
         return self.get_queryset().retrieve(user, pk)
 
-    def list_archived(self, user):
-        return self.get_queryset().list_archived(user)
 
 class Folder ( models.Model ):
 

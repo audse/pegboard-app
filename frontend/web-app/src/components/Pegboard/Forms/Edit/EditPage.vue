@@ -14,6 +14,10 @@ const editPage = async (pageId: string, data:object) => {
     await PageService.update(pageId, data)
 }
 
+const archivePage = async(pageId:number) => {
+    await PageService.archive(pageId)
+}
+
 </script>
 <template>
    
@@ -35,6 +39,10 @@ const editPage = async (pageId: string, data:object) => {
 
         <section class="pt-4">
             <button type="submit" @click="this.$emit('save')" class="secondary">Save Edit</button>
+        </section>
+
+        <section class="pt-8">
+            <button @click.prevent="archivePage(page.id);this.$emit('save')" class="bg-transparent text-red-500">Archive</button>
         </section>
     </form>
 </section>

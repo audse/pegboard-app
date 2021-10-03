@@ -25,10 +25,14 @@ class NoteSerializer ( serializers.ModelSerializer ):
         instance.user = validated_data.get('user', instance.user)
         instance.name = validated_data.get('name', instance.name)
         instance.content = validated_data.get('content', instance.content)
-        
-        instance.tags.clear()
-        for tag in validated_data.get('tags'):
-            instance.tags.add(tag.get('id'))
+
+        if validated_data.get('date_archived'):
+            instance.date_archived = validated_data.get('date_archived', instance.date_archived)
+
+        if validated_data.get('tags'):
+            instance.tags.clear()
+            for tag in validated_data.get('tags'):
+                instance.tags.add(tag.get('id'))
 
         instance.save()
 

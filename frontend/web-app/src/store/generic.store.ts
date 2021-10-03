@@ -44,6 +44,13 @@ const generic = {
                 state.items.splice(index, 1).push(item)
             }
         },
+
+        remove: ( state:storeState, id:number ) => {
+            const index = state.items.findIndex( (storeItem:any) => storeItem.id === id )
+            if ( index != -1 ) {
+                state.items.splice(index, 1)
+            }
+        }
     }
 }
 

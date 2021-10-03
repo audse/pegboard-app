@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from rest_framework import viewsets
+from rest_framework.decorators import action
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 
@@ -41,3 +42,11 @@ class CommentViewSet ( viewsets.ModelViewSet ):
             object_to_update=Comment.objects.retrieve(user=request.user, pk=pk),
             request=request,
         )
+
+    @action( methods=['put'], detail=True, url_path='archive' )
+    def archive(self, request, pk=None):
+        return self.update(request, pk)
+
+    @action( methods=['put'], detail=True, url_path='unarchive' )
+    def unarchive(self, request, pk):
+        return self.update(request, pk)

@@ -1,1 +1,1 @@
-from .utils import DISPLAY_CHOICES
+from .util_display_choices import DISPLAY_CHOICES

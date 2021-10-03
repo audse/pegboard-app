@@ -46,14 +46,6 @@ class BoardViewSet ( viewsets.ModelViewSet ):
             serializer=self.serializer_class,
         )
     
-
-    @action( methods=['get'], detail=False, url_path='archived' )
-    def list_archived(self, request):
-        return serialize_queryset(
-            queryset=Board.objects.list_archived(user=request.user),
-            serializer=self.serializer_class,
-        )
-    
     def create(self, request):
         return serialize_and_create(
             serializer=self.serializer_class,
@@ -68,27 +60,9 @@ class BoardViewSet ( viewsets.ModelViewSet ):
         )
 
     @action( methods=['put'], detail=True, url_path='archive' )
-    def archive(self, request, pk):
-        try:
-            return serialize_and_update(
-                serializer=self.serializer_class,
-                object_to_update=Board.objects.retrieve(user=request.user, pk=pk),
-                data={
-                    'date_archived': timezone.now()
-                },
-            )
-        except Exception as e:
-            return Response(e, status=404)
+    def archive(self, request, pk=None):
+        return self.update(request, pk)
 
-    @action( methods=['put'], detail=True, url_path='archive' )
+    @action( methods=['put'], detail=True, url_path='unarchive' )
     def unarchive(self, request, pk):
-        try:
-            return serialize_and_update(
-                serializer=self.serializer_class,
-                object_to_update=Board.objects.retrieve(user=request.user, pk=pk),
-                data={
-                    'date_archived': None,
-                },
-            )
-        except Exception as e:
-            return Response(e, status=404)
+        return self.update(request, pk)

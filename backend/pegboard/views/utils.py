@@ -71,6 +71,7 @@ def serialize_and_update(serializer, object_to_update, request):
             return Response(serialized_request.errors, status=400)
 
     except Exception as e:
+        print('Error updating request:', e)
         return Response(str(e), status=500)
         
 def serialize_query(query_object, serializer):

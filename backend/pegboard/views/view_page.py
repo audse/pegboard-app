@@ -53,29 +53,10 @@ class PageViewSet ( viewsets.ModelViewSet ):
             request=request,
         )
 
-    
     @action( methods=['put'], detail=True, url_path='archive' )
-    def archive(self, request, pk):
-        try:
-            return serialize_and_update(
-                serializer=self.serializer_class,
-                object_to_update=Page.objects.retrieve(user=request.user, pk=pk),
-                data={
-                    'date_archived': timezone.now()
-                },
-            )
-        except Exception as e:
-            return Response(str(e), status=404)
+    def archive(self, request, pk=None):
+        return self.update(request, pk)
 
-    @action( methods=['put'], detail=True, url_path='archive' )
+    @action( methods=['put'], detail=True, url_path='unarchive' )
     def unarchive(self, request, pk):
-        try:
-            return serialize_and_update(
-                serializer=self.serializer_class,
-                object_to_update=Page.objects.retrieve(user=request.user, pk=pk),
-                data={
-                    'date_archived': None,
-                },
-            )
-        except Exception as e:
-            return Response(str(e), status=404)
+        return self.update(request, pk)

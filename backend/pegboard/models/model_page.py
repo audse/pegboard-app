@@ -40,7 +40,7 @@ class PageManager ( models.Manager ):
     use_in_migrations = True
 
     def get_queryset(self):
-        return PageQuerySet(self.model, using=self._db)
+        return PageQuerySet(self.model, using=self._db).filter(date_archived__isnull=True)
 
     def list(self, user):
         return self.get_queryset().list(user)

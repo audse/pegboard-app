@@ -95,7 +95,7 @@ def update_board_consumer(sender, instance, **kwargs):
             group_name += str(instance.board.id)+'-'+instance.board.url
         elif instance.page:
             group_name += str(instance.page.board.id)+'-'+instance.page.board.url
-        elif instance.note and instance.note.page:
+        elif instance.note and instance.note.page and instance.note.page.board:
             group_name += str(instance.note.page.board.id)+'-'+instance.note.page.board.url
         elif instance.note and instance.note.board:
             group_name += str(instance.note.board.id)+'-'+instance.note.board.url

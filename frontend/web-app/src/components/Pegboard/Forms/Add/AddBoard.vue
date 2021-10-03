@@ -10,10 +10,10 @@ const props = defineProps({
 
 const addBoardForm = reactive({
     name: '',
-    folder: props.folderId || undefined
+    folder: props.folderId || null
 })
 
-const addBoard = async (boardId: string, data:object) => {
+const addBoard = async (data:object) => {
     await BoardService.create(data)
     addBoardForm.name = ''
 }
@@ -21,7 +21,7 @@ const addBoard = async (boardId: string, data:object) => {
 </script>
 <template>
 
-<form @submit.prevent="addBoard(addBoardForm, folder.id)" class="flex items-center">
+<form @submit.prevent="addBoard(addBoardForm)" class="flex items-center">
     <label for="name" class="flex-none">Board Name</label>
     <input v-model="addBoardForm.name" name="name" type="text" placeholder="Board Name" />
     <button type="submit" class="flex-none">Add Board</button>

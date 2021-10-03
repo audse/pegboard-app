@@ -4,6 +4,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 from django.db.models import Q
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+import channels.layers
+from asgiref.sync import async_to_sync
 
 class ChecklistQuerySet ( models.QuerySet ):
 
@@ -80,3 +84,29 @@ class Checklist ( models.Model ):
 
     def __str__ ( self ):
         return self.name
+
+
+@receiver(post_save, sender=Checklist)
+def update_board_consumer(sender, instance, **kwargs):
+    if instance.board or instance.page or instance.note:
+
+        channel_layer = channels.layers.get_channel_layer()
+        group_name = 'board-'
+
+        if instance.board:
+            group_name += str(instance.board.id)+'-'+instance.board.url
+        elif instance.page and instance.page.board:
+            group_name += str(instance.page.board.id)+'-'+instance.page.board.url
+        elif instance.note and instance.note.page and instance.note.page.board:
+            group_name += str(instance.note.page.board.id)+'-'+instance.note.page.board.url
+        elif instance.note and instance.note.board:
+            group_name += str(instance.note.board.id)+'-'+instance.note.board.url
+        else:
+            return
+
+        async_to_sync(channel_layer.group_send)(
+            group_name,
+            {
+                'type': 'update'
+            }
+        )

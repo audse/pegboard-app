@@ -20,7 +20,7 @@ const props = defineProps({
     <expandable>
         <template #label>
             <small class="mr-2">Comments</small>
-            <tag v-if="comments.length>0" :label="comments.length" color="aaaaff" />
+            <tag v-if="comments.length>0" :label="comments.length.toString()" color="aaaaff" />
         </template>
         <view-comment v-for="comment in comments" :comment="comment" :key="comment.id" />
         <add-comment :board-id="boardId" :page-id="pageId" :note-id="noteId" />

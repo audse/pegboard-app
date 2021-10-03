@@ -51,11 +51,24 @@ class Service {
         }
     }
 
-    async update ( pk:string, data:object ) {
+    async update ( pk:string|number, data:object ) {
         try {
             const response:{data:object} = await axios.put(`${this.url}${pk}/`, data=data, this.config)
             store.commit(`${this.storeName}/update`, response.data)
             return response.data
+        } catch (e:any) {
+            throw e
+        }
+    }
+
+    async archive ( pk:number ) {
+        try {
+            const data = {
+                date_archived: new Date()
+            }
+            await axios.put(`${this.url}${pk}/archive/`, data, this.config)
+            store.commit(`${this.storeName}/remove`, pk)
+            return null
         } catch (e:any) {
             throw e
         }

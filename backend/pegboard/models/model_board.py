@@ -18,13 +18,11 @@ class BoardQuerySet ( models.QuerySet ):
     def list(self, user):
         return self.filter(
             Q(user=user) | Q(shared_with=user),
-            date_archived__isnull=True,
         )
     
-    def retrieve(self, user, pk, not_archived=True):
+    def retrieve(self, user, pk):
         result = self.filter(
                 Q(user=user) | Q(shared_with=user),
-                date_archived__isnull=not_archived,
                 pk=pk
             ).first()
         if result is not None:
@@ -32,25 +30,16 @@ class BoardQuerySet ( models.QuerySet ):
         else:
             raise FileNotFoundError
 
-    def list_archived(self, user):
-        return self.filter(
-            Q(user=user) | 
-            Q(shared_with=user),
-            date_archived__isnull=False,
-        )
-
     def list_unsorted(self, user):
         return self.filter(
             Q(user=user) | 
             Q(shared_with=user),
             folder__isnull=True,
-            date_archived__isnull=True,
         )
     
     def list_shared_with(self, user):
         return self.filter(
             shared_with=user,
-            date_archived__isnull=True,
         ).exclude(
             user=user
         )
@@ -59,17 +48,14 @@ class BoardManager ( models.Manager ):
     use_in_migrations = True
 
     def get_queryset(self):
-        return BoardQuerySet(self.model, using=self._db)
-
+        return BoardQuerySet(self.model, using=self._db).filter(date_archived__isnull=True)
+        
     def list(self, user):
         return self.get_queryset().list(user)
 
-    def retrieve(self, user, pk, not_archived=True):
+    def retrieve(self, user, pk):
         return self.get_queryset().retrieve(user, pk)
 
-    def list_archived(self, user):
-        return self.get_queryset().list_archived(user)
-    
     def list_unsorted(self, user):
         return self.get_queryset().list_unsorted(user)
 
