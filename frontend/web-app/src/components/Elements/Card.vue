@@ -16,7 +16,7 @@ const borderStyle = props.border ? `1.5pt solid var(--${props.border})` : 'trans
 <template>
 
 <div :class="['wrapper', hover?'wrapper-hover':'']">
-<article>
+<article v-wave="{initialOpacity:hover?0.1:0,finalOpacity:0}">
     <header v-if="this.$slots.header">
         <slot name="header"></slot>
     </header>
@@ -45,7 +45,7 @@ export default {
 }
 
 .wrapper-hover:hover {
-    transform: scale(1.025, 1.025);
+    transform: scale(1.02, 1.02);
 }
 
 article {
@@ -56,7 +56,7 @@ article {
 }
 
 header, footer, .content {
-    @apply px-6 py-2;
+    @apply px-6 py-1;
 }
 
 .center-content {
@@ -64,7 +64,7 @@ header, footer, .content {
 }
 
 header {
-    @apply pt-6;
+    @apply pt-4;
 }
 
 footer {

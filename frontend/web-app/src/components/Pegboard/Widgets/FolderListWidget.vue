@@ -30,7 +30,7 @@ onBeforeMount( () => {
 
     <li v-for="folder in folders" :key="folder.id">
         <ul>
-        <li class="px-4 pt-6 pb-1 font-medium uppercase ls tracking-widest text-emphasis">
+        <li class="px-8 pt-6 pb-1 font-medium uppercase tracking-widest text-scale-text-700">
             {{ folder.name }}
         </li>
         <li v-for="board in folder.boards" :key="board.id" class="pl-4 pr-4 w-full">
@@ -43,7 +43,7 @@ onBeforeMount( () => {
         </ul>
     </li>
 
-    <li class="px-4 pt-6 pb-1 font-medium uppercase ls tracking-widest text-scale-text-500">
+    <li class="px-8 pt-6 pb-1 font-medium uppercase tracking-widest text-scale-text-500">
         Unsorted
     </li>
     <li v-for="board in unsortedBoards" :key="board.id" class="pl-4 pr-4 w-full">

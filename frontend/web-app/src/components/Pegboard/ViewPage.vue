@@ -18,33 +18,29 @@ const showEditModal = ref(false)
 </script>
 <template>
 
-<card no-bg>
+<section>
 
-    <template #header>
-        <span class="flex items-center">
-            <span class="flex-grow">
-                <h3 class="pt-3 pb-1">{{ page.name }}</h3>
-                <h4>{{ page.description }}</h4>
-            </span>
-            <button @click="showEditModal=!showEditModal" class="secondary">Edit</button>
-
-            <modal :show="showEditModal" @hide="showEditModal=false">
-                <edit-page :page="page" @save="showEditModal=false" />
-            </modal>
+    <span class="flex items-center px-2">
+        <span class="flex-grow">
+            <h3 class="pt-3 text-base tracking-wide">{{ page.name }}</h3>
+            <h4 class="font-normal text-base text-scale-text-500">{{ page.description }}</h4>
         </span>
+        <co-button @click="showEditModal=!showEditModal" icon="options" subtle color="scale-text-500"></co-button>
 
-        <view-comments :page-id="page.id" :comments="page.comments" />
-    </template>
+        <modal :show="showEditModal" @hide="showEditModal=false">
+            <edit-page :page="page" @save="showEditModal=false" />
+        </modal>
+    </span>
+
+    <!-- <view-comments :page-id="page.id" :comments="page.comments" /> -->
 
     <section v-for="note in page.notes" :key="note.id">
         <view-note :note="note" />
     </section>
     
-    <template #footer>
-        <add-note :page-id="page.id" class="pb-8" />
-    </template>
+    <add-note :page-id="page.id" class="pb-8" />
 
-</card>
+</section>
 
 </template>
 <script lang="ts">

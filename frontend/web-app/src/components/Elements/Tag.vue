@@ -3,8 +3,9 @@
 import { ref } from 'vue'
 
 const props = defineProps({
-    color: String,
-    label: String,
+    varColor:String,
+    color:String,
+    label:String,
 })
 
 const changeOpacity = (color, opacity) => {
@@ -12,8 +13,8 @@ const changeOpacity = (color, opacity) => {
     return color + newOpacity.toString(16).toUpperCase();
 }
 
-const textColor = ref( `#${props.color}`)
-const bgColor = ref( `#${changeOpacity(props.color, 0.25)}` )
+const textColor = props.varColor ? ref(`var(--${props.varColor})`) : ref( `#${props.color}`)
+const bgColor = props.varColor ? ref(`var(--${props.varColor}-opacity-100`) : ref( `#${changeOpacity(props.color, 0.25)}` )
 
 </script>
 <template>
@@ -33,10 +34,11 @@ export default {
 <style scoped>
 
 .tag {
-    @apply px-3 py-1 mx-1 my-3 font-semibold uppercase text-xs rounded-full;
+    @apply px-2 my-3 font-semibold uppercase rounded-full tracking-widest;
     background-color: v-bind('bgColor');
     color: v-bind('textColor');
-    letter-spacing: 1pt;
+    font-size: 0.7em;
+    padding: 2pt 6pt;
 }
 
 </style>

@@ -4,16 +4,16 @@ button {
     background-color: var(--emphasis);
     color: var(--text);
     max-height: fit-content;
+    transition: transform 250ms;
 }
 
 button:hover {
-    transform: scale(1.025, 1.025);
-    transition: transform 300ms;
+    transform: scale(1.02, 1.02);
 }
 
 button:active {
     transform: scale(0.975, 0.975);
-    transition: transform 1s;
+    transition: transform 250ms;
 }
 
 /*
@@ -83,6 +83,41 @@ button:active {
 
 .subtle-emphasis:hover {
     background: var(--emphasis-opacity-50);
+    transition: background 200ms;
+}
+
+/*
+*  ALERT
+*/
+
+.outline-alert {
+    background: transparent;
+    color: var(--alert);
+    border: 1.25pt solid var(--alert);
+}
+
+.outline-alert:hover {
+    background: var(--alert-opacity-50);
+    transition: background 200ms;
+}
+
+.light-alert {
+    background: var(--alert-opacity-50);
+    color: var(--alert);
+}
+
+.light-alert:hover {
+    background: var(--alert-opacity-100);
+    transition: background 200ms;
+}
+
+.subtle-alert {
+    background: transparent;
+    color: var(--alert);
+}
+
+.subtle-alert:hover {
+    background: var(--alert-opacity-50);
     transition: background 200ms;
 }
 

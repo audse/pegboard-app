@@ -2,6 +2,8 @@
 :root {
     --primary: #282c38;
     --secondary: #111213;
+    --main: #282c38;
+    --second: #111213;
 
     --text: #f3f7ff;
     --text-opacity-50: #f3f7ff23;
@@ -21,7 +23,17 @@
     --emphasis-opacity-900: #f855a6d3;
     --emphasis-opacity-950: #f855a6e5;
 
-    --info: #678afd;
+    --info: #88a4ff;
+
+    --alert: #88a4ff;
+    --alert-opacity-50: #88a4ff23;
+    --alert-opacity-100: #88a4ff3d;
+    --alert-opacity-300: #88a4ff6e;
+    --alert-opacity-500: #88a4ff8c;
+    --alert-opacity-700: #88a4ffb4;
+    --alert-opacity-900: #88a4ffd3;
+    --alert-opacity-950: #88a4ffe5;
+
     --warning: #d3a43f;
     --error: #40396d;
 

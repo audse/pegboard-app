@@ -20,32 +20,32 @@ const archivePage = async(pageId:number) => {
 
 </script>
 <template>
-   
-<section>
 
-    <h3>Edit {{ page.name }}</h3>
+<h3>
+    <tag label="edit" var-color="scale-text-500" class="block w-min" />
+    {{ page.name }}
+</h3>
 
-    <form @submit.prevent="editPage(page.id, editPageForm)">
+<form @submit.prevent="editPage(page.id, editPageForm)">
 
-        <section class="pt-4 flex items-center">
-            <label for="name" class="flex-none">Page Name</label>
-            <input v-model="editPageForm.name" name="name" type="text" />
-        </section>
+    <section class="pt-6 flex items-center">
+        <label for="name" class="flex-none w-24">Name</label>
+        <input v-model="editPageForm.name" name="name" type="text" />
+    </section>
 
-        <section class="pt-4 flex items-center">
-            <label for="description" class="flex-none">Page Description</label>
-            <textarea v-model="editPageForm.description" name="description" type="text" />
-        </section>
+    <section class="pt-1 flex items-center">
+        <label for="description" class="flex-none w-24">Description</label>
+        <textarea v-model="editPageForm.description" name="description" type="text" />
+    </section>
 
-        <section class="pt-4">
-            <button type="submit" @click="this.$emit('save')" class="secondary">Save Edit</button>
-        </section>
+    <section class="pt-1">
+        <button type="submit" @click="this.$emit('save')" class="secondary">Save Edit</button>
+    </section>
 
-        <section class="pt-8">
-            <button @click.prevent="archivePage(page.id);this.$emit('save')" class="bg-transparent text-red-500">Archive</button>
-        </section>
-    </form>
-</section>
+    <section class="pt-8">
+        <button @click.prevent="archivePage(page.id);this.$emit('save')" class="bg-transparent text-red-500">Archive</button>
+    </section>
+</form>
 
 </template>
 

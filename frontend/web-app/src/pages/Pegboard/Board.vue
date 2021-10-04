@@ -94,9 +94,7 @@ onBeforeUnmount( () => {
             </router-link>
 
             <template #right>
-                <co-button @click="showAddPageForm=!showAddPageForm" outline color="scale-text-500" class="hidden lg:block">
-                    <i class="gg-user icon-lg" style="margin: 4px 0"></i>
-                </co-button>
+                <co-button light color="alert" icon="user" class="hidden lg:block"></co-button>
                 <co-button @click="showAddPageForm=!showAddPageForm" color="emphasis" class="flex items-center pl-2 my-2 lg:my-0">
                     <transition name="scale" mode="out-in">
                         <i v-if="!showAddPageForm" class="gg-math-plus block flex-none mr-2"></i>
@@ -117,7 +115,7 @@ onBeforeUnmount( () => {
     </template>
 
     <section class="flex flex-wrap">
-        <view-page v-for="page in board.pages" :key="page.id" :page="page" class="flex-none w-4/12" />
+        <view-page v-for="page in board.pages" :key="page.id" :page="page" class="flex-none w-full md:w-1/2 lg:w-4/12" />
     </section>
 
     <modal :show="showEditModal" @hide="showEditModal=false">
@@ -128,7 +126,7 @@ onBeforeUnmount( () => {
         <section class="flex items-center pl-2">
             <add-note :board-id="board.id" class="w-4/12" />
         </section>
-        <section class="flex items-center flex-wrap">
+        <section class="flex flex-wrap">
             <view-note v-for="note in board.notes" :key="note.id" :note="note" class="box-border w-4/12 flex-none" />
         </section>
     </article>

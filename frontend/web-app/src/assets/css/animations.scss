@@ -10,3 +10,18 @@
 .scale-enter-from, .scale-leave-to {
     transform: scale(0.5, 0.5);
 }
+
+
+.translate-fade-enter-to, .translate-fade-leave-from {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.translate-fade-enter-active, .translate-fade-leave-active {
+    transition: transform, opacity 500ms ease;
+}
+
+.translate-fade-enter-from, .translate-fade-leave-to {
+    transform: translateY(24pt);
+    opacity: 0;
+}

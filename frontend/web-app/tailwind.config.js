@@ -7,6 +7,7 @@ module.exports = {
             'second': 'var(--secondary)',
             'text': 'var(--text)',
             'emphasis': 'var(--emphasis)',
+            'alert': 'var(--alert)',
 
             'scale-text-100': 'var(--scale-text-100)',
             'scale-text-300': 'var(--scale-text-300)',
@@ -35,7 +36,10 @@ module.exports = {
         },
     },
     variants: {
-        extend: {},
+        extend: {
+            backgroundColor: ['checked'],
+            borderColor: ['checked'],
+        },
     },
 
     plugins: [

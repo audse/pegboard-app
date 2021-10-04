@@ -1,0 +1,49 @@
+.checkbox-control {
+    transition: transform 200ms;
+}
+
+.checkbox-control:hover {
+    transform: scale(1.025, 1.025);
+}
+
+.checkmark {
+    width: 24pt;
+    height: 24pt;
+    position: relative;
+}
+
+// .checkmark:hover {
+//     transform: scale(1.025, 1.025);
+// }
+
+.checkmark input, .checkmark i {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.checkmark input {
+    @apply border border-scale-text-100 checked:border-main bg-scale-text-300 rounded-md checked:bg-scale-text-100 p-2 mr-2 block;
+
+    width: 22pt;
+    height: 22pt;
+    margin: 1pt;
+    transition: background, opacity, border 300ms;
+}
+
+.checkmark:hover input {
+    // border-width: 2pt;
+    border-color: var(--scale-text-500);
+}
+
+.checkmark i {
+    transform-origin: center;
+    transform: scale(0, 0);
+    top: 4pt;
+    left: 4pt;
+    transition: transform 300ms;
+}
+
+.checked i {
+    transform: scale(1, 1);
+}

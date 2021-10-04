@@ -23,7 +23,7 @@ const breadcrumbs = computed( () => {
 
         <span v-if="link.path" class="flex items-center">
             <router-link :to="link.path" class="flex items-center mx-1">
-                <co-button :icon="link.icon" subtle color="scale-text-500">
+                <co-button :icon="link.icon" subtle color="alert" sm>
                     {{ link.name }}
                 </co-button>
             </router-link>
@@ -31,7 +31,7 @@ const breadcrumbs = computed( () => {
             <span class="sm opacity-30 px-3 flex-1"> / </span>
         </span>
         <span v-else class="flex items-center mx-1">
-            <co-button :icon="link.icon" light color="scale-text-700">
+            <co-button :icon="link.icon" light color="alert" sm>
                 {{ link.name }}
             </co-button>
         </span>

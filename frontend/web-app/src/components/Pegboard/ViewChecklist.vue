@@ -21,9 +21,12 @@ watch(checklistItems, () => {
 
 <ul>
     <li class="font-bold">{{ checklist.name }}</li>
-    <li v-for="(item, index) of checklistItems" :key="index" :class="!item.done ? 'opacity-100' : 'opacity-50'">
-        <input v-model="item.done" name="done" type="checkbox" class="mr-2" />
-        <label for="done">{{ item.name }}</label>
+    <li v-for="(item, index) of checklistItems" :key="index" :class="[!item.done ? 'opacity-100' : 'opacity-40', 'flex items-center py-1 checkbox-control']" @click="item.done=!item.done">
+        <div :class="['checkmark flex-none', item.done?'checked':'']">
+            <input v-wave v-model="item.done" name="done" type="checkbox" class="appearance-none" />
+            <i class="gg-check icon-md"></i>
+        </div>
+        <label for="done" :class="['ml-2', item.done?'line-through':'']">&nbsp;{{ item.name }}&nbsp;</label>
     </li>
 </ul>
 

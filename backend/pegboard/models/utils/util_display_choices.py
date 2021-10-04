@@ -10,4 +10,5 @@ DISPLAY_CHOICES = [
     ('l', 'checklist'), # displays checklist prominently, good for headings
     ('d', 'date'), # displays due date/todo date prominently, with colors to indicate soonness
     ('o', 'countdown'), # displays due date/todo date prominently, with a countdown to indicate soonness
+    ('t', 'discussion') # displays comments/live chat on front 
 ]

@@ -63,8 +63,8 @@ watch( hidden, () => {
     </section>
     <section @click="hidden=!hidden" class="w-10 absolute right-0 top-0 items-center justify-center h-full hidden lg:flex sidebar-hidden">
         <button class="sidebar-hidden-button pb-10">
-            <i v-if="hidden" class="gg-chevron-double-right"></i>
-            <i v-if="!hidden" class="gg-chevron-double-left"></i>
+            <i v-if="hidden" class="gg-chevron-double-right icon-md opacity-40"></i>
+            <i v-if="!hidden" class="gg-chevron-double-left icon-md opacity-40"></i>
         </button>
     </section>
 
@@ -83,6 +83,7 @@ export default {
 .sidebar {
     @apply border-primary border-r;
     isolation: isolate;
+    z-index: 900;
 }
 
 .sidebar-main {
