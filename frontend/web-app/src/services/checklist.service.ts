@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import Service from './index.service'
+import Service from './generic.service'
 
 class ChecklistService extends Service {
 

@@ -12,6 +12,7 @@ class PageSerializer ( serializers.ModelSerializer ):
     notes = NoteSerializer(many=True, required=False)
     
     comments = CommentSerializer(many=True, required=False)
+    checklists = ChecklistSerializer(many=True, required=False)
 
     class Meta:
         model = Page

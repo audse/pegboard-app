@@ -1,4 +1,4 @@
-import Service from './index.service'
+import Service from './generic.service'
 
 class CommentService extends Service {
 

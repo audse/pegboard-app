@@ -1,15 +1,10 @@
 <script lang="ts" setup>
 
-import ViewFolder from '../../components/Pegboard/ViewFolder.vue'
-import AddFolder from '../../components/Pegboard/Forms/Add/AddFolder.vue'
-import AddBoard from '../../components/Pegboard/Forms/Add/AddBoard.vue'
-
 import { onMounted, computed, ref, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
 
-import FolderService from './../../services/folder.service'
-import BoardService from './../../services/board.service'
-import AuthService from '../../services/auth.service'
+import { Folder, AddFolder, AddBoard } from '@/components'
+import { FolderService, BoardService, AuthService } from '@/services'
 
 const store = useStore()
 
@@ -33,7 +28,7 @@ const showAddFolderForm = ref(false)
 </script>
 <template>
 
-<page>
+<page-layout>
     
     <template #header>
         <toolbar>
@@ -58,12 +53,12 @@ const showAddFolderForm = ref(false)
     </template>
 
     <section>
-        <view-folder v-for="folder in folders" :key="folder.id" :folder="folder" />
+        <folder v-for="folder of folders" :key="folder.id" :folder="folder" />
     </section>
 
     <section class="mt-6">
         <h2 class="py-4">Unsorted</h2>
-        <card v-for="board in unsortedBoards" :key="board.id">
+        <card v-for="board of unsortedBoards" :key="board.id">
             <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }">{{ board.name }}</router-link>
         </card>
     </section>
@@ -72,6 +67,6 @@ const showAddFolderForm = ref(false)
         <add-board />
     </section>
 
-</page>
+</page-layout>
 
 </template>

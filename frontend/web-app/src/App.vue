@@ -1,14 +1,14 @@
 <template>
 
-<MainLayout>
+<main-layout>
 <router-view />
-</MainLayout>
+</main-layout>
 
 </template>
 
 <script lang="ts">
 
-import MainLayout from './layouts/Main.layout.vue'
+import { MainLayout } from '@/layouts'
 
 export default {
     components: {

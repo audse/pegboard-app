@@ -1,6 +1,6 @@
 
-import Folders from './../pages/Pegboard/Folders.vue'
-import Board from './../pages/Pegboard/Board.vue'
+import Folders from '@/pages/Pegboard/Folders.vue'
+import Board from '@/pages/Pegboard/Board.vue'
 
 const pegboardRoutes = [
     { 

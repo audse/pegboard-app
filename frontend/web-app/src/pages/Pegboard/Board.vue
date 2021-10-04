@@ -1,14 +1,10 @@
 <script lang="ts" setup>
 
-import ViewPage from '../../components/Pegboard/ViewPage.vue'
-import ViewNote from '../../components/Pegboard/ViewNote.vue'
-import EditBoard from '../../components/Pegboard/Forms/Edit/EditBoard.vue'
-import AddPage from '../../components/Pegboard/Forms/Add/AddPage.vue'
-import AddNote from '../../components/Pegboard/Forms/Add/AddNote.vue'
-
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
+
+import { EditBoard, Page, AddPage, Note, AddNote, } from '@/components'
 
 const store = useStore()
 const route = useRoute()
@@ -64,7 +60,7 @@ onBeforeUnmount( () => {
 </script>
 <template>
 
-<page v-if="board">
+<page-layout v-if="board">
     <template #header>
 
         <toolbar>
@@ -115,7 +111,7 @@ onBeforeUnmount( () => {
     </template>
 
     <section class="flex flex-wrap">
-        <view-page v-for="page in board.pages" :key="page.id" :page="page" class="flex-none w-full md:w-1/2 lg:w-4/12" />
+        <page v-for="page in board.pages" :key="page.id" :page="page" class="flex-none w-full md:w-1/2 lg:w-4/12" />
     </section>
 
     <modal :show="showEditModal" @hide="showEditModal=false">
@@ -127,12 +123,12 @@ onBeforeUnmount( () => {
             <add-note :board-id="board.id" class="w-4/12" />
         </section>
         <section class="flex flex-wrap">
-            <view-note v-for="note in board.notes" :key="note.id" :note="note" class="box-border w-4/12 flex-none" />
+            <note v-for="note in board.notes" :key="note.id" :note="note" />
         </section>
     </article>
 
-</page>
-<page v-else></page>
+</page-layout>
+<page-layout v-else></page-layout>
 
 </template>
 <style scoped>

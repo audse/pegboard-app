@@ -13,6 +13,6 @@ module.exports = {
         // We use it to determine the version of vue.
         // It is relative to root property.
         package: './package.json',
-      }
+        tsconfig: './tsconfig.json',
     ]
   }

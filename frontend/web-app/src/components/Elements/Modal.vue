@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 
 
@@ -20,9 +20,12 @@ const hideModal = (event:any) => {
     }
 }
 
+const activeTab = ref(props.tabs ? props.tabs[0] : '')
+
 // Calculate modal width depending on screen size and sidebar visibility
 const store = useStore()
 const sidebarHidden = computed( () => store.state.auth.preferences.sidebarHidden )
+
 
 </script>
 
@@ -38,14 +41,24 @@ const sidebarHidden = computed( () => store.state.auth.preferences.sidebarHidden
                 <slot name="header" />
 
                 <label v-for="tab of tabs" :key="`label-${tab}`">
-                    <slot :name="`label-${tab}`">{{ tab }}</slot>
+                    <slot :name="`label-${tab}`">
+                        <co-button @click="activeTab=tab" :color="tab===activeTab?'emphasis':'scale-text-500'" :subtle="tab!==activeTab" :light="tab==activeTab">
+                            {{ tab }}
+                        </co-button>
+                    </slot>
                 </label>
             </template>
 
             <slot></slot>
 
             <section v-for="tab of tabs" :key="`section-${tab}`">
-                <slot :name="`section-${tab}`" />
+                <transition name="scale" mode="out-in">
+                    <article v-if="tab===activeTab">
+                        <slot :name="`section-${tab}`">
+                            ...
+                        </slot>
+                    </article>
+                </transition>
             </section>
 
             <template #footer>

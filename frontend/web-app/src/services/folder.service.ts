@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import store from './../store/index.store'
-import Service from './index.service'
+import store from '../store'
+import Service from './generic.service'
 
 class FolderService extends Service {
 
