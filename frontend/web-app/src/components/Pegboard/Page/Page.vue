@@ -27,8 +27,6 @@ const showEditModal = ref(false)
         </modal>
     </span>
 
-    <!-- <view-comments :page-id="page.id" :comments="page.comments" /> -->
-
     <section v-for="note in page.notes" :key="note.id">
         <note :note="note" />
     </section>
@@ -41,7 +39,7 @@ const showEditModal = ref(false)
 <script lang="ts">
 
 export default {
-    name: 'ViewPage',
+    name: 'page',
 }
 
 </script>

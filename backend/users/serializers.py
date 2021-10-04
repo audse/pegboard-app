@@ -7,6 +7,7 @@ class UserSerializer(UserDetailsSerializer):
 
     class Meta(UserDetailsSerializer.Meta):
         fields = UserDetailsSerializer.Meta.fields + ('theme',)
+        # fields = ['pk', 'username', 'email']
 
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('profile', {})

@@ -2,13 +2,13 @@
 
 import { ref } from 'vue'
 
-const props = defineProps({
-    varColor:String,
-    color:String,
-    label:String,
-})
+const props = defineProps<{
+    varColor?:string,
+    color?:string,
+    label?:string,
+}>()
 
-const changeOpacity = (color, opacity) => {
+const changeOpacity = (color:string, opacity:number) => {
     const newOpacity = Math.round(Math.min(Math.max(opacity || 1, 0), 1) * 255);
     return color + newOpacity.toString(16).toUpperCase();
 }
@@ -21,13 +21,14 @@ const bgColor = props.varColor ? ref(`var(--${props.varColor}-opacity-100`) : re
     
 <span class="tag">
     {{ label }}
+    <slot />
 </span>
 
 </template>
 <script lang="ts">
 
 export default {
-    name: 'Tag'
+    name: 'co-tag'
 }
 
 </script>

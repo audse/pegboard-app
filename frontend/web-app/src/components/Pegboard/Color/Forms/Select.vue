@@ -28,7 +28,7 @@ onMounted(() => refreshColors())
 
 <section>
     
-    <tag v-for="color in colors" :key="color.id" @click="this.$emit('update:modelValue', color.id)" :label="color.name" :color="color.color" :class="modelValue===color.id?'selected':''" />
+    <co-tag v-for="color in colors" :key="color.id" @click="this.$emit('update:modelValue', color.id)" :label="color.name" :color="color.color" :class="modelValue===color.id?'selected':''" />
     <br />
 
     <expandable class="py-4">

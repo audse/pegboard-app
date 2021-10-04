@@ -4,6 +4,7 @@ export type UserSimple = {
 }
 
 export type Color = {
+    id:number,
     user:UserSimple,
 
     board:number,
@@ -13,6 +14,7 @@ export type Color = {
 }
 
 export type Tag = {
+    id:number,
     user:UserSimple,
 
     board:number,
@@ -27,6 +29,7 @@ export type ChecklistItem = {
 }
 
 export type Checklist = {
+    id:number,
     user:UserSimple,
 
     board:number|null,
@@ -38,6 +41,7 @@ export type Checklist = {
 }
 
 export type UserComment = {
+    id:number,
     user:UserSimple,
 
     board:number|null,
@@ -52,6 +56,7 @@ export type UserComment = {
 }
 
 export type Note = {
+    id:number,
     user:UserSimple,
 
     page:number|null,
@@ -82,6 +87,7 @@ export type Note = {
 }
 
 export type Page = {
+    id:number,
     user:UserSimple,
 
     board:number,
@@ -106,6 +112,7 @@ export type Page = {
 }
 
 export type Board = {
+    id:number,
     user:UserSimple,
     shared_with:Array<UserSimple>,
 
@@ -132,6 +139,7 @@ export type Board = {
 }
 
 export type Folder = {
+    id:number,
     user:UserSimple,
 
     name:string,

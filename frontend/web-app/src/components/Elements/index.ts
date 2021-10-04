@@ -1,9 +1,9 @@
 import Card from './Card.vue'
 import Toolbar from './Toolbar.vue'
 import Expandable from './Expandable.vue'
-import CoButton from './Button.vue'
+import CoButton from './CoButton.vue'
 import Modal from './Modal.vue'
-import Tag from './Tag.vue'
+import CoTag from './CoTag.vue'
 
 export {
     Card,
@@ -11,5 +11,5 @@ export {
     Expandable,
     CoButton,
     Modal,
-    Tag
+    CoTag
 }

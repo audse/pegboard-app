@@ -3,6 +3,8 @@
 import { computed, onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 
+import { Tag, Color } from '@/types'
+
 const props = defineProps({
     modelValue: Array,
 })
@@ -23,8 +25,8 @@ const selectedTags = computed({
     }
 })
 
-const updateSelectedTags = (tag:{id:number}, array:Array<object>) => {
-    const index = array.findIndex( (entry:{id:number}) => entry.id === tag.id )
+const updateSelectedTags = (tag:Tag, array:Array<Tag>) => {
+    const index = array.findIndex( (entry:Tag) => entry.id === tag.id )
     if ( index === -1 ) {
         array.push(tag)
     } else {
@@ -32,22 +34,26 @@ const updateSelectedTags = (tag:{id:number}, array:Array<object>) => {
     }
 }
 
-const tagInSelected = (tag:{id:number}, array:Array<object>) => {
-    return array.findIndex( (entry:{id:number}) => entry.id === tag.id ) !== -1
+const isTagInSelected = (tag:Tag, array:Array<Tag>) => {
+    return array.findIndex( (entry:Tag) => entry.id === tag.id ) !== -1
 }
 
 </script>
 <template>
 
-<section>
-    <tag v-for="tag in tags" :key="tag.id" @click="updateSelectedTags(tag, selectedTags)" :label="tag.name" :color="tag.color.color" :class="tagInSelected(tag, selectedTags)?'selected tag':'tag'" />
-</section>
+<co-tag 
+    v-for="tag in tags"
+    :key="tag.id" 
+    :label="tag.name" :color="tag.color.color" 
+    :class="isTagInSelected(tag, selectedTags)?'selected tag':'tag'"
+    @click="updateSelectedTags(tag, selectedTags)" 
+/>
 
 </template>
 <script lang="ts">
 
 export default {
-    name: 'SelectColor',
+    name: 'select-tags',
 }
 
 </script>

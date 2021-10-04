@@ -47,7 +47,7 @@ const archiveBoard = async(boardId:number) => {
             <label for="tags">Tags</label>
             
             <section class="pt-4">
-                <tag v-for="tag in tags" :key="tag.id" :label="tag.name" :color="tag.color.color" />
+                <co-tag v-for="tag in tags" :key="tag.id" :label="tag.name" :color="tag.color.color" />
             </section>
 
             <expandable class="pt-4">

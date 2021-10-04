@@ -40,7 +40,7 @@ const addTag = async (data:object) => {
 <script lang="ts">
 
 export default {
-    name: 'AddTag'
+    name: 'add-tag'
 }
 
 </script>

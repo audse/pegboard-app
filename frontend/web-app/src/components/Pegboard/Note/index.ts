@@ -16,4 +16,4 @@ export {
     DISPLAY CHOICES
 */
 
-export * from './Displays/note.displays.components'
+export * from './Displays'

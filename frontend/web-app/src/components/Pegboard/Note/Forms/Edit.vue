@@ -2,7 +2,7 @@
 
 import { reactive, Ref, ref } from 'vue'
 
-import { SelectTag, AddChecklist } from '@/components'
+import { SelectTags, AddChecklist } from '@/components'
 import { NoteService, ChecklistService } from '@/services'
 import { Note } from '@/types/pegboard.types'
 

@@ -23,6 +23,11 @@ const borderStyle = props.border ? `1.5pt solid var(--${props.border})` : 'trans
     <section :class="['content', centerContent?'center-content':'']" v-if="this.$slots.default">
         <slot></slot>
     </section>
+    <footer v-if="this.$slots.actions">
+        <section class="actions">
+            <slot name="actions"></slot>
+        </section>
+    </footer>
     <footer v-if="this.$slots.footer">
         <slot name="footer"></slot>
     </footer>
@@ -55,7 +60,7 @@ article {
     border: v-bind(borderStyle);
 }
 
-header, footer, .content {
+header, footer, .content, .actions {
     @apply px-6 py-1;
 }
 

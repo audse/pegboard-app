@@ -12,7 +12,7 @@ const emits = defineEmits([
 ])
 
 const slotLabel = `label-${props.note?.name}`
-const slotSection = `section=${props.note?.name}`
+const slotSection = `section-${props.note?.name}`
 
 </script>
 <template>
@@ -21,10 +21,9 @@ const slotSection = `section=${props.note?.name}`
 
     <template v-slot:[slotSection]>
         {{ note.name }}
-        {{ note }}
     </template>
 
-    <template #Edit>
+    <template #section-Edit>
         <edit-note :note="note" />
     </template>
 
@@ -34,7 +33,7 @@ const slotSection = `section=${props.note?.name}`
 <script lang="ts">
 
 export default {
-    name: 'NoteModal'
+    name: 'note-modal'
 }
 
 </script>
