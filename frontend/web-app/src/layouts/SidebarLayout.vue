@@ -29,7 +29,7 @@ watch( hidden, () => {
             <h3 class="pb-1 px-4 text-text">Pegboard</h3>
             <h4 class="px-4 text-scale-text-700">
                 Welcome, 
-                <strong class="font-normal">{{ currentUser?.username }}</strong>.
+                <strong class="font-medium text-alert">{{ currentUser?.username }}</strong>.
             </h4>
 
             <ul class="pt-4 routes">
