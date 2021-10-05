@@ -4,6 +4,7 @@ import Expandable from './Expandable.vue'
 import CoButton from './CoButton.vue'
 import Modal from './Modal.vue'
 import CoTag from './CoTag.vue'
+import SwitchIcon from './SwitchIcon.vue'
 
 export {
     Card,
@@ -11,5 +12,6 @@ export {
     Expandable,
     CoButton,
     Modal,
-    CoTag
+    CoTag,
+    SwitchIcon
 }

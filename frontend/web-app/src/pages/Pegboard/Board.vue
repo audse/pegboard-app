@@ -4,7 +4,7 @@ import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 
-import { EditBoard, Page, AddPage, Note, AddNote, } from '@/components'
+import { BoardModal, Page, AddPage, Note, AddNote, } from '@/components'
 
 const store = useStore()
 const route = useRoute()
@@ -91,11 +91,7 @@ onBeforeUnmount( () => {
             <template #right>
                 <co-button light color="alert" icon="user" class="hidden lg:block"></co-button>
                 <co-button @click="showAddPageForm=!showAddPageForm" color="emphasis" class="flex items-center pl-2 my-2 lg:my-0">
-                    <transition name="scale" mode="out-in">
-                        <i v-if="!showAddPageForm" class="gg-math-plus block flex-none mr-2"></i>
-                        <i v-else class="gg-math-minus block flex-none mr-2"></i>
-                    </transition>
-
+                    <switch-icon :switch="showAddPageForm" />
                     Add Page
                 </co-button>
             </template>
@@ -113,9 +109,10 @@ onBeforeUnmount( () => {
         <page v-for="page in board.pages" :key="page.id" :page="page" class="flex-none w-11/12 md:w-5/12 lg:w-4/12" />
     </section>
 
-    <modal :show="showEditModal" @hide="showEditModal=false">
+    <!-- <modal :show="showEditModal" @hide="showEditModal=false">
         <edit-board :board="board" :tags="board.tags" @save="showEditModal=false" />
-    </modal>
+    </modal> -->
+    <board-modal :board="board" :show="showEditModal" @hide="showEditModal=false" />
 
     <article v-if="board?.notes?.length > 0" class="mt-8">
         <section class="flex items-center pl-2">

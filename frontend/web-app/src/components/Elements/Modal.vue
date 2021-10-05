@@ -50,7 +50,7 @@ const sidebarHidden = computed( () => store.state.auth.preferences.sidebarHidden
 
             <slot></slot>
 
-            <section v-for="tab of tabs" :key="`section-${tab}`" class="pt-6">
+            <section v-for="tab of tabs" :key="`section-${tab}`" class="pt-4">
                 <!-- <transition name="scale" mode="out-in"> -->
                     <article v-if="tab===activeTab">
                         <slot :name="`section-${tab}`" />

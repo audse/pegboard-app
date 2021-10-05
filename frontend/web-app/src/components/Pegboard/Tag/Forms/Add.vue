@@ -2,17 +2,18 @@
 
 import { reactive } from 'vue'
 
+import { Board } from '@/types'
 import { SelectColor } from '@/components'
 import { TagService } from '@/services'
 
-const props = defineProps({
-    boardId: Number,
-})
+const props = defineProps<{
+    board:Board
+}>()
 
 const addTagForm = reactive({
     name: '',
     color: undefined,
-    board: props.boardId || undefined
+    board: props.board.id || undefined
 })
 
 const addTag = async (data:object) => {
@@ -23,14 +24,14 @@ const addTag = async (data:object) => {
 <template>
 
 <form @submit.prevent="addTag(addTagForm)">
-    <section class="flex items-center">
-        <label for="name" class="flex-none">Tag Name</label>
+    <section class="flex items-center my-2">
+        <label for="name" class="flex-none w-20">Tag Name</label>
         <input v-model="addTagForm.name" name="name" type="text" placeholder="Tag Name" />
     </section>
     
-    <section class="block">
-        <label for="name" class="flex-none">Color</label>
-        <select-color v-model="addTagForm.color" :boardId="boardId" />
+    <section class="flex items-center my-2">
+        <label for="name" class="flex-none w-20">Color</label>
+        <select-color v-model="addTagForm.color" :colors="board.colors" />
     </section>
     
     <button type="submit" class="flex-none">Add Tag</button>

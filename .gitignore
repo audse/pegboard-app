@@ -1,5 +1,5 @@
 *.pyc
-backend/PegboardApp/settings.py
+backend/.env
 backend/pegboard/__pycache__
 backend/pegboard/migrations
 backend/pegboard/migrations/__pycache__
@@ -9,3 +9,4 @@ backend/pegboard/models/__pycache__
 .DS_Store
 .vscode
 /env
+vetur.config.js

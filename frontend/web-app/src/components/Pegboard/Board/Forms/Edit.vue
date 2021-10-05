@@ -43,19 +43,6 @@ const archiveBoard = async(boardId:number) => {
             <textarea v-model="editBoardForm.description" name="description"></textarea>
         </section>
 
-        <section class="pt-4">
-            <label for="tags">Tags</label>
-            
-            <section class="pt-4">
-                <co-tag v-for="tag in tags" :key="tag.id" :label="tag.name" :color="tag.color.color" />
-            </section>
-
-            <expandable class="pt-4">
-                <template #label>Add Tag</template>
-                <add-tag :boardId="board.id" />
-            </expandable>
-        </section>
-
         <section class="pt-8">
             <button type="submit" @click="this.$emit('save')" class="secondary">Save Edit</button>
         </section>

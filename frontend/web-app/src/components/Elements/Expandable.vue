@@ -2,9 +2,10 @@
 
 import { ref } from 'vue'
 
-const props = defineProps({
+const props = defineProps<{
     toShow:Boolean,
-})
+    label?:string
+}>()
 
 const show = ref(false)
 
@@ -13,18 +14,16 @@ const show = ref(false)
     
 <article>
 
-    <section @click="show=!show" class="cursor-pointer flex items-center" v-if="this.$slots.label">
+    <section @click="show=!show" class="cursor-pointer flex items-center" v-if="this.$slots.label || this.label">
 
-        <transition mode="out-in" name="scale">
-            <span v-if="!show || !toShow" class="mr-4">
-                <i class="gg-math-plus"></i>
-            </span>
-            <span v-else class="mr-4">
-                <i class="gg-math-minus"></i>
-            </span>
-        </transition>
-
-        <slot name="label"></slot>
+        <slot name="label">
+            <co-button color="emphasis" light class="flex items-center pr-8"> 
+                <transition mode="out-in" name="scale">
+                    <switch-icon :switch="show||toShow" />
+                </transition>
+                {{ label }}
+            </co-button>
+        </slot>
     </section>
 
     <transition name="slide" class="expanded">
