@@ -27,7 +27,7 @@ const addComment = async (data:object) => {
 
 <form @submit.prevent="addComment(addCommentForm)" class="flex items-center">
     <input v-model="addCommentForm.content" name="name" type="text" placeholder="Comment" class="dark" />
-    <button type="submit" class="secondary">Send</button>
+    <co-button type="submit" subtle icon="chevron-double-right" class="ml-1" color="emphasis"></co-button>
 </form>
 
 </template>

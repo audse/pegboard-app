@@ -83,7 +83,7 @@ class Checklist ( models.Model ):
     )
 
     def __str__ ( self ):
-        return self.name
+        return 'Checklist: ' + self.name
 
 
 @receiver(post_save, sender=Checklist)

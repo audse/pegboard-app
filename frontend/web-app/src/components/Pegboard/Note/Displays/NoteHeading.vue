@@ -15,7 +15,7 @@ const props = defineProps<{
 
     <header class="my-4">
         <co-tag v-for="tag in note.tags" :key="tag.id" :label="tag.name" :color="tag.color.color" />
-        <h3 class="font-semibold text-xl">
+        <h3 class="font-semibold text-xl py-2 tracking-wide">
             {{ note.name }}
         </h3>
     </header>

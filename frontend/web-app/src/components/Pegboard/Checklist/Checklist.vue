@@ -30,11 +30,11 @@ const numComplete = computed( () => {
 <template>
 
 <ul class="mb-3">
-    <li class="font-bold">
-        <toolbar>
+    <li>
+        <toolbar wrap>
             {{ checklist.name }}
             <template #right>
-                <co-tag var-color="scale-text-500" class="mr-1">{{ numComplete }} / {{ checklist.items.length }}</co-tag>
+                <co-tag var-color="scale-text-500" class="mr-1 flex-none">{{ numComplete }} / {{ checklist.items.length }}</co-tag>
             </template>
         </toolbar>
     </li>
@@ -43,7 +43,7 @@ const numComplete = computed( () => {
             <input v-wave v-model="item.done" name="done" type="checkbox" class="appearance-none" />
             <i class="gg-check icon-md"></i>
         </div>
-        <label for="done" :class="['ml-2', item.done?'line-through':'']">&nbsp;{{ item.name }}&nbsp;</label>
+        <label for="done" :class="['ml-2', item.done?'line-through':'']">&nbsp; {{ item.name }} &nbsp;</label>
     </li>
 </ul>
 

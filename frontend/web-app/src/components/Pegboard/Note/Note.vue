@@ -28,7 +28,7 @@ const showModal = ref(false)
 </script>
 <template>
 
-<note-checklist v-if="note.display==='l'" :note="note" @click="showModal=true" />
+<note-checklist v-if="note.display==='l'" :note="note" @show-modal="showModal=true" />
 <note-default v-if="note.display==='n'" :note="note" @click="showModal=true" />
 <note-discussion v-if="note.display==='t'" :note="note" @show-modal="showModal=true" />
 <note-heading v-if="note.display==='h'" :note="note" @click="showModal=true" />
@@ -43,5 +43,3 @@ export default {
 }
 
 </script>
-
-        NoteDiscussion

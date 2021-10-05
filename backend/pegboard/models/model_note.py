@@ -151,6 +151,8 @@ def update_board_consumer(sender, instance, **kwargs):
         else:
             return
 
+        print('\nUpdating', group_name, '...\n')
+
         async_to_sync(channel_layer.group_send)(
             group_name,
             {

@@ -3,19 +3,24 @@
 import parseISO from 'date-fns/parseISO'
 import format from 'date-fns/format'
 
-const props = defineProps({
-    comment:Object,
-})
+import { UserComment } from '@/types'
 
-const commentDate = format(parseISO(props.comment?.date_created), 'MMM d, h:m aaaa') || ''
+const props = defineProps<{
+    comment:UserComment,
+}>()
+
+const commentDate = format(parseISO(props.comment.date_created), 'MMM d, h:m aaaa') || ''
 
 </script>
 <template>
     
-<article v-if="comment" class="pb-4">
-    <label class="font-semibold opacity-75">{{ comment.user.username }}</label>
+<article class="pb-4">
+    <section class="flex items-center">
+        <co-tag :label="comment.user.username" var-color="scale-text-500" dense />
+        <small class="ml-2 text-scale-text-500">{{ commentDate }}</small>
+    </section>
+
     <p>{{ comment.content }}</p>
-    <small class="opacity-50">{{ commentDate }}</small>
 </article>
 
 </template>

@@ -2,11 +2,16 @@
 
 import { reactive } from 'vue'
 
+import { Page } from '@/types'
 import { PageService } from '@/services'
 
-const props = defineProps({
-    page: Object,
-})
+const props = defineProps<{
+    page:Page,
+}>()
+
+const emits = defineEmits([
+    'save'
+])
 
 const editPageForm = reactive({...props.page})
 
@@ -22,7 +27,7 @@ const archivePage = async(pageId:number) => {
 <template>
 
 <h3>
-    <tag label="edit" var-color="scale-text-500" class="block w-min" />
+    <co-tag label="edit" var-color="scale-text-500" class="block w-min" />
     {{ page.name }}
 </h3>
 
@@ -52,7 +57,7 @@ const archivePage = async(pageId:number) => {
 <script lang="ts">
 
 export default {
-    name: 'EditPage',
+    name: 'edit-page',
 }
 
 </script>

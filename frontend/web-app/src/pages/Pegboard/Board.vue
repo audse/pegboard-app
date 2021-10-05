@@ -10,15 +10,15 @@ const store = useStore()
 const route = useRoute()
 const router = useRouter()
 
-let id = route.params.id
-let url = route.params.url
+let id = ref(route.params.id)
+let url = ref(route.params.url)
 
 const board = computed( () => store.state.boards.current )
 
 const showEditModal = ref(false)
 const showAddPageForm = ref(false)
 
-let connectionUrl = `ws://localhost:8000/ws/api/boards/${id}/${url}`
+let connectionUrl = `ws://localhost:8000/ws/api/boards/${id.value}/${url.value}`
 let connection = new WebSocket(connectionUrl)
 
 const openConnection = () => {
@@ -38,11 +38,10 @@ connection.onopen = () => openConnection()
 connection.onmessage = (connectionEvent) => getConnectionMssage(connectionEvent)
 
 watch(route, () => {
-    console.log(route.path, route.params)
 
-    id = route.params.id
-    url = route.params.url
-    connectionUrl = `ws://localhost:8000/ws/api/boards/${id}/${url}`
+    id.value = route.params.id
+    url.value = route.params.url
+    connectionUrl = `ws://localhost:8000/ws/api/boards/${id.value}/${url.value}`
 
     connection.close()
     connection = new WebSocket(connectionUrl)
@@ -110,8 +109,8 @@ onBeforeUnmount( () => {
 
     </template>
 
-    <section class="flex flex-wrap">
-        <page v-for="page in board.pages" :key="page.id" :page="page" class="flex-none w-full md:w-1/2 lg:w-4/12" />
+    <section class="flex overflow-x-scroll h-auto no-scrollbar">
+        <page v-for="page in board.pages" :key="page.id" :page="page" class="flex-none w-11/12 md:w-5/12 lg:w-4/12" />
     </section>
 
     <modal :show="showEditModal" @hide="showEditModal=false">
@@ -122,8 +121,10 @@ onBeforeUnmount( () => {
         <section class="flex items-center pl-2">
             <add-note :board-id="board.id" class="w-4/12" />
         </section>
-        <section class="flex flex-wrap">
-            <note v-for="note in board.notes" :key="note.id" :note="note" />
+        <section class="flex flex-wrap pl-2">
+            <div v-for="note in board.notes" :key="note.id" class="flex-none w-11/12 md:w-5/12 lg:w-4/12">
+                <note :note="note" />
+            </div>
         </section>
     </article>
 

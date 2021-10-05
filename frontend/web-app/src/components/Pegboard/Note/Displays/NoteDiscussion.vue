@@ -12,13 +12,20 @@ const emits = defineEmits([
     'show-modal'
 ])
 
+const showModal = (event:any) => {
+    event.stopPropagation()
+    if ( !event.currentTarget.className.includes('comment-form') ) {
+        emits('show-modal')
+    }
+}
+
 </script>
 <template>
     
-<card bg="primary" hover>
+<card bg="primary" hover @click="showModal">
 
     <template #header>
-        <toolbar @click="$emit('show-modal')">
+        <toolbar>
             <co-tag v-for="tag in note.tags" :key="tag.id" :label="tag.name" :color="tag.color.color" />
             <strong class="block font-medium mt-1">{{ note.name }}</strong>
             <template #right>
@@ -27,10 +34,8 @@ const emits = defineEmits([
         </toolbar>
     </template>
 
-    <section class="max-h-60 overflow-y-scroll">
-        <comments :comments="note.comments" :noteId="note.id" />
-    </section>
-    <add-comment :note-id="noteId" class="pb-2" />
+    <comments :comments="note.comments" :note-id="note.id" />
+    <add-comment :note-id="note.id" class="comment-form pb-2" @click="showModal" />
 
 </card>
 

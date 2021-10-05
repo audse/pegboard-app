@@ -4,6 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
+@import 'utilities.scss';
 @import 'typography.scss';
 @import 'animations.scss';
 @import 'buttons.scss';
@@ -39,22 +40,4 @@ body, html, #app {
 
 a {
     color: var(--info);
-}
-
-form label {
-    @apply font-bold mr-4;
-}
-
-form input, form textarea {
-    @apply px-4 py-1 my-1 rounded-xl placeholder-scale-text-300;
-    background: var(--scale-secondary-300);
-    width: 100%;
-}
-
-form input:focus-visible, form textarea:focus-visible {
-    outline-color: var(--info);
-}
-
-form textarea {
-    @apply py-3;
 }

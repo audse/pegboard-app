@@ -14,7 +14,6 @@ const emits = defineEmits([
 ])
 
 const hideModal = (event:any) => {
-    console.log(event.target.className)
     if ( event.target.className === 'overlay' || event.target.className.includes('wrapper') ) {
         emits('hide')
     }
@@ -31,7 +30,7 @@ const sidebarHidden = computed( () => store.state.auth.preferences.sidebarHidden
 
 <template>
     
-<div class="co-modal-wrapper">
+<div :class="['co-modal-wrapper no-scrollbar', !show?'h-0 w-0':'w-full h-full']">
     <div :class="['overlay', !show?'hidden':'']" @click="hideModal"></div>
 
     <transition name="translate-fade">
@@ -42,7 +41,7 @@ const sidebarHidden = computed( () => store.state.auth.preferences.sidebarHidden
 
                 <label v-for="tab of tabs" :key="`label-${tab}`">
                     <slot :name="`label-${tab}`">
-                        <co-button @click="activeTab=tab" :color="tab===activeTab?'emphasis':'scale-text-500'" :subtle="tab!==activeTab" :light="tab==activeTab">
+                        <co-button @click="activeTab=tab" :color="tab===activeTab?'emphasis':'scale-text-500'" :subtle="tab!==activeTab" :light="tab==activeTab" class="mr-1">
                             {{ tab }}
                         </co-button>
                     </slot>
@@ -51,12 +50,10 @@ const sidebarHidden = computed( () => store.state.auth.preferences.sidebarHidden
 
             <slot></slot>
 
-            <section v-for="tab of tabs" :key="`section-${tab}`">
+            <section v-for="tab of tabs" :key="`section-${tab}`" class="pt-6">
                 <!-- <transition name="scale" mode="out-in"> -->
                     <article v-if="tab===activeTab">
-                        <slot :name="`section-${tab}`">
-                            ...
-                        </slot>
+                        <slot :name="`section-${tab}`" />
                     </article>
                 <!-- </transition> -->
             </section>
@@ -89,12 +86,15 @@ export default {
     z-index: 1000;
 }
 
+.co-modal-wrapper {
+    overflow: hidden;
+}
+
 .co-modal {
     @apply top-16 bottom-16 right-16;
     position: fixed;
     z-index: 1001;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    max-height: 100%;
 }
 
 </style>

@@ -28,6 +28,15 @@ export type ChecklistItem = {
     name:string|null,
 }
 
+export type ChecklistForm = {
+    board?:number,
+    page?:number,
+    note?:number,
+
+    name:string,
+    items:Array<ChecklistItem>
+}
+
 export type Checklist = {
     id:number,
     user:UserSimple,

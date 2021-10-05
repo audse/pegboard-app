@@ -17,14 +17,14 @@ const slotSection = `section-${props.note?.name}`
 </script>
 <template>
 
-<modal :show="show" :tabs="[note.name, 'Edit', 'Checklists']" @hide="this.$emit('hide')">
+<modal :show="show" :tabs="[note.name, 'Edit', 'Checklists']" @hide="$emit('hide')">
 
     <template v-slot:[slotSection]>
         {{ note.name }}
     </template>
 
     <template #section-Edit>
-        <edit-note :note="note" />
+        <edit-note :note="note" @save="$emit('hide')" />
     </template>
 
 </modal>

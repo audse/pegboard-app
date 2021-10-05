@@ -6,6 +6,7 @@ const props = defineProps<{
     varColor?:string,
     color?:string,
     label?:string,
+    dense?:boolean,
 }>()
 
 const changeOpacity = (color:string, opacity:number) => {
@@ -19,7 +20,7 @@ const bgColor = props.varColor ? ref(`var(--${props.varColor}-opacity-100`) : re
 </script>
 <template>
     
-<span class="tag">
+<span :class="['tag', dense?'dense':'']">
     {{ label }}
     <slot />
 </span>
@@ -35,11 +36,15 @@ export default {
 <style scoped>
 
 .tag {
-    @apply px-2 my-3 font-semibold uppercase rounded-full tracking-widest;
+    @apply my-1 font-semibold uppercase rounded-full tracking-widest;
     background-color: v-bind('bgColor');
     color: v-bind('textColor');
     font-size: 0.7em;
     padding: 2pt 6pt;
+}
+
+.dense {
+    padding: 0 4pt;
 }
 
 </style>

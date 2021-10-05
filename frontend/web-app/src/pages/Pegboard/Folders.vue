@@ -56,11 +56,16 @@ const showAddFolderForm = ref(false)
         <folder v-for="folder of folders" :key="folder.id" :folder="folder" />
     </section>
 
-    <section class="mt-6">
+    <section class="mt-6 flex">
         <h2 class="py-4">Unsorted</h2>
-        <card v-for="board of unsortedBoards" :key="board.id">
-            <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }">{{ board.name }}</router-link>
-        </card>
+        <section v-for="board of unsortedBoards" :key="board.id" class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+            <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }">
+                <card hover bg="primary">
+                    <template #header>{{ board.name }}</template>
+                    {{ board.description }}
+                </card>
+            </router-link>
+        </section>
     </section>
 
     <section>

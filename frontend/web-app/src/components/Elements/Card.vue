@@ -16,7 +16,7 @@ const borderStyle = props.border ? `1.5pt solid var(--${props.border})` : 'trans
 <template>
 
 <div :class="['wrapper', hover?'wrapper-hover':'']">
-<article v-wave="{initialOpacity:hover?0.1:0,finalOpacity:0}">
+<article v-wave="{initialOpacity:hover?0.1:0,finalOpacity:0}" class="no-scrollbar">
     <header v-if="this.$slots.header">
         <slot name="header"></slot>
     </header>
@@ -47,6 +47,7 @@ export default {
 .wrapper {
     @apply p-2;
     transition: transform 200ms;
+    max-height: 100%;
 }
 
 .wrapper-hover:hover {
@@ -58,6 +59,8 @@ article {
 
     background-color: v-bind(bgColor);
     border: v-bind(borderStyle);
+    max-height: 100%;
+    overflow: scroll;
 }
 
 header, footer, .content, .actions {

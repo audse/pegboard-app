@@ -9,7 +9,7 @@
         <slot name="header" />
     </header>
 
-    <section class="lg:pl-6 lg:pr-10 pt-8">
+    <section class="pl-4 md:pl-6 lg:pl-6 lg:pr-10 pt-8">
         <slot />
     </section>
 

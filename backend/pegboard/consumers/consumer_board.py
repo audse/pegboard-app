@@ -19,6 +19,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
         self.board_url = self.scope['url_route']['kwargs']['board_url']
 
         self.board_group_name = 'board-'+str(self.board_id)+'-'+self.board_url
+        print('\nConnected to', self.board_group_name, '!\n')
 
         self.board = await self.retrieve()
 
@@ -56,6 +57,7 @@ class BoardConsumer(AsyncWebsocketConsumer):
         }))
 
     async def update(self, event):
+        print('Updating websocket...')
         self.board = await self.retrieve()
         await self.channel_layer.group_send(
             self.board_group_name,

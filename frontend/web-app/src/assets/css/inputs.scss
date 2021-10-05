@@ -1,3 +1,51 @@
+
+form label {
+    @apply font-bold mr-4;
+}
+
+form input, form textarea {
+    @apply px-4 py-1 my-1 rounded-xl placeholder-scale-text-300;
+    background: var(--scale-secondary-300);
+    width: 100%;
+}
+
+form input:focus-visible, form textarea:focus-visible {
+    outline-color: var(--info);
+}
+
+form textarea {
+    @apply py-3;
+    min-height: 100pt;
+}
+
+form select {
+    @apply appearance-none focus:border-alert px-2 py-1;
+    min-width: 140pt;
+    position: relative;
+    isolation: isolate;
+}
+
+form .select-control {
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+    isolation: isolate;
+}
+
+form .select-control::after {
+    content: "";
+    position: absolute;
+    width: 0px;
+    height: 0px;
+    border-top: 6pt solid var(--text);
+    border-right: 4pt solid transparent;
+    border-bottom: 4pt solid transparent;
+    border-left: 4pt solid transparent;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-2pt);
+}
+
 .checkbox-control {
     transition: transform 200ms;
 }
@@ -11,10 +59,6 @@
     height: 24pt;
     position: relative;
 }
-
-// .checkmark:hover {
-//     transform: scale(1.025, 1.025);
-// }
 
 .checkmark input, .checkmark i {
     position: absolute;

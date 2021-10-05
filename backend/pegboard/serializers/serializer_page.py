@@ -9,10 +9,10 @@ class PageSerializer ( serializers.ModelSerializer ):
 
     board = serializers.PrimaryKeyRelatedField(queryset=Board.objects.all(), allow_null=True)
 
-    notes = NoteSerializer(many=True, required=False)
+    notes = NoteSerializer(many=True, required=False, read_only=True)
     
-    comments = CommentSerializer(many=True, required=False)
-    checklists = ChecklistSerializer(many=True, required=False)
+    comments = CommentSerializer(many=True, required=False, read_only=True)
+    checklists = ChecklistSerializer(many=True, required=False, read_only=True)
 
     class Meta:
         model = Page

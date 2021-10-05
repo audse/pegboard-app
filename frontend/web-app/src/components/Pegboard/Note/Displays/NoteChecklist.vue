@@ -9,17 +9,28 @@ const props = defineProps<{
     note:Note,
 }>()
 
+const emits = defineEmits([
+    'show-modal'
+])
+
+const showModal = (event:any) => {
+    event.stopPropagation()
+    if ( !event.currentTarget.className.includes('checklists') ) {
+        emits('show-modal')
+    }
+}
+
 </script>
 <template>
     
-<card bg="primary" hover>
+<card bg="primary" hover @click="showModal">
 
     <template #header>
         <co-tag v-for="tag in note.tags" :key="tag.id" :label="tag.name" :color="tag.color.color" />
         <strong class="block font-semibold mt-1">{{ note.name }}</strong>
     </template>
 
-    <section v-if="note.checklists.length > 0" class="py-2 mt-2 border-scale-secondary-300 border-t">
+    <section @click="showModal" v-if="note.checklists.length > 0" class="checklists py-2 mt-2 border-scale-secondary-300 border-t">
         <checklist v-for="checklist in note.checklists" :checklist="checklist" :key="checklist.id" />
     </section>
 
