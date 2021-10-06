@@ -2,19 +2,20 @@
 
 import { reactive } from 'vue'
 
+import { Board, Page, Note } from '@/types'
 import { CommentService } from '@/services'
 
-const props = defineProps({
-    boardId:Number,
-    pageId:Number,
-    noteId:Number,
-})
+const props = defineProps<{
+    board?:Board,
+    page?:Page,
+    note?:Note,
+}>()
 
 const addCommentForm = reactive({
     content: '',
-    board: props.boardId || null,
-    page: props.pageId || null,
-    note: props.noteId || null,
+    board: props.board?.id,
+    page: props.page?.id,
+    note: props.note?.id,
 })
 
 const addComment = async (data:object) => {
@@ -34,7 +35,7 @@ const addComment = async (data:object) => {
 <script lang="ts">
 
 export default {
-    name: 'AddComment'
+    name: 'add-comment'
 }
 
 </script>

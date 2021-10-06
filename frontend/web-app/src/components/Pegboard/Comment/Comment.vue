@@ -27,7 +27,7 @@ const commentDate = format(parseISO(props.comment.date_created), 'MMM d, h:m aaa
 <script lang="ts">
 
 export default {
-    name: 'ViewComment'
+    name: 'view-comment'
 }
 
 </script>

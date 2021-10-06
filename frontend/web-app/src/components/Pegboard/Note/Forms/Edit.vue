@@ -17,14 +17,14 @@ const emits = defineEmits([
 const displayChoices = [
     { value: 'n', key: 'Note' },
     { value: 'h', key: 'Heading' },
-    { value: 'i', key: 'Image' },
-    { value: 'c', key: 'Checkbox' },
-    { value: 'a', key: 'Assignee' },
+    // { value: 'i', key: 'Image' },
+    // { value: 'c', key: 'Checkbox' },
+    // { value: 'a', key: 'Assignee' },
     { value: 'r', key: 'Readme' },
     { value: 's', key: 'Small' },
     { value: 'l', key: 'Checklist' },
-    { value: 'd', key: 'Date' },
-    { value: 'o', key: 'Countdown' },
+    // { value: 'd', key: 'Date' },
+    // { value: 'o', key: 'Countdown' },
     { value: 't', key: 'Discussion' },
     
 ]
@@ -74,7 +74,7 @@ const archiveNote = async(noteId:number) => {
         </section>
 
         <section class="pt-4 flex items-center">
-            <label for="display" class="flex-none w-20">Display {{ editNoteForm.display }}</label>
+            <label for="display" class="flex-none w-20">Display</label>
             <div class="select-control">
                 <select v-model="editNoteForm.display" name="display" class="bg-scale-text-100">
                     <option v-for="choice of displayChoices" :key="choice.value" :value="choice.value">

@@ -2,12 +2,13 @@
 
 import { computed } from 'vue'
 
-const props = defineProps({
-    bg:String,
-    border:String,
-    centerContent:Boolean,
-    hover:Boolean,
-})
+const props = defineProps<{
+    bg?:string,
+    border?:string,
+    centerContent?:boolean,
+    hover?:boolean,
+    dense?:boolean,
+}>()
 
 const bgColor = computed( () => props.bg ? `var(--${props.bg})` : 'transparent' )
 const borderStyle = props.border ? `1.5pt solid var(--${props.border})` : 'transparent'
@@ -16,7 +17,7 @@ const borderStyle = props.border ? `1.5pt solid var(--${props.border})` : 'trans
 <template>
 
 <div :class="['wrapper', hover?'wrapper-hover':'']">
-<article v-wave="{initialOpacity:hover?0.1:0,finalOpacity:0}" class="no-scrollbar">
+<article v-wave="{initialOpacity:hover?0.1:0,finalOpacity:0}" :class="['no-scrollbar', dense?'card-dense':'card']">
     <header v-if="this.$slots.header">
         <slot name="header"></slot>
     </header>
@@ -54,7 +55,7 @@ export default {
     transform: scale(1.02, 1.02);
 }
 
-article {
+article.card, article.card-dense {
     @apply shadow-md rounded-2xl;
 
     background-color: v-bind(bgColor);
@@ -63,7 +64,21 @@ article {
     overflow: scroll;
 }
 
-header, footer, .content, .actions {
+article.card-dense {
+    @apply rounded-xl;
+}
+
+article.card header,
+article.card footer,
+article.card .content,
+article.card .actions {
+    @apply px-6 py-1;
+}
+
+article.card-dense header,
+article.card-dense footer,
+article.card-dense .content,
+article.card-dense .actions {
     @apply px-6 py-1;
 }
 
@@ -71,12 +86,24 @@ header, footer, .content, .actions {
     @apply flex items-center justify-center;
 }
 
-header {
+article.card header {
     @apply pt-4;
 }
 
-footer {
+article.card-dense header {
+    @apply pt-0;
+}
+
+article.card footer {
     @apply pb-4;
+}
+
+article.card-dense .content {
+    @apply bg-emphasis;
+}
+
+article.card-dense footer {
+    @apply pb-0;
 }
 
 </style>
