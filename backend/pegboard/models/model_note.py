@@ -43,7 +43,7 @@ class NoteManager ( models.Manager ):
     use_in_migrations = True
 
     def get_queryset(self):
-        return NoteQuerySet(self.model, using=self._db).filter(date_archived__isnull=True)
+        return NoteQuerySet(self.model, using=self._db).filter(date_archived__isnull=True).order_by('order').order_by('-date_updated')
 
     def list(self, user):
         return self.get_queryset().list(user)

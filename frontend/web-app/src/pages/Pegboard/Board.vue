@@ -99,24 +99,21 @@ onBeforeUnmount( () => {
 
         <section>
             <expandable :to-show="showAddPageForm">
-                <add-page :board-id="board.id" class="mt-6 p-4 rounded-2xl bg-scale-secondary-700" />
+                <add-page :board="board" class="mt-6 p-4 rounded-2xl bg-scale-secondary-700" />
             </expandable>
         </section>
 
     </template>
 
     <section class="flex overflow-x-scroll h-auto no-scrollbar">
-        <page v-for="page in board.pages" :key="page.id" :page="page" class="flex-none w-11/12 md:w-5/12 lg:w-4/12" />
+        <page v-for="page in board.pages" :key="page.id" :page="page" :board="board" class="flex-none w-11/12 md:w-5/12 lg:w-4/12" />
     </section>
 
-    <!-- <modal :show="showEditModal" @hide="showEditModal=false">
-        <edit-board :board="board" :tags="board.tags" @save="showEditModal=false" />
-    </modal> -->
     <board-modal :board="board" :show="showEditModal" @hide="showEditModal=false" />
 
     <article v-if="board?.notes?.length > 0" class="mt-8">
         <section class="flex items-center pl-2">
-            <add-note :board-id="board.id" class="w-4/12" />
+            <add-note :board="board" class="w-4/12" />
         </section>
         <section class="flex flex-wrap pl-2">
             <div v-for="note in board.notes" :key="note.id" class="flex-none w-11/12 md:w-5/12 lg:w-4/12">

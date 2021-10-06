@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 
 import { Board } from '@/types'
-import { AddTag } from '@/components'
+import { AddTag, AddColor } from '@/components'
 
 const props = defineProps<{
     board:Board,
@@ -22,17 +22,32 @@ const tabsSections = (index:number) => `section-${tabs[index]}`
 <modal :tabs="tabs" :show="show" @hide="$emit('hide')">
 
     <template v-slot:[tabsSections(0)]>
-
+        
     </template>
 
     <template v-slot:[tabsSections(1)]>
         <h3>Tags</h3>
         <section class="pt-4">
-            <co-tag v-for="tag in board.tags" :key="tag.id" :label="tag.name" :color="tag.color.color" />
+            <co-tag lg v-for="tag in board.tags" :key="tag.id" :label="tag.name" :tag="tag" class="m-1" />
         </section>
 
-        <expandable class="pt-8" label="Add Tag">
-            <add-tag :board="board" />
+        <expandable class="mt-8" label="Add Tag">
+            <card bg="scale-secondary-500" class="mt-2">
+                <add-tag :board="board" />
+            </card>
+        </expandable>
+    </template>
+
+    <template v-slot:[tabsSections(2)]>
+        <h3>Color Palette</h3>
+        <section class="pt-4">
+            <co-tag lg v-for="color in board.colors" :key="color.id" :label="color.name" :right="`#${color.code}`" :color="color.code" class="m-1" />
+        </section>
+
+        <expandable class="mt-8" label="Add Color">
+            <card bg="scale-secondary-500" class="mt-2">
+                <add-color :board="board" />
+            </card>
         </expandable>
     </template>
 

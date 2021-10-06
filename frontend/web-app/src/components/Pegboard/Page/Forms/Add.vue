@@ -2,20 +2,21 @@
 
 import { reactive } from 'vue'
 
+import { Board } from '@/types'
 import { PageService } from '@/services'
 
-const props = defineProps({
-    boardId: Number,
-})
+const props = defineProps<{
+    board:Board,
+}>()
 
 const addPageForm = reactive({
     name: '',
     description: '',
-    board: props.boardId || null,
+    board: props.board.id || null,
 })
 
 const addPage = async (data:{name:string,board:number|undefined}) => {
-    data.board = props.boardId
+    data.board = props.board.id
     await PageService.create(data)
     addPageForm.name = ''
 }

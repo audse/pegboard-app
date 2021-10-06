@@ -58,7 +58,7 @@ class Color ( models.Model ):
     )
 
     name = models.CharField(max_length=128)
-    color = models.CharField(max_length=6)
+    code = models.CharField(max_length=6)
 
     def __str__ ( self ):
         return self.name

@@ -26,7 +26,7 @@ const showModal = (event:any) => {
 <card bg="primary" hover @click="showModal">
 
     <template #header>
-        <co-tag v-for="tag in note.tags" :key="tag.id" :label="tag.name" :color="tag.color.color" />
+        <co-tag v-for="tag in note.tags" :key="tag.id" :label="tag.name" :tag="tag" />
         <strong class="block font-semibold mt-1">{{ note.name }}</strong>
     </template>
 

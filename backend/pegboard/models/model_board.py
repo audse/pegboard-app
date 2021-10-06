@@ -91,12 +91,6 @@ class Board ( models.Model ):
 
     order = models.IntegerField(default=0)
 
-    color_palette = models.ManyToManyField(
-        'Color',
-        blank=True,
-        related_name='color_boards'
-    )
-
     default_note_display = models.CharField(max_length=3, choices=DISPLAY_CHOICES, default='n')
 
     date_created = models.DateTimeField('date created', default=timezone.now)

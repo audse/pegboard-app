@@ -2,20 +2,20 @@
 
 import { ref, watch, Ref } from 'vue'
 
-import { ChecklistForm } from '@/types'
+import { ChecklistForm, Board, Page, Note } from '@/types'
 
 const props = defineProps<{
-    boardId?:number,
-    pageId?:number,
-    noteId?:number,
+    board?:Board,
+    page?:Page,
+    note?:Note,
 }>()
 
 const checklist:Ref<ChecklistForm> = ref({
     name: 'Checklist',
     items: [],
-    board: props.boardId,
-    page: props.pageId,
-    note: props.noteId,
+    board: props.board?.id,
+    page: props.page?.id,
+    note: props.note?.id,
 })
 
 const hasChecklist = ref(false)

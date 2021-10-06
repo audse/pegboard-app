@@ -18,7 +18,7 @@ const truncatedContent = computed( () => {
 <card bg="primary" hover>
 
     <template #header>
-        <co-tag v-for="tag in note.tags" :key="tag.id" :label="tag.name" :color="tag.color.color" />
+        <co-tag v-for="tag in note.tags" :key="tag.id" :label="tag.name" :tag="tag" />
         <strong class="block font-medium mt-1">{{ note.name }}</strong>
     </template>
 

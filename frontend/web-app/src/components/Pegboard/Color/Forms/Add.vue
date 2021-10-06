@@ -2,16 +2,17 @@
 
 import { reactive } from 'vue'
 
+import { Board } from '@/types'
 import { ColorService } from '@/services'
 
-const props = defineProps({
-    boardId: Number,
-})
+const props = defineProps<{
+    board:Board,
+}>()
 
 const addColorForm = reactive({
     name: '',
-    color: '',
-    board: props.boardId || undefined
+    code: '',
+    board: props.board.id || undefined
 })
 
 const addColor = async (data:object) => {
@@ -21,19 +22,23 @@ const addColor = async (data:object) => {
 </script>
 <template>
 
-<form @submit.prevent="addColor(addColorForm)" class="flex items-center">
-    <label for="name" class="flex-none">Color Name</label>
-    <input v-model="addColorForm.name" name="name" type="text" placeholder="Color Name" />
-    <label for="name" class="flex-none">Color Hex Code</label>
-    <input v-model="addColorForm.color" name="name" type="text" placeholder="Color Hex Code" />
-    <button type="submit" class="flex-none">Add Color</button>
+<form @submit.prevent="addColor(addColorForm)">
+    <section class="flex items-center my-2">
+        <label for="name" class="flex-none w-20">Name</label>
+        <input v-model="addColorForm.name" name="name" type="text" class="bg-main" />
+    </section>
+    <section class="flex items-center my-2 mb-6">
+        <label for="name" class="flex-none w-20">Hex Code</label>
+        <co-tag label="#" /><input v-model="addColorForm.code" name="name" type="text" placeholder="FEFEFE" class="bg-main" />
+    </section>
+    <co-button type="submit" color="emphasis" class="block my-2">Add Color</co-button>
 </form>
     
 </template>
 <script lang="ts">
 
 export default {
-    name: 'AddColor'
+    name: 'add-color'
 }
 
 </script>

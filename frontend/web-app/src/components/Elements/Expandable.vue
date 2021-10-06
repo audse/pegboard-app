@@ -3,7 +3,7 @@
 import { ref } from 'vue'
 
 const props = defineProps<{
-    toShow:Boolean,
+    toShow?:boolean,
     label?:string
 }>()
 

@@ -6,9 +6,9 @@ class CommentSerializer ( serializers.ModelSerializer ):
 
     model = Comment
 
-    board = serializers.PrimaryKeyRelatedField(queryset=Board.objects.all(), allow_null=True)
-    page = serializers.PrimaryKeyRelatedField(queryset=Page.objects.all(), allow_null=True)
-    note = serializers.PrimaryKeyRelatedField(queryset=Note.objects.all(), allow_null=True)
+    board = serializers.PrimaryKeyRelatedField(queryset=Board.objects.all(), required=False, allow_null=True)
+    page = serializers.PrimaryKeyRelatedField(queryset=Page.objects.all(), required=False, allow_null=True)
+    note = serializers.PrimaryKeyRelatedField(queryset=Note.objects.all(), required=False, allow_null=True)
 
     class Meta:
         model = Comment

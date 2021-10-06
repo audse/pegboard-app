@@ -11,10 +11,10 @@ const props = defineProps<{
 </script>
 <template>
 
-<card bg="primary" hover>
+<card bg="scale-text-50" hover>
 
     <header class="my-4">
-        <co-tag v-for="tag in note.tags" :key="tag.id" :label="tag.name" :color="tag.color.color" />
+        <co-tag v-for="tag in note.tags" :key="tag.id" :label="tag.name" :tag="tag" class="mr-2" />
         <h3 class="font-semibold text-xl py-2 tracking-wide">
             {{ note.name }}
         </h3>

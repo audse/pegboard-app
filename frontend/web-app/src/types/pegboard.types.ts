@@ -10,7 +10,7 @@ export type Color = {
     board:number,
     
     name:string,
-    color:string,
+    code:string,
 }
 
 export type Tag = {
@@ -19,7 +19,7 @@ export type Tag = {
 
     board:number,
 
-    color:Color,
+    color:number,
     name:string,
 }
 
@@ -136,15 +136,15 @@ export type Board = {
     url:string,
     order:number,
 
-    color_palette:Array<Color>,
     default_note_display:string,
 
     date_created:string,
     date_updated:string,
     date_archived:string|null,
 
-    comments:Array<UserComment>
+    comments:Array<UserComment>,
     checklists:Array<Checklist>,
+    colors:Array<Color>,
 }
 
 export type Folder = {

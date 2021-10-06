@@ -48,6 +48,7 @@ def serialize_and_create (serializer, request):
             return Response(serialized_request.errors, status=400)
 
     except Exception as e:
+        print('Error creating object:', e)
         return Response(str(e), status=500)
 
 def serialize_and_update(serializer, object_to_update, request):

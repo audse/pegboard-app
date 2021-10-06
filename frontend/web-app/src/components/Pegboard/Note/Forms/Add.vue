@@ -2,17 +2,20 @@
 
 import { reactive } from 'vue'
 
+import { Board, Page } from '@/types'
 import { NoteService } from '@/services'
 
-const props = defineProps({
-    boardId: Number,
-    pageId: Number,
-})
+const props = defineProps<{
+    board?:Board,
+    page?:Page,
+    display?:string,
+}>()
 
 const addNoteForm = reactive({
     name: '',
-    board: props.boardId || null,
-    page: props.pageId || null,
+    board: props.board?.id || null,
+    page: props.page?.id || null,
+    display: props.display || 'n'
 })
 
 const addNote = async (data:object) => {

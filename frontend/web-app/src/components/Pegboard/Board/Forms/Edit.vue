@@ -58,7 +58,7 @@ const archiveBoard = async(boardId:number) => {
 <script lang="ts">
 
 export default {
-    name: 'EditBoard',
+    name: 'edit-board',
 }
 
 </script>

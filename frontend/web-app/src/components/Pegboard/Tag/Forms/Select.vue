@@ -42,10 +42,12 @@ const isTagInSelected = (tag:Tag, array:Array<Tag>) => {
 <template>
 
 <co-tag 
+    hover
     v-for="tag in tags"
     :key="tag.id" 
-    :label="tag.name" :color="tag.color.color" 
-    :class="isTagInSelected(tag, selectedTags)?'selected tag':'tag'"
+    :label="tag.name"
+    :tag="tag"
+    :class="[isTagInSelected(tag, selectedTags)?'selected tag':'tag', 'mr-1 mb-1']"
     @click="updateSelectedTags(tag, selectedTags)" 
 />
 
@@ -62,10 +64,13 @@ export default {
 
 .tag {
     @apply cursor-pointer;
+    border: 2px solid transparent;
+    transition: border 200ms;
 }
 
 .selected {
-    border: 2px solid red;
+    @apply backdrop-filter backdrop-invert-5;
+    border-color: var(--alert);
 }
 
 </style>

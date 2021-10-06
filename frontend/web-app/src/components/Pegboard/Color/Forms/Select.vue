@@ -7,20 +7,20 @@ import { Color } from '@/types'
 import { ColorService } from '@/services'
 
 const props = defineProps<{
-    modelValue:number,
+    modelValue?:number,
     colors:Array<Color>
 }>()
 
 </script>
 <template>
 
-<co-tag
+<co-tag hover
 v-for="color in colors"
 :key="color.id"
 @click="this.$emit('update:modelValue', color.id)"
 :label="color.name"
-:color="color.color"
-:class="modelValue===color.id?'selected':''"
+:color="color.code"
+:class="['tag', modelValue===color.id?'selected':'', 'cursor-pointer m-1']"
 />
 
 </template>
@@ -34,8 +34,15 @@ export default {
 
 <style scoped>
 
+.tag {
+    @apply cursor-pointer;
+    border: 2px solid transparent;
+    transition: border 200ms;
+}
+
 .selected {
-    border: 2px solid red;
+    @apply backdrop-filter backdrop-invert-5;
+    border-color: var(--alert);
 }
 
 </style>

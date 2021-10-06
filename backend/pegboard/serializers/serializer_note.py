@@ -6,8 +6,8 @@ from ..models import Note, Board, Page
 class NoteSerializer ( serializers.ModelSerializer ):
     model = Note
 
-    board = serializers.PrimaryKeyRelatedField(queryset=Board.objects.all(), allow_null=True)
-    page = serializers.PrimaryKeyRelatedField(queryset=Page.objects.all(), allow_null=True)
+    board = serializers.PrimaryKeyRelatedField(queryset=Board.objects.all(), required=False, allow_null=True)
+    page = serializers.PrimaryKeyRelatedField(queryset=Page.objects.all(), required=False, allow_null=True)
 
     tags = TagSerializer(many=True, required=False)
     

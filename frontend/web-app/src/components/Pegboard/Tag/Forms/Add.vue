@@ -12,8 +12,8 @@ const props = defineProps<{
 
 const addTagForm = reactive({
     name: '',
-    color: undefined,
-    board: props.board.id || undefined
+    color: null,
+    board: props.board.id
 })
 
 const addTag = async (data:object) => {
@@ -26,15 +26,15 @@ const addTag = async (data:object) => {
 <form @submit.prevent="addTag(addTagForm)">
     <section class="flex items-center my-2">
         <label for="name" class="flex-none w-20">Tag Name</label>
-        <input v-model="addTagForm.name" name="name" type="text" placeholder="Tag Name" />
+        <input v-model="addTagForm.name" name="name" type="text" class="bg-main" />
     </section>
     
-    <section class="flex items-center my-2">
+    <section class="flex items-center my-2 mb-6">
         <label for="name" class="flex-none w-20">Color</label>
         <select-color v-model="addTagForm.color" :colors="board.colors" />
     </section>
     
-    <button type="submit" class="flex-none">Add Tag</button>
+    <co-button type="submit" color="emphasis" class="block my-2">Add Tag</co-button>
 </form>
     
 </template>

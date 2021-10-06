@@ -26,7 +26,7 @@ const showModal = (event:any) => {
 
     <template #header>
         <toolbar>
-            <co-tag v-for="tag in note.tags" :key="tag.id" :label="tag.name" :color="tag.color.color" />
+            <co-tag v-for="tag in note.tags" :key="tag.id" :label="tag.name" :tag="tag" />
             <strong class="block font-medium mt-1">{{ note.name }}</strong>
             <template #right>
                 <co-tag v-if="note.comments.length>0" :label="note.comments.length.toString()" var-color="alert" />

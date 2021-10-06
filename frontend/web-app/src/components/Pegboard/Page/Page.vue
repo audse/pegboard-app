@@ -2,11 +2,13 @@
 
 import { ref } from 'vue'
 
+import { Board, Page } from '@/types'
 import { EditPage, Note, AddNote, Comments } from '@/components'
 
-const props = defineProps({
-    page: Object,
-})
+const props = defineProps<{
+    board?:Board,
+    page:Page,
+}>()
 
 const showEditModal = ref(false)
 
@@ -16,7 +18,7 @@ const showEditModal = ref(false)
 <section>
 
     <toolbar>
-        <span class="pl-2">
+        <span class="pl-2 mb-2">
             <h3 class="text-base tracking-wide">{{ page.name }}</h3>
             <h4 class="font-normal text-base text-scale-text-500">{{ page.description }}</h4>
         </span>
@@ -29,7 +31,7 @@ const showEditModal = ref(false)
         <note :note="note" />
     </section>
     
-    <add-note :page-id="page.id" class="pb-8" />
+    <add-note :page="page" :display="board?.default_note_display" class="pb-8" />
 
     <modal :show="showEditModal" @hide="showEditModal=false">
         <edit-page :page="page" @save="showEditModal=false" />

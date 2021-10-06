@@ -7,7 +7,7 @@ class PageSerializer ( serializers.ModelSerializer ):
     
     model = Page
 
-    board = serializers.PrimaryKeyRelatedField(queryset=Board.objects.all(), allow_null=True)
+    board = serializers.PrimaryKeyRelatedField(queryset=Board.objects.all(), required=False, allow_null=True)
 
     notes = NoteSerializer(many=True, required=False, read_only=True)
     

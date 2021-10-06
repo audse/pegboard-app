@@ -4,7 +4,7 @@ import { reactive, Ref, ref } from 'vue'
 
 import { SelectTags, AddChecklist } from '@/components'
 import { NoteService, ChecklistService } from '@/services'
-import { Note } from '@/types'
+import { Note, Board } from '@/types'
 
 const props = defineProps<{
     note:Note,
@@ -91,7 +91,7 @@ const archiveNote = async(noteId:number) => {
 
         <section class="pt-16">
             {{ newChecklist }}
-            <add-checklist :note-id="note.id" @update-checklist="updateChecklist" />
+            <add-checklist :note="note" @update-checklist="updateChecklist" />
         </section>
 
         <section class="pt-8">
@@ -110,7 +110,7 @@ const archiveNote = async(noteId:number) => {
 <script lang="ts">
 
 export default {
-    name: 'EditNote',
+    name: 'edit-note',
 }
 
 </script>

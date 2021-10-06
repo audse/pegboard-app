@@ -34,7 +34,7 @@ const numComplete = computed( () => {
         <toolbar wrap>
             {{ checklist.name }}
             <template #right>
-                <co-tag var-color="scale-text-500" class="mr-1 flex-none">{{ numComplete }} / {{ checklist.items.length }}</co-tag>
+                <co-tag var-color="alert" class="mr-1 flex-none">{{ numComplete }} / {{ checklist.items.length }}</co-tag>
             </template>
         </toolbar>
     </li>

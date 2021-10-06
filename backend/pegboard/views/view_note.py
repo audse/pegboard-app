@@ -17,6 +17,8 @@ from .utils import serialize_and_create, serialize_and_update, serialize_query, 
 class NoteViewSet ( viewsets.ModelViewSet ):
     authentication_classes = [TokenAuthentication]
 
+    # TODO date_archived filtering should go here
+    # rather than within models
     queryset = Note.objects.all()
     serializer_class = NoteSerializer
 
