@@ -10,8 +10,8 @@ const props = defineProps<{
 <template>
 
 <transition name="scale" mode="out-in">
-    <i v-if="switch" :class="[iconTrue?iconTrue:'gg-math-minus', 'block flex-none mr-2']"></i>
-    <i v-else :class="[iconFalse?iconFalse:'gg-math-plus', 'gg-math-minus block flex-none mr-2']"></i>
+    <i v-if="switch" :class="[iconTrue?`gg-${iconTrue}`:'gg-math-minus', 'block flex-none']"></i>
+    <i v-else :class="[iconFalse?`gg-${iconFalse}`:'gg-math-plus', 'block flex-none']"></i>
 </transition>
 
 </template>

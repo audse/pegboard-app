@@ -18,11 +18,20 @@
     transform: scale(0.8, 0.7);
 }
 
+.gg-color-bucket {
+    margin: -0.3em 0.3em 0.3em 0.3em;
+}
+
+.gg-color-bucket.icon-lg {
+    margin: 0 0.5em 0.5em 0;
+}
+
 .icon-md {
     transform: scale(0.8, 0.8);
 }
 
 .icon-lg {
+    display: block;
     transform: scale(1, 1);
 }
 

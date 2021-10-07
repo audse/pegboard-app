@@ -43,6 +43,11 @@ watch( hidden, () => {
                         <co-button :subtle="!isActive" :light="isActive" :color="isActive?'emphasis':'scale-text-500'" icon="folder">Folders</co-button>
                     </router-link>
                 </li>
+                <li class="mx-4 my-1">
+                    <router-link class="route" v-slot="{ isActive }" to="/folders">
+                        <co-button :subtle="!isActive" :light="isActive" :color="isActive?'emphasis':'scale-text-500'" icon="color-bucket">Themes</co-button>
+                    </router-link>
+                </li>
 
                 <div class="border-t-2 opacity-50 border-second mx-4 mt-6" />
 
@@ -55,16 +60,14 @@ watch( hidden, () => {
         </section>
 
         <section class="w-full secret-links">
-            <a href="http://localhost:3000/">Home</a>
-            <a href="http://localhost:8000/admin">Django Admin</a>
-            <a href="http://localhost:8000/api">API Root</a>
+            <co-button v-if="isAuthenticated" @click="signOut" subtle left color="scale-text-300">Sign Out</co-button>
+            <a href="http://localhost:8000/admin"><co-button subtle left color="scale-text-300">Admin</co-button></a>
         </section>
 
     </section>
     <section @click="hidden=!hidden" class="w-10 absolute right-0 top-0 items-center justify-center h-full hidden lg:flex sidebar-hidden">
         <button class="sidebar-hidden-button pb-10">
-            <i v-if="hidden" class="gg-chevron-double-right icon-md opacity-40"></i>
-            <i v-if="!hidden" class="gg-chevron-double-left icon-md opacity-40"></i>
+            <switch-icon :switch="hidden" icon-true="chevron-double-right" icon-false="chevron-double-left" />
         </button>
     </section>
 
@@ -109,7 +112,7 @@ export default {
 }
 
 .secret-links {
-    @apply pb-4;
+    @apply pb-4 px-2;
 }
 
 .secret-links a {

@@ -91,7 +91,7 @@ article.card header {
 }
 
 article.card-dense header {
-    @apply pt-0;
+    @apply pt-1;
 }
 
 article.card footer {
@@ -103,7 +103,7 @@ article.card-dense .content {
 }
 
 article.card-dense footer {
-    @apply pb-0;
+    @apply pb-1;
 }
 
 </style>

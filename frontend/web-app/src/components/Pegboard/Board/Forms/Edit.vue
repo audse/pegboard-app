@@ -1,20 +1,18 @@
 <script lang="ts" setup>
 
-import { AddTag } from '@/components'
-
-import { reactive } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+import { Board } from '@/types'
 import { BoardService } from '@/services'
 
-const props = defineProps({
-    board: Object,
-    tags: Array,
-})
+const props = defineProps<{
+    board:Board,
+}>()
 
 const router = useRouter()
 
-const editBoardForm = reactive({...props.board})
+const editBoardForm = ref({...props.board})
 
 const editBoard = async (boardId:number, data:object) => {
     await BoardService.update(boardId, data)
@@ -29,26 +27,32 @@ const archiveBoard = async(boardId:number) => {
 <template>
 
 <section>
-    <h3>Edit {{ board.name }}</h3>
+    <h2 class="flex items-center my-4">
+        <span class="block w-20 text-scale-text-500">Edit</span>
+        <span class="block pl-4">{{ board.name }}</span>
+    </h2>
 
     <form @submit.prevent="editBoard(board.id, editBoardForm)">
 
-        <section class="pt-4 flex items-center">
-            <label for="name" class="flex-none">Name</label>
+        <section class="pt-2 flex items-center">
+            <label for="name" class="flex-none w-20">
+                Name
+                <small class="text text-danger">Required.</small>
+            </label>
             <input v-model="editBoardForm.name" name="name" type="text" />
         </section>
 
-        <section class="pt-4 flex items-center">
-            <label for="description" class="flex-none">Description</label>
+        <section class="pt-2 flex items-center">
+            <label for="description" class="flex-none w-20">Description</label>
             <textarea v-model="editBoardForm.description" name="description"></textarea>
         </section>
 
-        <section class="pt-8">
-            <button type="submit" @click="this.$emit('save')" class="secondary">Save Edit</button>
+        <section class="pt-2">
+            <co-button type="submit" @click="this.$emit('save')" light color="emphasis">Save Edit</co-button>
         </section>
 
-        <section class="pt-8">
-            <button @click.prevent="archiveBoard(board.id);this.$emit('save')" class="bg-transparent text-red-500">Archive</button>
+        <section class="pt-4">
+            <co-button @click.prevent="archiveBoard(board.id);this.$emit('save')" subtle color="scale-text-500">Archive</co-button>
         </section>
     </form>
 

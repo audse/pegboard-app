@@ -9,7 +9,7 @@ const props = defineProps<{
     comment:UserComment,
 }>()
 
-const commentDate = format(parseISO(props.comment.date_created), 'MMM d, h:m aaaa') || ''
+const commentDate = format(parseISO(props.comment.date_created), 'MMM d, h:mm aaaa') || ''
 
 </script>
 <template>

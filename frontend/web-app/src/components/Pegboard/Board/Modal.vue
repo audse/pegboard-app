@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 
+import parseISO from 'date-fns/parseISO'
+import format from 'date-fns/format'
+
 import { Board } from '@/types'
-import { AddTag, AddColor } from '@/components'
+import { EditBoard, AddTag, AddColor } from '@/components'
 
 const props = defineProps<{
     board:Board,
@@ -13,7 +16,6 @@ const emits = defineEmits([
 ])
 
 const tabs = ['Edit', 'Tags', 'Color Palette']
-const tabsLabels = (index:number) => `label-${tabs[index]}`
 const tabsSections = (index:number) => `section-${tabs[index]}`
 
 </script>
@@ -21,8 +23,8 @@ const tabsSections = (index:number) => `section-${tabs[index]}`
 
 <modal :tabs="tabs" :show="show" @hide="$emit('hide')">
 
-    <template v-slot:[tabsSections(0)]>
-        
+    <template v-slot:[tabsSections(0)]>        
+        <edit-board :board="board" />
     </template>
 
     <template v-slot:[tabsSections(1)]>

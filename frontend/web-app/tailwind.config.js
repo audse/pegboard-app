@@ -8,6 +8,7 @@ module.exports = {
             'text': 'var(--text)',
             'emphasis': 'var(--emphasis)',
             'alert': 'var(--alert)',
+            'danger': 'var(--danger)',
 
             'scale-text-100': 'var(--scale-text-100)',
             'scale-text-300': 'var(--scale-text-300)',
@@ -59,7 +60,6 @@ module.exports = {
             'secondary-content': 'var(--text)',
 
             'info': 'var(--info)',
-            'warning': 'var(--warning)',
             'error': 'var(--error)',
         }},
       ],

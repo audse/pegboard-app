@@ -63,8 +63,11 @@ const archiveNote = async(noteId:number) => {
 
     <form @submit.prevent="editNote(note.id, editNoteForm)">
 
-        <section class="pt-2 flex items-center">
-            <label for="name" class="flex-none w-20">Name</label>
+        <section class="pt-8 flex items-center">
+            <label for="name" class="flex-none w-20">
+                Name
+                <small class="text-danger">Required.</small>
+            </label>
             <input v-model="editNoteForm.name" name="name" type="text" class="py-2" />
         </section>
 

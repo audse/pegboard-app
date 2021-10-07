@@ -34,8 +34,8 @@ const showModal = (event:any) => {
         </toolbar>
     </template>
 
-    <comments :comments="note.comments" :note-id="note.id" />
-    <add-comment :note-id="note.id" class="comment-form pb-2" @click="showModal" />
+    <comments :comments="note.comments" :note="note" />
+    <add-comment :note="note" class="comment-form pb-2" @click="showModal" />
 
 </card>
 

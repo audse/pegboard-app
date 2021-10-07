@@ -22,9 +22,9 @@ const addBoard = async (data:object) => {
 <template>
 
 <form @submit.prevent="addBoard(addBoardForm)" class="flex items-center">
-    <label for="name" class="flex-none">Board Name</label>
-    <input v-model="addBoardForm.name" name="name" type="text" placeholder="Board Name" />
-    <button type="submit" class="flex-none">Add Board</button>
+    <label for="name" class="flex-none text-scale-text-700">Add Board</label>
+    <input v-model="addBoardForm.name" name="name" type="text" placeholder="Board Name" class="bg-main" />
+    <co-button type="submit" class="flex-none ml-4" icon="math-plus" light color="emphasis">Add Board</co-button>
 </form>
     
 </template>

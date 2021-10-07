@@ -5,11 +5,11 @@
 
 <article>
 
-    <header class="header px-4 lg:pl-6 lg:pr-10 pt-8 pb-4 bg-scale-secondary-100 shadow-sm">
+    <header class="page-header px-4 lg:pl-6 lg:pr-10 pt-8 pb-4 bg-scale-secondary-100 shadow-sm">
         <slot name="header" />
     </header>
 
-    <section class="pl-4 md:pl-6 lg:pl-6 lg:pr-10 pt-8">
+    <section>
         <slot />
     </section>
 
@@ -23,10 +23,14 @@ export default {
 }
 
 </script>
-<style scoped>
+<style>
 
-.header {
+.page-header {
     border-bottom: 1px solid var(--secondary);
+}
+
+.page-padding {
+    @apply  px-4 md:px-6 lg:px-6 lg:pr-10 pt-8;
 }
 
 

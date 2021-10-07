@@ -36,10 +36,7 @@ const showAddFolderForm = ref(false)
 
             <template #right>
                 <co-button @click="showAddFolderForm=!showAddFolderForm" color="emphasis" class="flex-shrink flex items-center pl-2 my-2 lg:my-0">
-                    <transition name="scale" mode="out-in">
-                        <i v-if="!showAddFolderForm" class="gg-math-plus block flex-none mr-2"></i>
-                        <i v-else class="gg-math-minus block flex-none mr-2"></i>
-                    </transition>
+                    <switch-icon :switch="showAddFolderForm" />
                     Add Folder
                 </co-button>
             </template>
@@ -52,25 +49,35 @@ const showAddFolderForm = ref(false)
         </section> 
     </template>
 
+    <article class="page-padding">
     <section>
         <folder v-for="folder of folders" :key="folder.id" :folder="folder" />
     </section>
 
-    <section class="mt-6 flex">
-        <h2 class="py-4">Unsorted</h2>
-        <section v-for="board of unsortedBoards" :key="board.id" class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+    <h2 class="mt-12 px-2 text-scale-text-500">Unsorted</h2>
+    <section class="mt-4 flex">
+        <section v-for="board of unsortedBoards" :key="board.id" class="flex-none w-full md:w-1/2 lg:w-1/3 xl:w-1/3">
             <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }">
                 <card hover bg="primary">
-                    <template #header>{{ board.name }}</template>
+                    <template #header>
+                        <strong>{{ board.name }}</strong>
+                    </template>
+                    
                     {{ board.description }}
+
+                    <template #footer v-if="board.description">
+
+                    </template>
                 </card>
             </router-link>
         </section>
     </section>
 
-    <section>
+    <section class="mt-4 px-2">
         <add-board />
     </section>
+    
+    </article>
 
 </page-layout>
 

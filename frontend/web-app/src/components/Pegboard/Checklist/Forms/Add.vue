@@ -77,7 +77,7 @@ watch(checklist, emitChecklist)
 <script lang="ts">
 
 export default {
-    name: 'AddChecklist'
+    name: 'add-checklist'
 }
 
 </script>

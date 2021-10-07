@@ -84,14 +84,14 @@ onBeforeUnmount( () => {
                 <co-button :light="isActive" :subtle="!isActive" :color="isActive?'emphasis':'scale-text-500'">Kanban</co-button>
             </router-link>
 
-            <router-link to="/" v-slot="{ isActive }">
+            <!-- <router-link to="/" v-slot="{ isActive }">
                 <co-button :light="isActive" :subtle="!isActive" :color="isActive?'emphasis':'scale-text-500'">Calendar</co-button>
-            </router-link>
+            </router-link> -->
 
             <template #right>
                 <co-button light color="alert" icon="user" class="hidden lg:block"></co-button>
-                <co-button @click="showAddPageForm=!showAddPageForm" color="emphasis" class="flex items-center pl-2 my-2 lg:my-0">
-                    <switch-icon :switch="showAddPageForm" />
+                <co-button @click="showAddPageForm=!showAddPageForm" color="emphasis">
+                    <switch-icon :switch="showAddPageForm" class="mr-2" />
                     Add Page
                 </co-button>
             </template>
@@ -105,13 +105,13 @@ onBeforeUnmount( () => {
 
     </template>
 
-    <section class="flex overflow-x-scroll h-auto no-scrollbar">
+    <section class="flex overflow-x-scroll h-auto no-scrollbar page-padding">
         <page v-for="page in board.pages" :key="page.id" :page="page" :board="board" class="flex-none w-11/12 md:w-5/12 lg:w-4/12" />
     </section>
 
     <board-modal :board="board" :show="showEditModal" @hide="showEditModal=false" />
 
-    <article class="mt-8">
+    <article class="mt-8 page-padding">
         <section class="flex items-center pl-2 py-4">
             <h2 class="text-scale-text-500 px-4">Unsorted Notes</h2>
             <add-note :board="board" class="w-4/12" />
