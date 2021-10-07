@@ -56,28 +56,28 @@ const archiveNote = async(noteId:number) => {
 <template>
     
 <section>
-    <h3 class="flex items-center">
+    <h3 class="flex flex-col md:flex-row md:items-center">
         <span class="text-scale-text-500 block w-20">Edit</span>
-        <span class="block pl-5">{{ note.name }}</span>
+        <span class="block md:pl-5">{{ note.name }}</span>
     </h3>
 
     <form @submit.prevent="editNote(note.id, editNoteForm)">
 
-        <section class="pt-8 flex items-center">
-            <label for="name" class="flex-none w-20">
+        <section class="pt-8 flex flex-col md:flex-row md:items-center">
+            <label for="name" class="flex-none w-20 my-1 md:my-0">
                 Name
                 <small class="text-danger">Required.</small>
             </label>
             <input v-model="editNoteForm.name" name="name" type="text" class="py-2" />
         </section>
 
-        <section class="pt-2 flex items-center">
-            <label for="content" class="flex-none w-20">Content</label>
+        <section class="pt-6 md:pt-2 flex flex-col md:flex-row md:items-center">
+            <label for="content" class="flex-none w-20 my-1 md:my-0">Content</label>
             <textarea v-model="editNoteForm.content" name="content"></textarea>
         </section>
 
-        <section class="pt-4 flex items-center">
-            <label for="display" class="flex-none w-20">Display</label>
+        <section class="pt-4 flex flex-col md:flex-row md:items-center">
+            <label for="display" class="flex-none w-20 my-1 md:my-0">Display</label>
             <div class="select-control">
                 <select v-model="editNoteForm.display" name="display" class="bg-scale-text-100">
                     <option v-for="choice of displayChoices" :key="choice.value" :value="choice.value">
@@ -87,13 +87,12 @@ const archiveNote = async(noteId:number) => {
             </div>
         </section>
 
-        <section class="pt-4 flex items-center">
+        <section class="pt-4 flex flex-col md:flex-row md:items-center">
             <label for="tags" class="flex-none w-20">Tags</label>
             <select-tags v-model="editNoteForm.tags" />
         </section>
 
         <section class="pt-16">
-            {{ newChecklist }}
             <add-checklist :note="note" @update-checklist="updateChecklist" />
         </section>
 

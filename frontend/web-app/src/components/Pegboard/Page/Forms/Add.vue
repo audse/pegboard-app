@@ -25,7 +25,7 @@ const addPage = async (data:{name:string,board:number|undefined}) => {
 
 <form @submit.prevent="addPage(addPageForm)">
 
-    <section class="flex items-center">
+    <section class="flex items-start flex-col md:items-center md:flex-row">
         <label for="name" class="flex-none block w-24">
             Name
             <small class="text-danger">Required.</small>
@@ -33,7 +33,7 @@ const addPage = async (data:{name:string,board:number|undefined}) => {
         <input v-model="addPageForm.name" name="name" type="text" placeholder="Name" class="bg-main" />
     </section>
 
-    <section class="flex items-center">
+    <section class="mt-4 flex items-start flex-col md:items-center md:flex-row">
         <label for="description" class="flex-none block w-24">Description</label>
         <textarea v-model="addPageForm.description" name="description" type="text" placeholder="Description" class="bg-main" />
     </section>

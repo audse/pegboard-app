@@ -2,10 +2,13 @@
 
 import { computed, ref, watch } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
+import { AuthService } from '@/services'
 import { FolderList } from '@/components'
 
 const store = useStore()
+const router = useRouter()
 
 const isAuthenticated = computed( () => store.getters['auth/isAuthenticated'] )
 const currentUser = computed( () => store.state.auth.currentUser )
@@ -17,6 +20,14 @@ const hidden = ref( store.state.auth.preferences.sidebarHidden )
 watch( hidden, () => {
     store.commit('auth/setSidebarHiddenPreference', hidden)
 })
+
+const signOut = async () => {
+    await AuthService.signOut().then( () => {
+        router.push({ name: 'Sign In' })
+    }).catch( (e:any) => {
+        throw e
+    })
+}
 
 </script>
 <template>
@@ -55,8 +66,21 @@ watch( hidden, () => {
             
             </ul>
         </section>
-        <section v-else>
-            ...
+        <section v-else class="py-6 px-4">
+            <h3 class="pb-1 text-text">
+                <span class="text-alert">Pegboard</span>
+            </h3>
+
+            <router-link :to="{ name: 'Home' }">
+                <co-button color="scale-text-500" light class="my-2">Home</co-button>
+            </router-link>
+            <router-link :to="{ name: 'Sign In' }">
+                <co-button color="emphasis" light class="my-2">Sign In</co-button>
+            </router-link>
+            <router-link :to="{ name: 'Sign Up' }">
+                <co-button color="emphasis" light class="my-2">Sign Up</co-button>
+            </router-link>
+
         </section>
 
         <section class="w-full secret-links">

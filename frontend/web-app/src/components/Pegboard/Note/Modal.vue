@@ -29,7 +29,7 @@ const noteDate = format(parseISO(props.note.date_created), 'MMM d, h:mm aaaa') |
         <co-tag v-for="tag of note.tags" :key="tag.id" :tag="tag" :label="tag.name" />
         <h2 class="mt-2">{{ note.name }}</h2>
         <small class="block text-scale-text-500 mb-4">{{ noteDate }}</small>
-        <p class="text-scale-text-700 w-2/3 mt-4 whitespace-pre-line">{{ note.content }}</p>
+        <p class="text-scale-text-700 md:w-2/3 mt-4 whitespace-pre-line">{{ note.content }}</p>
 
         <h3 v-if="note.checklists.length>0" class="mt-12 mb-2">Checklists</h3>
         <card bg="scale-secondary-300" v-for="checklist of note.checklists" :key="checklist.id" class="w-2/3">

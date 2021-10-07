@@ -12,7 +12,7 @@ const breadcrumbs = computed( () => {
 </script>
 <template>
 
-<toolbar align-top class="px-4 lg:pl-6 lg:pr-10 pt-8 pb-4 bg-scale-secondary-100">
+<toolbar align-top no-col class="px-4 lg:pl-6 lg:pr-10 pt-8 pb-4 bg-scale-secondary-100">
 
     <template #icon>
         <slot />

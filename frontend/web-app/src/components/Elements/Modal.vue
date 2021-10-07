@@ -39,6 +39,7 @@ const sidebarHidden = computed( () => store.state.auth.preferences.sidebarHidden
             <template #header>
                 <slot name="header" />
 
+                <toolbar>
                 <label v-for="tab of tabs" :key="`label-${tab}`">
                     <slot :name="`label-${tab}`">
                         <co-button @click="activeTab=tab" :color="tab===activeTab?'emphasis':'scale-text-500'" :subtle="tab!==activeTab" :light="tab==activeTab" class="mr-1">
@@ -46,16 +47,15 @@ const sidebarHidden = computed( () => store.state.auth.preferences.sidebarHidden
                         </co-button>
                     </slot>
                 </label>
+                </toolbar>
             </template>
 
             <slot></slot>
 
             <section v-for="tab of tabs" :key="`section-${tab}`" class="pt-4">
-                <!-- <transition name="scale" mode="out-in"> -->
-                    <article v-if="tab===activeTab">
-                        <slot :name="`section-${tab}`" />
-                    </article>
-                <!-- </transition> -->
+                <article v-if="tab===activeTab">
+                    <slot :name="`section-${tab}`" />
+                </article>
             </section>
 
             <template #footer>
@@ -76,7 +76,7 @@ export default {
 <style scoped>
 
 .overlay {
-    @apply px-8 pt-16 lg:pl-80;
+    @apply px-4 pt-8 lg:pl-80;
     position: fixed;
     top: 0;
     left: 0;
@@ -91,7 +91,7 @@ export default {
 }
 
 .co-modal {
-    @apply top-16 bottom-16 right-16;
+    @apply top-8 bottom-8 right-8;
     position: fixed;
     z-index: 1001;
     max-height: 100%;

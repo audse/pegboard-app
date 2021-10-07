@@ -17,7 +17,7 @@ const showEditModal = ref(false)
 
 <section>
 
-    <toolbar>
+    <toolbar no-col>
         <span class="pl-2 mb-2">
             <h3 class="text-base tracking-wide">{{ page.name }}</h3>
             <h4 class="font-normal text-base text-scale-text-500">{{ page.description }}</h4>

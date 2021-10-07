@@ -28,13 +28,13 @@ const archiveBoard = async(boardId:number) => {
 
 <section>
     <h2 class="flex items-center my-4">
-        <span class="block w-20 text-scale-text-500">Edit</span>
+        <span class="block md:w-20 text-scale-text-500">Edit</span>
         <span class="block pl-4">{{ board.name }}</span>
     </h2>
 
     <form @submit.prevent="editBoard(board.id, editBoardForm)">
 
-        <section class="pt-2 flex items-center">
+        <section class="pt-2 flex flex-col md:flex-row md:items-center">
             <label for="name" class="flex-none w-20">
                 Name
                 <small class="text text-danger">Required.</small>
@@ -42,7 +42,7 @@ const archiveBoard = async(boardId:number) => {
             <input v-model="editBoardForm.name" name="name" type="text" />
         </section>
 
-        <section class="pt-2 flex items-center">
+        <section class="pt-2 flex flex-col md:flex-row md:items-center">
             <label for="description" class="flex-none w-20">Description</label>
             <textarea v-model="editBoardForm.description" name="description"></textarea>
         </section>

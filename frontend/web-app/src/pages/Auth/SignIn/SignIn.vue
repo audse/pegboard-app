@@ -1,64 +1,69 @@
+<script lang="ts" setup>
+
+import { reactive, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
+
+import { AuthService } from '@/services'
+
+const router = useRouter()
+
+const signInData = reactive({
+    username: '',
+    password: '',
+})
+
+const signIn = async ( data:{username:string,password:string} ) => {
+    await AuthService.signIn( data ).then( (userResponse:object) => {
+        router.push({ name: 'Home' })
+    }).catch( (e:any) => {
+        throw e
+    })
+}
+
+</script>
 <template>
 
-<article>
+<page-layout>
 
-    <form @submit.prevent="signIn(signInData)">
+    <template #header>
+        <h1>Sign In</h1>
+    </template>
 
-        <section>
-            <label for="username">Username</label>
-            <input v-model="signInData.username" name="username" type="text" />
-        </section>
-        <section>
-            <label for="password">Password</label>
-            <input v-model="signInData.password" name="password" type="password" />
-        </section>
-        <section>
-            <button type="submit">Sign In</button>
-        </section>
+    <section class="page-padding">
+            
+        <form @submit.prevent="signIn(signInData)">
 
-    </form>
+            <section class="flex items-center my-2">
+                <label for="username" class="w-20">Username</label>
+                <input v-model="signInData.username" name="username" type="text" />
+            </section>
+            <section class="flex items-center my-2">
+                <label for="password" class="w-20">Password</label>
+                <input v-model="signInData.password" name="password" type="password" />
+            </section>
+            <toolbar class="ml-20 pl-2">
+                <co-button type="submit" color="emphasis">Sign In</co-button>
+                <template #right>
+                    <label class="text-right">Not signed up yet?</label>
+                    <router-link :to="{ name: 'Sign Up' }">
+                        <co-button subtle color="scale-text-500">Sign Up</co-button>
+                    </router-link>
+                </template>
+            </toolbar>
 
-    <label>Not signed up?</label>
-    <router-link :to="{ name: 'Sign Up' }">
-        <button class="secondary">Sign Up</button>
-    </router-link>
+        </form>
 
-</article>
+        
+
+    </section>
+
+</page-layout>
 
 </template>
 <script lang="ts">
 
-import { reactive, computed, watch } from 'vue'
-import { useRouter } from 'vue-router'
-import AuthService from './../../../services/auth.service'
-
 export default {
-
-    setup () {
-
-        const router = useRouter()
-
-        const signInData = reactive({
-            username: '',
-            password: '',
-        })
-
-        const signIn = async ( data:{username:string,password:string} ) => {
-            await AuthService.signIn( data ).then( (userResponse:object) => {
-                router.push({ name: 'Home' })
-            }).catch( (e:any) => {
-                throw e
-            })
-        }
-
-        return {
-            signInData,
-            signIn,
-            // AuthService
-        }
-
-    }
-
+    name: 'sign-in'
 }
 
 </script>

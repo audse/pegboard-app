@@ -29,7 +29,7 @@ const tabsSections = (index:number) => `section-${tabs[index]}`
 
     <template v-slot:[tabsSections(1)]>
         <h3>Tags</h3>
-        <section class="pt-4">
+        <section class="pt-4 flex flex-col md:flex-row">
             <co-tag lg v-for="tag in board.tags" :key="tag.id" :label="tag.name" :tag="tag" class="m-1" />
         </section>
 
@@ -42,7 +42,7 @@ const tabsSections = (index:number) => `section-${tabs[index]}`
 
     <template v-slot:[tabsSections(2)]>
         <h3>Color Palette</h3>
-        <section class="pt-4">
+        <section class="pt-4 flex flex-col md:flex-row">
             <co-tag lg v-for="color in board.colors" :key="color.id" :label="color.name" :right="`#${color.code}`" :color="color.code" class="m-1" />
         </section>
 

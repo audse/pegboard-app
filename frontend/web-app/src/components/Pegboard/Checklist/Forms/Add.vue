@@ -54,19 +54,19 @@ watch(checklist, emitChecklist)
         </co-button>
     </section>
 
-    <expandable :to-show="hasChecklist" class="pt-4">
-        <section class="flex items-center">
-            <label for="name" class="flex-none w-20">Name</label>
+    <expandable :to-show="hasChecklist" class="pt-6 md:pt-4">
+        <section class="flex flex-col md:flex-row md:items-center">
+            <label for="name" class="flex-none w-20 my-1 md:my-0">Name</label>
             <input v-model="checklist.name" name="name" class="py-3" />
         </section>
 
         <section v-for="(item, index) of checklist.items" :key="index" class="flex items-center">
-            <label class="flex-none w-32 text-right text-scale-text-500">{{ index+1 }}</label>
+            <label class="flex-none md:w-32 text-right text-scale-text-500">{{ index+1 }}</label>
             <input v-model="item.name" />
             <co-button @click.prevent="removeItem(index)" light color="alert" class="ml-2">&times;</co-button>
         </section>
 
-        <section class="ml-36 mt-2">
+        <section class="md:ml-36 mt-2">
             <co-button @click.prevent="addItem" light color="alert" >Add Item</co-button>
         </section>
     </expandable>

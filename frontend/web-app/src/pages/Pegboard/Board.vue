@@ -62,7 +62,7 @@ onBeforeUnmount( () => {
 <page-layout v-if="board">
     <template #header>
 
-        <toolbar>
+        <toolbar no-col>
 
             <h1 class="pb-1">
                 {{ board.name }}
@@ -79,14 +79,10 @@ onBeforeUnmount( () => {
 
         </toolbar>
 
-        <toolbar class="mt-4" wrap>
+        <toolbar class="mt-4" no-col>
             <router-link :to="{ name: 'Board', params: { id: id, url: url } }" v-slot="{ isActive }">
                 <co-button :light="isActive" :subtle="!isActive" :color="isActive?'emphasis':'scale-text-500'">Kanban</co-button>
             </router-link>
-
-            <!-- <router-link to="/" v-slot="{ isActive }">
-                <co-button :light="isActive" :subtle="!isActive" :color="isActive?'emphasis':'scale-text-500'">Calendar</co-button>
-            </router-link> -->
 
             <template #right>
                 <co-button light color="alert" icon="user" class="hidden lg:block"></co-button>
@@ -112,9 +108,9 @@ onBeforeUnmount( () => {
     <board-modal :board="board" :show="showEditModal" @hide="showEditModal=false" />
 
     <article class="mt-8 page-padding">
-        <section class="flex items-center pl-2 py-4">
+        <section class="flex flex-col md:flex-row md:items-center pl-2 py-4">
             <h2 class="text-scale-text-500 px-4">Unsorted Notes</h2>
-            <add-note :board="board" class="w-4/12" />
+            <add-note :board="board" class="md:w-4/12" />
         </section>
         <section class="flex flex-wrap pl-2" v-if="board?.notes?.length > 0">
             <div v-for="note in board.notes" :key="note.id" class="flex-none w-11/12 md:w-5/12 lg:w-4/12">

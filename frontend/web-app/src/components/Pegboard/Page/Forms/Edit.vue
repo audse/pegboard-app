@@ -33,17 +33,17 @@ const archivePage = async(pageId:number) => {
 
 <form @submit.prevent="editPage(page.id, editPageForm)">
 
-    <section class="pt-6 flex items-center">
-        <label for="name" class="flex-none w-24">Name</label>
+    <section class="pt-6 pb-2 md:pb-0 flex items-start flex-col md:items-center md:flex-row">
+        <label for="name" class="flex-none w-24 pl-4 md:pl-0">Name</label>
         <input v-model="editPageForm.name" name="name" type="text" />
     </section>
 
-    <section class="pt-1 flex items-center">
-        <label for="description" class="flex-none w-24">Description</label>
+    <section class="pt-4 pb-2 md:pb-0 md:pt-1 flex items-start flex-col md:items-center md:flex-row">
+        <label for="description" class="flex-none w-24 pl-4 md:pl-0">Description</label>
         <textarea v-model="editPageForm.description" name="description" type="text" />
     </section>
 
-    <section class="pt-1">
+    <section class="pt-4 pl-1 md:pl-20 md:ml-8">
         <button type="submit" @click="this.$emit('save')" class="secondary">Save Edit</button>
     </section>
 

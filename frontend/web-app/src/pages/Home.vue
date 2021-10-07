@@ -30,19 +30,10 @@ const signOut = async () => {
                 Welcome,
                 <span class="text-alert">{{ currentUser.username }}.</span>
             </h1>
-
-            <!-- <template #right>
-                <co-button class="secondary" @click="signOut" subtle color="scale-text-300">Sign Out</co-button>
-            </template> -->
         </toolbar>
         <section v-else>
 
-            <router-link :to="{ name: 'Sign In' }">
-                <a class="pr-4">Sign In</a>
-            </router-link>
-            <router-link :to="{ name: 'Sign Up' }">
-                <a>Sign Up</a>
-            </router-link>
+            <h1>Welcome to <span class="text-alert">Pegboard.</span></h1>
 
         </section>
     </template>
@@ -74,6 +65,31 @@ const signOut = async () => {
         </router-link>
 
     </section>
+    <section v-else class="flex items-center page-padding">
+        <router-link :to="{ name: 'Sign In' }">
+            <card bg="primary" hover>
+                <template #header>
+                    <h2 class="px-2 text-center">
+                        <icon lg icon="user" />
+                        <span class="block mt-2">Sign In</span>
+                    </h2>
+                </template>
+                <template #footer></template>
+            </card>
+        </router-link>
+        <router-link :to="{ name: 'Sign Up' }">
+            <card bg="scale-text-100" hover>
+                <template #header>
+                    <h2 class="px-2 text-center">
+                        <icon lg icon="user-add" />
+                        <span class="block mt-2">Sign Up</span>
+                    </h2>
+                </template>
+                <template #footer></template>
+            </card>
+        </router-link>
+    </section>
+
 </page-layout>
 
 </template>
