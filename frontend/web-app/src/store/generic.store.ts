@@ -63,6 +63,7 @@ const colors = {...generic}
 const tags = {...generic}
 const checklists = {...generic}
 const comments = {...generic}
+const themes = {...generic}
 
 export {
     generic,
@@ -75,5 +76,6 @@ export {
     colors,
     tags,
     checklists,
-    comments
+    comments,
+    themes
 }

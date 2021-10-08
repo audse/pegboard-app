@@ -92,6 +92,13 @@ class Board ( models.Model ):
     order = models.IntegerField(default=0)
 
     default_note_display = models.CharField(max_length=3, choices=DISPLAY_CHOICES, default='n')
+    theme = models.ForeignKey(
+        'Theme',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='boards'
+    )
 
     date_created = models.DateTimeField('date created', default=timezone.now)
     date_updated = models.DateTimeField('date updated', default=timezone.now)

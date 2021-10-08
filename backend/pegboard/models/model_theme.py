@@ -4,8 +4,43 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 from django.utils import timezone
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils.text import slugify
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+class ThemeQuerySet ( models.QuerySet ):
+
+    def list(self, user):
+        return self.filter(
+                user=user
+            )
+
+    def retrieve(self, user, pk):
+        result = self.filter(
+                 user=user,
+                 pk=pk
+            ).first()
+        if result is not None:
+            return result
+        else:
+            raise ObjectDoesNotExist
+
+class ThemeManager ( models.Model ):
+    use_in_migration = True
+
+    def get_queryset(self):
+        return ThemeQuerySet(self.model, using=self._db)
+
+    def list(self, user):
+        return self.get_queryset().list(user)
+
+    def retrieve(self, user, pk):
+        return self.get_queryset().retrieve(user, pk)
 
 class Theme ( models.Model ):
+
+    object = ThemeManager()
 
     user = models.ForeignKey(
         User,
@@ -14,21 +49,23 @@ class Theme ( models.Model ):
     )
 
     name = models.CharField(max_length=128)
-    models.SlugField(blank=True)
+    url = models.SlugField(blank=True)
     
     order = models.IntegerField(default=0)
 
-    primary = models.CharField(max_length=7)
-    secondary = models.CharField(max_length=7)
+    main = models.CharField(max_length=7)
+    second = models.CharField(max_length=7)
     text = models.CharField(max_length=7)
-    scaleSecondary = ArrayField(
+    scale_secondary = ArrayField(
         models.CharField(max_length=7),
         size=10
     )
-    scaleText = ArrayField(
+    scale_text = ArrayField(
         models.CharField(max_length=7),
         size=10
     )
+    alert = models.CharField(max_length=7)
+    danger = models.CharField(max_length=7)
     
     date_created = models.DateTimeField('date created', default=timezone.now)
     date_updated = models.DateTimeField('date updated', default=timezone.now)
@@ -36,3 +73,22 @@ class Theme ( models.Model ):
 
     def __str__ ( self ):
         return self.name
+
+
+@receiver(post_save, sender=Theme)
+def save_url(sender, instance, **kwargs):
+    post_save.disconnect(save_url, sender=sender)
+
+    instance.url = slugify(instance.name)
+    instance.save()
+
+    post_save.connect(save_url, sender=sender)
+
+@receiver(post_save, sender=Theme)
+def save_date_updated(sender, instance, **kwargs):
+    post_save.disconnect(save_date_updated, sender=sender)
+
+    instance.date_updated = timezone.now()
+    instance.save()
+
+    post_save.connect(save_date_updated, sender=sender)

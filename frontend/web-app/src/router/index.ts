@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
+import { Route } from '@/types'
 import store from '@/store'
 import { AuthService } from '@/services'
 
@@ -7,13 +9,13 @@ import pegboardRoutes from './pegboard.routes'
 
 import Home from '@/pages/Home.vue'
 
-const routes = [
+const routes:Array<Route> = [
     { 
         name: 'Home',
         path: '/', 
         component: Home,
         meta: {
-            breadcrumb: (route:string) => ([
+            breadcrumb: ( () => [
                 { name: 'Home' },
             ])
         }

@@ -55,7 +55,7 @@ const signOut = async () => {
                     </router-link>
                 </li>
                 <li class="mx-4 my-1">
-                    <router-link class="route" v-slot="{ isActive }" to="/folders">
+                    <router-link class="route" v-slot="{ isActive }" to="/themes">
                         <co-button :subtle="!isActive" :light="isActive" :color="isActive?'emphasis':'scale-text-500'" icon="color-bucket">Themes</co-button>
                     </router-link>
                 </li>

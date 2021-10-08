@@ -64,6 +64,27 @@ export type UserComment = {
     date_archived:string|null,
 }
 
+export type Theme = {
+    id:number,
+    user:UserSimple,
+
+    name:string,
+    url:string,
+    order:number,
+
+    main:string,
+    second:string,
+    text:string,
+    scale_secondary:Array<string>,
+    scale_text:Array<string>,
+    alert:string,
+    danger:string,
+
+    date_created:string,
+    date_edited:string,
+    date_archived:string|null,
+}
+
 export type Note = {
     id:number,
     user:UserSimple,

@@ -17,6 +17,8 @@ class BoardSerializer ( serializers.ModelSerializer ):
     comments = CommentSerializer(many=True, required=False)
     checklists = ChecklistSerializer(many=True, required=False)
 
+    theme = ThemeSerializer(required=False)
+
     class Meta:
         model = Board
         fields = '__all__'

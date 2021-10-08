@@ -1,15 +1,15 @@
 
-import Folders from '@/pages/Pegboard/Folders.vue'
-import Board from '@/pages/Pegboard/Board.vue'
+import { Route } from '@/types'
+import { Folders, Board, Themes } from '@/pages'
 
-const pegboardRoutes = [
+const pegboardRoutes:Array<Route> = [
     { 
         name: 'Folders',
         path: '/folders', 
         component: Folders,
         meta: {
             requiresAuth: true,
-            breadcrumb: () => ([
+            breadcrumb: ( () => [
                 { name: 'home', path: '/', icon: 'home-alt' },
                 { name: 'folders', icon: 'folder' },
             ])
@@ -21,13 +21,25 @@ const pegboardRoutes = [
         component: Board,
         meta: {
             requiresAuth: true,
-            breadcrumb: (route:{params:{id:number,url:string}}) => ([
+            breadcrumb: ( (route) => route?[
                 { name: 'home', path: '/', icon: 'home-alt' },
                 { name: 'folders', path: '/folders', icon: 'folder' },
                 { name: route.params.url, icon: 'clipboard' },
-            ])
+            ]:undefined)
         }
     },
+    {
+        name: 'Themes',
+        path: '/themes',
+        component: Themes,
+        meta: {
+            requiresAuth: true,
+            breadcrumb: ( () => [
+                { name: 'home', path: '/', icon: 'home-alt' },
+                { name: 'themes', icon: 'color-bucket' },
+            ])
+        }
+    }
 ]
 
 export default pegboardRoutes

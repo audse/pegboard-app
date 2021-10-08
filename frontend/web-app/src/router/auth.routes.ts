@@ -1,16 +1,14 @@
+import { Route } from '@/types'
+import { SignUp, SignUpSuccess, SignIn } from '@/pages'
 
-import SignUp from './../pages/Auth/SignUp/SignUp.vue'
-import SignUpSuccess from './../pages/Auth/SignUp/SignUp.success.vue'
-import SignIn from './../pages/Auth/SignIn/SignIn.vue'
-
-const authRoutes = [
+const authRoutes:Array<Route> = [
     { 
         name: 'Sign Up',
         path: '/signup', 
         component: SignUp,
         meta: {
             requiresUnauth: true,
-            breadcrumb: (route:string) => ([
+            breadcrumb: ( () => [
                 { name: 'Home', path: '/' },
                 { name: 'Sign Up' }
             ])
@@ -22,7 +20,7 @@ const authRoutes = [
         component: SignUpSuccess,
         meta: {
             requiresUnauth: true,
-            breadcrumb: (route:string) => ([
+            breadcrumb: ( () => [
                 { name: 'Home', path: '/' },
                 { name: 'Sign Up' }
             ])
@@ -34,7 +32,7 @@ const authRoutes = [
         component: SignIn,
         meta: {
             requiresUnauth: true,
-            breadcrumb: (route:string) => ([
+            breadcrumb: ( () => [
                 { name: 'Home', path: '/' },
                 { name: 'Sign In' }
             ])

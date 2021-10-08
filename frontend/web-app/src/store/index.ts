@@ -12,6 +12,7 @@ import {
     tags, 
     checklists, 
     comments,
+    themes
 
 } from './generic.store'
 
@@ -28,7 +29,8 @@ const store = createStore({
         colors,
         tags,
         checklists,
-        comments
+        comments,
+        themes
     }
 
 })
