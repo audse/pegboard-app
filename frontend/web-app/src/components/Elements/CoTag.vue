@@ -35,7 +35,7 @@ const textColor = computed( () => {
     } else if ( props.varColor ) {
         return `var(--${props.varColor})`
     } else if ( props.color ) {
-        return `#${props.color}`
+        return `${props.color}`
     } else return 'var(--text)'
 })
 
@@ -45,7 +45,7 @@ const bgColor = computed( () => {
     }if ( props.varColor ) {
         return `var(--${props.varColor}-opacity-100`
     } else if ( props.color ) { 
-        return `#${changeOpacity(props.color, 0.25)}`
+        return `${changeOpacity(props.color, 0.25)}`
     } else return 'transparent'
 })
 

@@ -9,6 +9,7 @@ const props = defineProps<{
     name?:string,
     placeholder?:string,
     bg?:string,
+    inputIcon?:string,
 }>()
 
 const emits = defineEmits([
@@ -16,12 +17,8 @@ const emits = defineEmits([
 ])
 
 const value = computed({
-    get: () => {
-        return props.modelValue
-    },
-    set: (value:string) => {
-        emits('update:modelValue', value)
-    }
+    get: () => props.modelValue,
+    set: (value:string) => emits('update:modelValue', value)
 })
 
 </script>
@@ -32,6 +29,7 @@ const value = computed({
         {{ label }}
         <small v-if="required" class="text-danger">Required.</small>
     </label>
+    <!-- <icon v-if="inputIcon" :icon="inputIcon" class="mr-2 text-scale-text-500" /> -->
     <input v-model="value" :name="name" type="text" :placeholder="placeholder" :class="[bg?`bg-${bg}`:'']" />
 </section>
 

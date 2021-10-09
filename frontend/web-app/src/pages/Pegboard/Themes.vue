@@ -5,7 +5,7 @@ import { useStore } from 'vuex'
 
 import { Theme as ThemeType } from '@/types'
 import { ThemeService } from '@/services'
-import { Theme, AddTheme } from '@/components'
+import { AddTheme } from '@/components'
 
 const store = useStore()
 
@@ -27,7 +27,7 @@ const refreshThemes = async () => {
         <h2>Add Theme</h2>
         <add-theme />
 
-        <theme v-for="theme of themes" :key="theme.id" :theme="theme" />
+        <!-- <theme v-for="theme of themes" :key="theme.id" :theme="theme" /> -->
 
     </section>
 

@@ -1,7 +1,7 @@
-import Theme from './Theme.vue'
+import ExampleTheme from './ExampleTheme.vue'
 import AddTheme from './Forms/Add.vue'
 
 export {
-    Theme,
+    ExampleTheme,
     AddTheme
 }

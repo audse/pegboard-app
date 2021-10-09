@@ -4,13 +4,26 @@ import { computed } from 'vue'
 
 const props = defineProps<{
     bg?:string,
+    hexBg?:string,
     border?:string,
     centerContent?:boolean,
     hover?:boolean,
     dense?:boolean,
+
+    topBg?:string,
+    topHexBg?:string,
 }>()
 
-const bgColor = computed( () => props.bg ? `var(--${props.bg})` : 'transparent' )
+const bgColor = computed( () => {
+    if (props.bg) return `var(--${props.bg})`
+    if (props.hexBg) return props.hexBg
+    else return 'transparent'
+})
+const topBgColor = computed( () => {
+    if (props.topBg) return `var(--${props.topBg}`
+    if (props.topHexBg) return props.topHexBg
+    else return 'transparent'
+})
 const borderStyle = props.border ? `1.5pt solid var(--${props.border})` : 'transparent'
 
 </script>
@@ -88,10 +101,13 @@ article.card-dense .actions {
 
 article.card header {
     @apply pt-4;
+    background-color: v-bind(topBgColor);
+
 }
 
 article.card-dense header {
     @apply pt-1;
+    background-color: v-bind(topBgColor);
 }
 
 article.card footer {
