@@ -1,7 +1,5 @@
 
 :root {
-    --primary: #282c38;
-    --secondary: #111213;
     --main: #282c38;
     --second: #111213;
 
@@ -23,8 +21,6 @@
     --emphasis-opacity-900: #f855a6d3;
     --emphasis-opacity-950: #f855a6e5;
 
-    --info: #88a4ff;
-
     --alert: #88a4ff;
     --alert-opacity-50: #88a4ff23;
     --alert-opacity-100: #88a4ff3d;
@@ -35,31 +31,39 @@
     --alert-opacity-950: #88a4ffe5;
 
     --danger: #d3a43f;
-    --error: #40396d;
 
     --scale-text-50: #3E4659;
     --scale-text-100: #535f79;
+    --scale-text-200: #535f79;
 
     --scale-text-300: #6a7692;
     --scale-text-300-opacity-50: #6a769223;
     --scale-text-300-opacity-100: #6a76923d;
     --scale-text-300-opacity-300: #6a76926e;
 
+    --scale-text-400: #8692b1;
     --scale-text-500: #8692b1;
     --scale-text-500-opacity-50: #8692b123;
     --scale-text-500-opacity-100: #8692b13d;
     --scale-text-500-opacity-300: #8692b16e;
 
+    --scale-text-600: #b6bfd4;
     --scale-text-700: #b6bfd4;
     --scale-text-700-opacity-50: #b6bfd423;
     --scale-text-700-opacity-100: #b6bfd43d;
     --scale-text-700-opacity-300: #b6bfd46e;
 
+    --scale-text-800: #d1d7e4;
     --scale-text-900: #d1d7e4;
 
+    --scale-secondary-50: #242831;
     --scale-secondary-100: #242831;
+    --scale-secondary-200: #20232b;
     --scale-secondary-300: #20232b;
+    --scale-secondary-400: #1d1f25;
     --scale-secondary-500: #1d1f25;
+    --scale-secondary-600: #191b1f;
     --scale-secondary-700: #191b1f;
+    --scale-secondary-800: #151719;
     --scale-secondary-900: #151719;
 }

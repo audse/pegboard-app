@@ -31,9 +31,9 @@ class Service {
         }
     }
 
-    async retrieve ( pk:string ) {
+    async retrieve ( pk:string|number ) {
         try {
-            const response:{data:object} = await axios.get(`${this.url}${pk}/`, this.config)
+            const response:{data:object} = await axios.get(`${this.url}${pk.toString()}/`, this.config)
             store.commit(`${this.storeName}/setCurrent`, response.data)
             return response.data
         } catch (e:any) {

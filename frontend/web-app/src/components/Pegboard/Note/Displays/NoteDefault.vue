@@ -15,7 +15,7 @@ const truncatedContent = computed( () => {
 </script>
 <template>
     
-<card bg="primary" hover>
+<card bg="main" hover>
 
     <template #header>
         <co-tag v-for="tag in note.tags" :key="tag.id" :label="tag.name" :tag="tag" />

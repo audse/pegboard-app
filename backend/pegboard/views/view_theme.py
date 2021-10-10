@@ -15,7 +15,7 @@ class ThemeViewSet ( viewsets.ModelViewSet ):
 
     def list(self, request):
         return serialize_queryset(
-            queryset=Theme.objects.filter(user=request.user),
+            queryset=Theme.objects.list(user=request.user),
             serializer=self.serializer_class,
         )
 
@@ -26,7 +26,7 @@ class ThemeViewSet ( viewsets.ModelViewSet ):
                 serializer=self.serializer_class, 
             )
         except Exception as e:
-            return Response(e, status=404)
+            return Response(str(e), status=404)
     
     def create(self, request):
         return serialize_and_create(

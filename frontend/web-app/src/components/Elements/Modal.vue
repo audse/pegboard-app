@@ -34,7 +34,7 @@ const sidebarHidden = computed( () => store.state.auth.preferences.sidebarHidden
     <div :class="['overlay', !show?'hidden':'']" @click="hideModal"></div>
 
     <transition name="translate-fade">
-        <card bg="primary" :class="['co-modal', !sidebarHidden?'left-16 lg:left-80':'left-16']" v-show="show" @click="hideModal">
+        <card bg="main" :class="['co-modal', !sidebarHidden?'left-16 lg:left-80':'left-16']" v-show="show" @click="hideModal">
 
             <template #header>
                 <slot name="header" />

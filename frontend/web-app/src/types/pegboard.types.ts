@@ -77,6 +77,7 @@ export type Theme = {
     text:string,
     scale_secondary:Array<string>,
     scale_text:Array<string>,
+    emphasis:string,
     alert:string,
     danger:string,
 
@@ -166,6 +167,7 @@ export type Board = {
     comments:Array<UserComment>,
     checklists:Array<Checklist>,
     colors:Array<Color>,
+    theme:number,
 }
 
 export type Folder = {

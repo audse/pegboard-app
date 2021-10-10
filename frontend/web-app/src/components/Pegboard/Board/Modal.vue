@@ -44,7 +44,7 @@ const tabsSections = (index:number) => `section-${tabs[index]}`
         <h3>Theme</h3>
 
         <h4>Board Theme</h4>
-        <select-theme />
+        <select-theme :board="board" />
 
         <h4>Color Palette</h4>
         <section class="pt-4 flex flex-col md:flex-row">

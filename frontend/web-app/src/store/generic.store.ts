@@ -16,7 +16,7 @@ const generic = {
 
     getters: {
         
-        getById ( state:storeState, id:number ) {
+        getById: ( state:storeState ) => ( id:number ) => {
             const index = state.items.findIndex( (storeItem:any) => storeItem.id === id )
             if ( index != -1 ) {
                 return state.items[index]

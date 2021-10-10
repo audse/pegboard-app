@@ -23,7 +23,7 @@ const showModal = (event:any) => {
 </script>
 <template>
     
-<card bg="primary" hover @click="showModal">
+<card bg="main" hover @click="showModal">
 
     <template #header>
         <co-tag v-for="tag in note.tags" :key="tag.id" :label="tag.name" :tag="tag" />

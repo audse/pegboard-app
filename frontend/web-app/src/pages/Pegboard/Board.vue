@@ -1,10 +1,12 @@
 <script lang="ts" setup>
 
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, ComputedRef, onBeforeUnmount, onMounted, ref, Ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 
+import { Board, Theme } from '@/types'
 import { BoardModal, Page, AddPage, Note, AddNote, } from '@/components'
+import { ThemeService } from '@/services'
 
 const store = useStore()
 const route = useRoute()
@@ -13,7 +15,7 @@ const router = useRouter()
 let id = ref(route.params.id)
 let url = ref(route.params.url)
 
-const board = computed( () => store.state.boards.current )
+const board:ComputedRef<Board> = computed( () => store.state.boards.current )
 
 const showEditModal = ref(false)
 const showAddPageForm = ref(false)

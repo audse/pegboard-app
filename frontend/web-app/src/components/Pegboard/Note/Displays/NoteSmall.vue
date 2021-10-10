@@ -11,7 +11,7 @@ const props = defineProps<{
 </script>
 <template>
     
-<card bg="primary" hover dense>
+<card bg="main" hover dense>
 
     <template #header>
         <co-tag v-for="tag in note.tags" :key="tag.id" :label="tag.name" :tag="tag" dense />

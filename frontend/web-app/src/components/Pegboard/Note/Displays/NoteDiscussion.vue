@@ -22,7 +22,7 @@ const showModal = (event:any) => {
 </script>
 <template>
     
-<card bg="primary" hover @click="showModal">
+<card bg="main" hover @click="showModal">
 
     <template #header>
         <toolbar>

@@ -26,7 +26,7 @@ class ThemeQuerySet ( models.QuerySet ):
         else:
             raise ObjectDoesNotExist
 
-class ThemeManager ( models.Model ):
+class ThemeManager ( models.Manager ):
     use_in_migrations = True
 
     def get_queryset(self):
