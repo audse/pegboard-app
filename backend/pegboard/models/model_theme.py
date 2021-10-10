@@ -13,8 +13,8 @@ class ThemeQuerySet ( models.QuerySet ):
 
     def list(self, user):
         return self.filter(
-                user=user
-            )
+            user=user,
+        )
 
     def retrieve(self, user, pk):
         result = self.filter(
@@ -27,7 +27,7 @@ class ThemeQuerySet ( models.QuerySet ):
             raise ObjectDoesNotExist
 
 class ThemeManager ( models.Model ):
-    use_in_migration = True
+    use_in_migrations = True
 
     def get_queryset(self):
         return ThemeQuerySet(self.model, using=self._db)
@@ -40,7 +40,7 @@ class ThemeManager ( models.Model ):
 
 class Theme ( models.Model ):
 
-    object = ThemeManager()
+    objects = ThemeManager()
 
     user = models.ForeignKey(
         User,
@@ -64,6 +64,7 @@ class Theme ( models.Model ):
         models.CharField(max_length=7),
         size=10
     )
+    emphasis = models.CharField(max_length=7)
     alert = models.CharField(max_length=7)
     danger = models.CharField(max_length=7)
     

@@ -14,7 +14,6 @@ const props = defineProps<{
     <template #header>
         <h3 class="theme pt-4 px-6 pb-4">
             Example Theme
-            {{ theme.name }}
         </h3>
     </template>
 
@@ -27,6 +26,7 @@ const props = defineProps<{
                 Some note content.
             </p>
             <template #footer>
+                <co-tag :color="theme.emphasis" label="Emphasis" />
                 <co-tag :color="theme.alert" label="Alert" />
                 <co-tag :color="theme.danger" label="Danger" />
             </template>

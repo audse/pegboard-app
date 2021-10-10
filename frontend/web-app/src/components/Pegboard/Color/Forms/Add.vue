@@ -29,7 +29,7 @@ const addColor = async (data:object) => {
     </section>
     <section class="flex items-center my-2 mb-6">
         <label for="name" class="flex-none w-20">Hex Code</label>
-        <co-tag label="#" /><input v-model="addColorForm.code" name="name" type="text" placeholder="FEFEFE" class="bg-main" />
+        <input v-model="addColorForm.code" name="name" type="text" placeholder="#FEFEFE" class="bg-main" />
     </section>
     <co-button type="submit" color="emphasis" class="block my-2">Add Color</co-button>
 </form>

@@ -8,6 +8,8 @@ import { Tag } from '@/types'
 const props = defineProps<{
     varColor?:string,
     color?:string,
+    textColor?:string,
+    filled?:boolean,
     tag?:Tag,
     label?:string,
     right?:string,
@@ -30,8 +32,10 @@ const tagColor = computed( () => {
 })
 
 const textColor = computed( () => {
-    if ( props.tag ) {
-        return `#${tagColor.value?.code}`
+    if ( props.textColor ) {
+        return props.textColor
+    } else if ( props.tag ) {
+        return `${tagColor.value?.code}`
     } else if ( props.varColor ) {
         return `var(--${props.varColor})`
     } else if ( props.color ) {
@@ -41,11 +45,11 @@ const textColor = computed( () => {
 
 const bgColor = computed( () => {
     if ( props.tag ) {
-        return `#${changeOpacity(tagColor.value?.code, 0.25)}`
+        return !props.filled ? `${changeOpacity(tagColor.value?.code, 0.25)}` : tagColor.value?.code
     }if ( props.varColor ) {
         return `var(--${props.varColor}-opacity-100`
     } else if ( props.color ) { 
-        return `${changeOpacity(props.color, 0.25)}`
+        return !props.filled ? `${changeOpacity(props.color, 0.25)}` : props.color
     } else return 'transparent'
 })
 

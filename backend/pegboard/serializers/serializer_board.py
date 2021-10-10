@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from . import *
-from ..models import Board, Folder
+from ..models import Board, Folder, Theme
 
 class BoardSerializer ( serializers.ModelSerializer ):
 
@@ -17,7 +17,7 @@ class BoardSerializer ( serializers.ModelSerializer ):
     comments = CommentSerializer(many=True, required=False)
     checklists = ChecklistSerializer(many=True, required=False)
 
-    theme = ThemeSerializer(required=False)
+    theme = serializers.PrimaryKeyRelatedField(queryset=Theme.objects.all(), required=False, allow_null=True)
 
     class Meta:
         model = Board

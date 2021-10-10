@@ -4,7 +4,7 @@ import parseISO from 'date-fns/parseISO'
 import format from 'date-fns/format'
 
 import { Board } from '@/types'
-import { EditBoard, AddTag, AddColor } from '@/components'
+import { EditBoard, AddTag, AddColor, SelectTheme } from '@/components'
 
 const props = defineProps<{
     board:Board,
@@ -41,9 +41,14 @@ const tabsSections = (index:number) => `section-${tabs[index]}`
     </template>
 
     <template v-slot:[tabsSections(2)]>
-        <h3>Color Palette</h3>
+        <h3>Theme</h3>
+
+        <h4>Board Theme</h4>
+        <select-theme />
+
+        <h4>Color Palette</h4>
         <section class="pt-4 flex flex-col md:flex-row">
-            <co-tag lg v-for="color in board.colors" :key="color.id" :label="color.name" :right="`#${color.code}`" :color="color.code" class="m-1" />
+            <co-tag lg v-for="color in board.colors" :key="color.id" :label="color.name" :right="`${color.code}`" :color="color.code" class="m-1" />
         </section>
 
         <expandable class="mt-8" label="Add Color">

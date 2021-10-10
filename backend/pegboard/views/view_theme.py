@@ -15,7 +15,7 @@ class ThemeViewSet ( viewsets.ModelViewSet ):
 
     def list(self, request):
         return serialize_queryset(
-            queryset=Theme.objects.list(user=request.user),
+            queryset=Theme.objects.filter(user=request.user),
             serializer=self.serializer_class,
         )
 
