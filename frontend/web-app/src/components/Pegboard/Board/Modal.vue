@@ -1,10 +1,12 @@
 <script lang="ts" setup>
 
+import { Ref, ref } from 'vue'
 import parseISO from 'date-fns/parseISO'
 import format from 'date-fns/format'
 
 import { Board } from '@/types'
-import { EditBoard, AddTag, AddColor, SelectTheme } from '@/components'
+import { ChecklistService } from '@/services'
+import { EditBoard, AddTag, AddColor, SelectTheme, Checklist, AddChecklist } from '@/components'
 
 const props = defineProps<{
     board:Board,
@@ -15,8 +17,15 @@ const emits = defineEmits([
     'hide'
 ])
 
-const tabs = ['Edit', 'Tags', 'Color Palette']
+const tabs = ['Edit', 'Tags', 'Color Palette', 'Checklists']
 const tabsSections = (index:number) => `section-${tabs[index]}`
+
+const newChecklist:Ref = ref(null)
+const updateChecklist = (event:object) => newChecklist.value = event
+
+const createChecklist = async (data:any) => {
+    ChecklistService.create(data)
+}
 
 </script>
 <template>
@@ -56,6 +65,17 @@ const tabsSections = (index:number) => `section-${tabs[index]}`
                 <add-color :board="board" />
             </card>
         </expandable>
+    </template>
+
+    <template v-slot:[tabsSections(3)]>
+        <h3>Checklists</h3>
+
+        <add-checklist :board="board" @update-checklist="updateChecklist" />
+        <co-button v-if="newChecklist" @click.prevent="createChecklist(newChecklist)">Add Checklist</co-button>
+        
+        <section class="mt-12">
+            <checklist v-for="checklist in board.checklists" :key="checklist.id" :checklist="checklist" />
+        </section>
     </template>
 
 </modal>

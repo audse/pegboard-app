@@ -44,13 +44,13 @@ watch(checklist, emitChecklist)
 <form>
 
     <section class="flex items-center">
-        <label class="w-20">Checklist</label>
+        <label class="w-20">Create</label>
         <co-button @click.prevent="hasChecklist=!hasChecklist" light color="emphasis" class="flex items-center">
             <transition name="scale" mode="out-in">
                 <i v-if="!hasChecklist" class="gg-math-plus block flex-none mr-4"></i>
                 <i v-else class="gg-math-minus block flex-none mr-4"></i>
             </transition>
-            Create
+            New Checklist
         </co-button>
     </section>
 

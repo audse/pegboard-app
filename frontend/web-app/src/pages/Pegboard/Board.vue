@@ -5,7 +5,7 @@ import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 
 import { Board, Theme } from '@/types'
-import { BoardModal, Page, AddPage, Note, AddNote, } from '@/components'
+import { BoardModal, Page, AddPage, Note, AddNote, Checklist } from '@/components'
 import { ThemeService } from '@/services'
 
 const store = useStore()
@@ -87,6 +87,9 @@ onBeforeUnmount( () => {
             </template>
 
         </toolbar>
+        <section v-if="board.checklists?.length>0" class="my-6">
+            <checklist v-for="checklist in board.checklists" :key="checklist.id" :checklist="checklist" />
+        </section>
 
         <toolbar class="mt-4" no-col>
             <router-link :to="{ name: 'Board', params: { id: id, url: url } }" v-slot="{ isActive }">
