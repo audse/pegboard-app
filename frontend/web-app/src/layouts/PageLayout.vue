@@ -13,6 +13,10 @@
         <slot />
     </section>
 
+    <footer class="h-40">
+        
+    </footer>
+
 </article>
 
 </template>

@@ -1,8 +1,7 @@
-
-import { Route } from '@/types'
 import { Folders, Board, Themes } from '@/pages'
+import { RouteLocationNormalizedLoaded } from 'vue-router'
 
-const pegboardRoutes:Array<Route> = [
+const pegboardRoutes = [
     { 
         name: 'Folders',
         path: '/folders', 
@@ -21,7 +20,7 @@ const pegboardRoutes:Array<Route> = [
         component: Board,
         meta: {
             requiresAuth: true,
-            breadcrumb: ( (route) => route?[
+            breadcrumb: ( (route:RouteLocationNormalizedLoaded) => route?[
                 { name: 'home', path: '/', icon: 'home-alt' },
                 { name: 'folders', path: '/folders', icon: 'folder' },
                 { name: route.params.url, icon: 'clipboard' },

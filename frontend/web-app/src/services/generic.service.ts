@@ -2,6 +2,16 @@ import axios, { AxiosRequestConfig } from 'axios'
 import store from '../store'
 import Cookies from 'js-cookie'
 
+import { GenericType } from '@/types'
+
+type GenericRetrieveResponse = {
+    data:GenericType
+}
+
+type GenericListResponse = {
+    data:Array<GenericType>
+}
+
 class Service {
     
     url:string = 'http://localhost:8000/api/'
@@ -33,7 +43,7 @@ class Service {
 
     async retrieve ( pk:string|number ) {
         try {
-            const response:{data:object} = await axios.get(`${this.url}${pk.toString()}/`, this.config)
+            const response:GenericRetrieveResponse = await axios.get(`${this.url}${pk.toString()}/`, this.config)
             store.commit(`${this.storeName}/setCurrent`, response.data)
             return response.data
         } catch (e:any) {

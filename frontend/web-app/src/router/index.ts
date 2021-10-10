@@ -1,15 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import { Route, Theme } from '@/types'
 import store from '@/store'
+import { Board } from '@/types'
 import { AuthService, BoardService, ThemeService } from '@/services'
 
 import authRoutes from './auth.routes'
 import pegboardRoutes from './pegboard.routes'
 
-import Home from '@/pages/Home.vue'
+import { Home } from '@/pages'
 
-const routes:Array<Route> = [
+const routes = [
     { 
         name: 'Home',
         path: '/', 
@@ -36,8 +36,8 @@ router.beforeEach( async (to, from, next) => {
     const isAuthenticated = store.getters['auth/isAuthenticated']
 
     if ( to.name === 'Board' ) {
-        const board = await BoardService.retrieve(to.params.id[0])
-        if (board.theme) {
+        const board:Board = await BoardService.retrieve(to.params.id[0])
+        if (board.theme && board.theme !== store.state.themes.current.id ) {
             await ThemeService.retrieve(board.theme)
             ThemeService.setTheme(store.state.themes.current)
         }
@@ -45,7 +45,7 @@ router.beforeEach( async (to, from, next) => {
 
     if ( to.meta.requiresAuth && !isAuthenticated ) {
         next({ name: 'Sign In' })
-    } else if ( to.meta.requiresUnauth && isAuthenticated ) {
+    } else if ( to.meta.requiresNoAuth && isAuthenticated ) {
         next({ name: 'Home' })
     } else {
         next()

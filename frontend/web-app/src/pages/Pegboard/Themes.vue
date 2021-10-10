@@ -26,8 +26,15 @@ onMounted(refreshThemes)
     </template>
     
     <section class="page-padding">
-        <h2>Add Theme</h2>
+        <h2 class="mb-8">
+            Add Theme<br />
+            <small class="font-light text-scale-text-500">Note: Themes are not currently functional at this time. They can be created, but not used.</small>
+        </h2>
         <add-theme />
+
+        <h2 class="mt-16 mb-6">
+            Your Themes
+        </h2>
         <theme v-for="theme of themes" :key="theme.id" :theme="theme" />
 
     </section>

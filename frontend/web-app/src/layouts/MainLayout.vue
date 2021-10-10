@@ -22,8 +22,6 @@ import { NavbarLayout, SidebarLayout } from '@/layouts'
             <slot></slot>
         </main>
 
-        <footer class="h-40">
-        </footer>
 
     </div> 
 

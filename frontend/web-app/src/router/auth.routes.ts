@@ -1,13 +1,12 @@
-import { Route } from '@/types'
 import { SignUp, SignUpSuccess, SignIn } from '@/pages'
 
-const authRoutes:Array<Route> = [
+const authRoutes = [
     { 
         name: 'Sign Up',
         path: '/signup', 
         component: SignUp,
         meta: {
-            requiresUnauth: true,
+            requiresNoAuth: true,
             breadcrumb: ( () => [
                 { name: 'Home', path: '/' },
                 { name: 'Sign Up' }
@@ -19,7 +18,7 @@ const authRoutes:Array<Route> = [
         path: '/signup/success', 
         component: SignUpSuccess,
         meta: {
-            requiresUnauth: true,
+            requiresNoAuth: true,
             breadcrumb: ( () => [
                 { name: 'Home', path: '/' },
                 { name: 'Sign Up' }
@@ -31,7 +30,7 @@ const authRoutes:Array<Route> = [
         path: '/signin', 
         component: SignIn,
         meta: {
-            requiresUnauth: true,
+            requiresNoAuth: true,
             breadcrumb: ( () => [
                 { name: 'Home', path: '/' },
                 { name: 'Sign In' }

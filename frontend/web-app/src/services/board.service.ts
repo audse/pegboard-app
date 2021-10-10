@@ -7,7 +7,7 @@ class BoardService extends Service {
     constructor () {
         super('boards')
     }
-
+    
     async listUnsorted () {
         try {
             const response = await axios.get(`${this.url}unsorted/`, this.config)

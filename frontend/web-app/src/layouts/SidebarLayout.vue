@@ -108,7 +108,7 @@ export default {
 <style scoped>
 
 .sidebar {
-    @apply border-primary border-r;
+    @apply border-second border-r;
     isolation: isolate;
     z-index: 900;
 }

@@ -1,21 +1,21 @@
 <script lang="ts" setup>
 
-import { ref, watch, onMounted, computed } from 'vue'
+import { ref, Ref, watch, onMounted, computed } from 'vue'
 import chroma from 'chroma-js'
 
 import { ExampleTheme, Swatches } from '@/components'
 import { Themes } from '@/pages'
 import { ThemeService } from '@/services'
 
-const name = ref('')
-const main = ref('#fefefe')
-const second = ref()
-const text = ref()
-const emphasis = ref()
-const alert = ref()
-const danger = ref()
-const scale_secondary = ref([])
-const scale_text = ref([])
+const name:Ref<string> = ref('')
+const main:Ref<string> = ref('#fefefe')
+const second:Ref<string> = ref('')
+const text:Ref<string> = ref('')
+const emphasis:Ref<string> = ref('')
+const alert:Ref<string> = ref('')
+const danger:Ref<string> = ref('')
+const scale_secondary:Ref<Array<string>> = ref([])
+const scale_text:Ref<Array<string>> = ref([])
 
 const pickMain = (swatch:string) => {
     console.log(swatch)
@@ -36,14 +36,14 @@ const autoColor = () => {
         .mode('lab')
         .padding(0.1)
         .correctLightness()
-        .colors(5)
+        .colors(6)
     
     scale_text.value = chroma
         .scale([main.value, text.value])
         .mode('lab')
         .padding(0.1)
         .correctLightness()
-        .colors(5)
+        .colors(6)
 }
 
 watch(main, () => {

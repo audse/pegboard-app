@@ -167,7 +167,7 @@ export type Board = {
     comments:Array<UserComment>,
     checklists:Array<Checklist>,
     colors:Array<Color>,
-    theme:number,
+    theme:number|null,
 }
 
 export type Folder = {
@@ -186,3 +186,5 @@ export type Folder = {
     date_updated:string,
     date_archived:string|null,
 }
+
+export type GenericType = Folder & Board & Page & Note & Theme & UserSimple & UserComment & Checklist & ChecklistForm & ChecklistItem & Tag & Color
