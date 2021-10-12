@@ -8,7 +8,7 @@ const authRoutes = [
         meta: {
             requiresNoAuth: true,
             breadcrumb: ( () => [
-                { name: 'Home', path: '/' },
+                { name: 'Home', path: '/', icon: 'home-alt' },
                 { name: 'Sign Up' }
             ])
         }
@@ -20,8 +20,9 @@ const authRoutes = [
         meta: {
             requiresNoAuth: true,
             breadcrumb: ( () => [
-                { name: 'Home', path: '/' },
-                { name: 'Sign Up' }
+                { name: 'Home', path: '/', icon: 'home-alt' },
+                { name: 'Sign Up', path: '/signup', icon: 'user' },
+                { name: 'Success' }
             ])
         }
     },
@@ -32,7 +33,7 @@ const authRoutes = [
         meta: {
             requiresNoAuth: true,
             breadcrumb: ( () => [
-                { name: 'Home', path: '/' },
+                { name: 'Home', path: '/', icon: 'home-alt' },
                 { name: 'Sign In' }
             ])
         }

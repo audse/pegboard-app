@@ -7,7 +7,7 @@ import { AuthService, BoardService, ThemeService } from '@/services'
 import authRoutes from './auth.routes'
 import pegboardRoutes from './pegboard.routes'
 
-import { Home } from '@/pages'
+import { Home, Error } from '@/pages'
 
 const routes = [
     { 
@@ -20,6 +20,17 @@ const routes = [
             ])
         }
     },
+    {
+        name: 'Error',
+        path: '/error',
+        component: Error,
+        meta: {
+            breadcrumb: ( () => [
+                { name: 'Home', path: '/', icon: 'home-alt' },
+                { name: 'Error' }
+            ])
+        }
+    }
     
     ...authRoutes,
     ...pegboardRoutes
