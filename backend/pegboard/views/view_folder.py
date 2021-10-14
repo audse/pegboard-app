@@ -18,10 +18,14 @@ class FolderViewSet ( viewsets.ModelViewSet ):
     serializer_class = FolderSerializer
 
     def list ( self, request ):
-        return serialize_queryset(
-            queryset=Folder.objects.list(user=request.user),
-            serializer=self.serializer_class,
-        )
+        try:
+            return serialize_queryset(
+                queryset=Folder.objects.list(user=request.user),
+                serializer=self.serializer_class,
+            )
+        except Exception as e:
+            print('Error listing folders:', e)
+            return Response(str(e))
 
     def retrieve ( self, request, pk=None ):
         try:
@@ -30,15 +34,8 @@ class FolderViewSet ( viewsets.ModelViewSet ):
                 serializer=self.serializer_class,
             )
         except Exception as e:
+            print('Error retrieving folder:', e)
             return Response(str(e))
-            # return Response(str(e), status=404)
-
-    @action( methods=['get'], detail=False, url_path='archived' )
-    def list_archived ( self, request ):
-        return serialize_queryset(
-            queryset=Folder.objects.list_archived(user=request.user),
-            serializer=self.serializer_class,
-        )
 
     def create ( self, request ):
         return serialize_and_create(
@@ -55,26 +52,8 @@ class FolderViewSet ( viewsets.ModelViewSet ):
     
     @action( methods=['put'], detail=True, url_path='archive' )
     def archive ( self, request, pk ):
-        try:
-            return serialize_and_update(
-                serializer=self.serializer_class,
-                object_to_update=Folder.objects.retrieve(user=request.user, pk=pk),
-                data={
-                    'date_archived': timezone.now()
-                },
-            )
-        except Exception as e:
-            return Response(str(e), status=404)
+        return self.update(request, pk)
 
     @action( methods=['put'], detail=True, url_path='archive' )
     def unarchive ( self, request, pk ):
-        try:
-            return serialize_and_update(
-                serializer=self.serializer_class,
-                object_to_update=Folder.objects.retrieve(user=request.user, pk=pk),
-                data={
-                    'date_archived': None,
-                },
-            )
-        except Exception as e:
-            return Response(str(e), status=404)
+        return self.update(request, pk)

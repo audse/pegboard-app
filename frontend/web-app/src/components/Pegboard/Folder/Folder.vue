@@ -18,7 +18,7 @@ const props = defineProps({
     <section class="flex flex-wrap">
 
         <router-link v-for="board in folder.boards" :key="board.id"  :to="{ name: 'Board', params: { id: board.id, url: board.url } }" class="w-full md:w-1/2 lg:w-1/3 xl:w-1/3">
-            <card hover bg="primary">
+            <card hover bg="main">
                 <template #header>
                         {{ board.name }}
                 </template>
@@ -32,7 +32,7 @@ const props = defineProps({
 
     <template #footer>
         <!-- <edit-folder :folder="folder" /> -->
-        <add-board :folder-id="folder.id" class="pt-4" />
+        <add-board :folder="folder" class="pt-4" />
     </template>
 </card>
 

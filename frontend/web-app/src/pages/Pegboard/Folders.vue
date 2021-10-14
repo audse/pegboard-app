@@ -58,7 +58,7 @@ const showAddFolderForm = ref(false)
     <section class="mt-4 flex">
         <section v-for="board of unsortedBoards" :key="board.id" class="flex-none w-full md:w-1/2 lg:w-1/3 xl:w-1/3">
             <router-link :to="{ name: 'Board', params: { id: board.id, url: board.url } }">
-                <card hover bg="primary">
+                <card hover bg="main">
                     <template #header>
                         <strong>{{ board.name }}</strong>
                     </template>

@@ -1,19 +1,26 @@
 <script lang="ts" setup>
 
 import chroma from 'chroma-js'
+import { computed } from 'vue'
+
+const props = defineProps<{
+    colors?:number,
+}>()
 
 const emits = defineEmits([
     'pick'
 ])
 
-const reds = chroma.scale(['#550607', '#d90429', '#ffbac6']).colors(10)
-const oranges = chroma.scale(['#731700', '#f54e00', '#ffd1b3']).colors(10)
-const yellows = chroma.scale(['#5e3100', '#ffa91f', '#ffe7bd']).colors(10)
-const greens = chroma.scale(['#0b3023', '#2fa160', '#cef2d9']).colors(10)
-const blues = chroma.scale(['#101d57', '#4361ee', '#d1e0ff']).colors(10)
-const purples = chroma.scale(['#33057d', '#6c26c7', '#e1c4ff']).colors(10)
-const pinks = chroma.scale(['#59004d', '#e349ad', '#ffd1ef']).colors(10)
-const coolGreys = chroma.scale(['#161f29', '#374554', '#c3cbd4']).colors(10)
+const numColors = computed( () => props.colors ? props.colors : 10)
+
+const reds = computed( () => chroma.scale(['#550607', '#d90429', '#ffbac6']).colors(numColors.value) )
+const oranges = computed( () => chroma.scale(['#731700', '#f54e00', '#ffd1b3']).colors(numColors.value) )
+const yellows = computed( () => chroma.scale(['#5e3100', '#ffa91f', '#ffe7bd']).colors(numColors.value) )
+const greens = computed( () => chroma.scale(['#0b3023', '#2fa160', '#cef2d9']).colors(numColors.value) )
+const blues = computed( () => chroma.scale(['#101d57', '#4361ee', '#d1e0ff']).colors(numColors.value) )
+const purples = computed( () => chroma.scale(['#33057d', '#6c26c7', '#e1c4ff']).colors(numColors.value) )
+const pinks = computed( () => chroma.scale(['#59004d', '#e349ad', '#ffd1ef']).colors(numColors.value) )
+const coolGreys = computed( () => chroma.scale(['#161f29', '#374554', '#c3cbd4']).colors(numColors.value) )
 
 const emitSwatch = (swatch:string) => {
     emits('pick', swatch)

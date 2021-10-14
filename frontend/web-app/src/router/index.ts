@@ -30,7 +30,7 @@ const routes = [
                 { name: 'Error' }
             ])
         }
-    }
+    },
     
     ...authRoutes,
     ...pegboardRoutes

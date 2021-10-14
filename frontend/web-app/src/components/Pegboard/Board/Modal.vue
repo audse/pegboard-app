@@ -55,12 +55,12 @@ const createChecklist = async (data:any) => {
         <h4>Board Theme</h4>
         <select-theme :board="board" />
 
-        <h4>Color Palette</h4>
+        <h4 class="mt-8">Color Palette</h4>
         <section class="pt-4 flex flex-col md:flex-row">
             <co-tag lg v-for="color in board.colors" :key="color.id" :label="color.name" :right="`${color.code}`" :color="color.code" class="m-1" />
         </section>
 
-        <expandable class="mt-8" label="Add Color">
+        <expandable label="Add Color">
             <card bg="scale-secondary-500" class="mt-2">
                 <add-color :board="board" />
             </card>

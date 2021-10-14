@@ -2,19 +2,25 @@
 
 import { reactive } from 'vue'
 
+import { Folder } from '@/types'
 import { BoardService } from '@/services'
 
-const props = defineProps({
-    folderId: Number,
-})
+const props = defineProps<{
+    folder?:Folder,
+}>()
 
 const addBoardForm = reactive({
     name: '',
-    folder: props.folderId || null
+    folder: props.folder?.id
 })
 
 const addBoard = async (data:object) => {
-    await BoardService.create(data)
+    if (props.folder != undefined) {
+        await BoardService.createInFolder(data, props.folder)
+    } else {
+        await BoardService.create(data)
+    }
+    
     addBoardForm.name = ''
 }
 

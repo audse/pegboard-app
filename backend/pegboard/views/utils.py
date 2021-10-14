@@ -34,6 +34,7 @@ def serialize_and_create (serializer, request):
         validated_foreign_keys = validate_foreign_keys(request.user, request.data)
         serialized_request = serializer(
             data={
+                'user': request.user.id,
                 **request.data,
                 **validated_foreign_keys
             }

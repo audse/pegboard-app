@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-import { ref } from 'vue'
+import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { Board } from '@/types'
@@ -12,7 +12,10 @@ const props = defineProps<{
 
 const router = useRouter()
 
-const editBoardForm = ref({...props.board})
+const editBoardForm = reactive({
+    name: props.board.name,
+    description: props.board.description
+})
 
 const editBoard = async (boardId:number, data:object) => {
     await BoardService.update(boardId, data)

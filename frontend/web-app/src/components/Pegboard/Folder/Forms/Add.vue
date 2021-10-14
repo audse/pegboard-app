@@ -8,7 +8,7 @@ const addFolderForm = reactive({
     name: '',
 })
 
-const addFolder = async (boardId: string, data:object) => {
+const addFolder = async (data:object) => {
     await FolderService.create(data)
     addFolderForm.name = ''
 }

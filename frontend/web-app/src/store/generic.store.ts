@@ -41,7 +41,7 @@ const generic = {
         update: ( state:storeState, item:{id:number} ) => {
             const index = state.items.findIndex( (storeItem:any) => storeItem.id === item.id )
             if ( index != -1 ) {
-                state.items.splice(index, 1).push(item)
+                state.items.splice(index, 1, item)
             }
         },
 
