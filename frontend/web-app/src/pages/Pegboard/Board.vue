@@ -5,7 +5,7 @@ import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 
 import { Board, Theme } from '@/types'
-import { BoardModal, Page, AddPage, Note, AddNote, Checklist } from '@/components'
+import { BoardModal, Page, AddPage, Note, AddNote, Checklist, Kanban, Calendar } from '@/components'
 import { ThemeService } from '@/services'
 
 const store = useStore()
@@ -23,6 +23,7 @@ const theme:ComputedRef<Theme> = computed( () => {
     }
 })
 
+const view = ref('kanban')
 const showEditModal = ref(false)
 const showAddPageForm = ref(false)
 
@@ -92,9 +93,9 @@ onBeforeUnmount( () => {
         </section>
 
         <toolbar class="mt-4" no-col>
-            <router-link :to="{ name: 'Board', params: { id: id, url: url } }" v-slot="{ isActive }">
-                <co-button :light="isActive" :subtle="!isActive" :color="isActive?'emphasis':'scale-text-500'">Kanban</co-button>
-            </router-link>
+
+            <co-button :light="view==='kanban'" :subtle="view!=='kanban'" :color="view==='kanban'?'emphasis':'scale-text-500'" @click="view='kanban'">Kanban</co-button>
+            <co-button :light="view==='calendar'" :subtle="view!=='calendar'" :color="view==='calendar'?'emphasis':'scale-text-500'" @click="view='calendar'">Calendar</co-button>
 
             <template #right>
                 <co-button light color="alert" icon="user" class="hidden lg:block"></co-button>
@@ -113,26 +114,12 @@ onBeforeUnmount( () => {
 
     </template>
 
-    <section class="flex overflow-x-scroll h-auto no-scrollbar page-padding">
-        <page v-for="page in board.pages" :key="page.id" :page="page" :board="board" class="flex-none w-11/12 md:w-5/12 lg:w-4/12" />
-    </section>
-
     <board-modal :board="board" :show="showEditModal" @hide="showEditModal=false" />
 
-    <article class="mt-8 page-padding">
-        <section class="flex flex-col md:flex-row md:items-center pl-2 py-4">
-            <h2 class="text-scale-text-500 px-4">Unsorted Notes</h2>
-            <add-note :board="board" class="md:w-4/12" />
-        </section>
-        <section class="flex flex-wrap pl-2" v-if="board?.notes?.length > 0">
-            <div v-for="note in board.notes" :key="note.id" class="flex-none w-11/12 md:w-5/12 lg:w-4/12">
-                <note :note="note" />
-            </div>
-        </section>
-    </article>
+    <kanban v-if="view==='kanban'" :board="board" />
+    <calendar v-if="view==='calendar'" :board="board" />
 
 </page-layout>
-<page-layout v-else></page-layout>
 
 </template>
 <style scoped>
