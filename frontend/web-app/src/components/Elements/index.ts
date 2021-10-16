@@ -3,6 +3,7 @@ import CoButton from './CoButton.vue'
 import CoTag from './CoTag.vue'
 import Expandable from './Expandable.vue'
 import FormTextField from './FormTextField.vue'
+import FormTextAreaField from './FormTextAreaField.vue'
 import Icon from './Icon.vue'
 import Modal from './Modal.vue'
 import SwitchIcon from './SwitchIcon.vue'
@@ -14,6 +15,7 @@ export {
     CoTag,
     Expandable,
     FormTextField,
+    FormTextAreaField,
     Icon,
     Modal,
     SwitchIcon,
