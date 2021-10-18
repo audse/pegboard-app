@@ -16,6 +16,7 @@ const props = defineProps<{
     dense?:boolean,
     lg?:boolean,
     hover?:boolean,
+    active?:boolean,
 }>()
 
 const store = useStore()
@@ -56,7 +57,7 @@ const bgColor = computed( () => {
 </script>
 <template>
 
-<span :class="['tag', dense?'tag-dense':'', lg?'tag-large':'', hover?'tag-hover':'']">
+<span :class="['tag', dense?'tag-dense':'', lg?'tag-large':'', hover?'tag-hover':'', active?'tag-active':'']">
     {{ label }}
     <span v-if="right" class="tag-right">{{ right }}</span>
     <slot />
@@ -73,7 +74,7 @@ export default {
 <style scoped>
 
 .tag {
-    @apply my-1 font-semibold uppercase rounded-full tracking-widest mr-1;
+    @apply my-1 font-semibold uppercase rounded-full tracking-widest mr-1 inline-block;
     background-color: v-bind('bgColor');
     color: v-bind('textColor');
     font-size: 0.75em;
@@ -95,11 +96,16 @@ export default {
 }
 
 .tag-hover {
+    cursor: pointer;
     transition: transform 200ms;
 }
 
 .tag-hover:hover {
     transform: scale(1.05, 1.05);
+}
+
+.tag-active {
+    @apply border-2 border-emphasis;
 }
 
 </style>

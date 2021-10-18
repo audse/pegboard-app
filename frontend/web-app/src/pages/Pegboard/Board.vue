@@ -72,7 +72,7 @@ onBeforeUnmount( () => {
 </script>
 <template>
 
-<page-layout v-if="board" :class="['bg-scale-secondary-700']">
+<page-layout v-if="board">
     <template #header>
 
         <toolbar no-col>

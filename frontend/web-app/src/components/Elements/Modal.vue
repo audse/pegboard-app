@@ -30,7 +30,7 @@ const sidebarHidden = computed( () => store.state.auth.preferences.sidebarHidden
 
 <template>
     
-<div :class="['co-modal-wrapper no-scrollbar', !show?'h-0 w-0':'w-full h-full']">
+<div :class="['co-modal-wrapper text-text no-scrollbar', !show?'h-0 w-0':'w-full h-full']">
     <div :class="['overlay', !show?'hidden':'']" @click="hideModal"></div>
 
     <transition name="translate-fade">

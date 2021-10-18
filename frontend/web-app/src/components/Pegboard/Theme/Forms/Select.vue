@@ -25,16 +25,18 @@ const refreshThemes = async () => {
 
 onMounted(refreshThemes)
 
-const setTheme = async (theme:ThemeType) => {
-    await BoardService.update(props.board.id, { theme: theme.id })
-    router.push(`/board/${props.board.id}/${props.board.url}`)
+const setTheme = async (theme:ThemeType|null) => {
+    await BoardService.update(props.board.id, { theme: theme?.id||null })
+    if (theme) ThemeService.setTheme(theme)
+    else ThemeService.resetTheme()
 }
 
 </script>
 <template>
 
     <section>
-        <co-tag v-for="theme of themes" :key="theme.id" @click="setTheme(theme)" :color="theme.main" :text-color="theme.text" :label="theme.name" filled lg class="theme m-1" />
+        <co-tag label="Remove" @click="setTheme(null)" hover />
+        <co-tag v-for="theme of themes" :key="theme.id" @click="setTheme(theme)" :color="theme.main" :text-color="theme.text" :label="theme.name" filled lg class="m-1" hover :active="theme.id===board.theme" />
     </section>
 
 </template>

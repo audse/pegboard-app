@@ -8,7 +8,7 @@ import { NavbarLayout, SidebarLayout } from '@/layouts'
 <div class="drawer drawer-mobile h-full">
 
     <input id="sidebar-drawer" type="checkbox" class="drawer-toggle" />
-    <div class="drawer-content" id="page-root">
+    <div class="drawer-content">
 
         <navbar-layout>
             <label for="sidebar-drawer" class="lg:hidden drawer-button w-auto">

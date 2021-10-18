@@ -29,7 +29,7 @@ const borderStyle = props.border ? `1.5pt solid var(--${props.border})` : 'trans
 </script>
 <template>
 
-<div :class="['wrapper', hover?'wrapper-hover':'']">
+<div :class="['theme', 'text-text', 'wrapper', hover?'wrapper-hover':'']">
 <article v-wave="{initialOpacity:hover?0.1:0,finalOpacity:0}" :class="['no-scrollbar', dense?'card-dense':'card']">
     <header v-if="this.$slots.header">
         <slot name="header"></slot>
@@ -71,8 +71,8 @@ export default {
 article.card, article.card-dense {
     @apply shadow-md rounded-2xl;
 
-    background-color: v-bind(bgColor);
-    border: v-bind(borderStyle);
+    background-color: v-bind('bgColor');
+    border: v-bind('borderStyle');
     max-height: 100%;
     overflow: scroll;
 }

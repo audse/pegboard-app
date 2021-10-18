@@ -8,11 +8,11 @@
         <slot name="header" />
     </header>
 
-    <section>
+    <section id="page-root" class="bg-scale-secondary-700 pb-40">
         <slot />
     </section>
 
-    <footer class="h-40">
+    <footer>
         
     </footer>
 
