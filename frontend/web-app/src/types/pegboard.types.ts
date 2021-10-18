@@ -82,7 +82,7 @@ export type Theme = {
     danger:string,
 
     date_created:string,
-    date_edited:string,
+    date_updated:string,
     date_archived:string|null,
 }
 

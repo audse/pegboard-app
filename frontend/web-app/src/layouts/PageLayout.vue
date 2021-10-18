@@ -4,7 +4,6 @@
 <template>
 
 <article>
-
     <header class="page-header px-4 lg:pl-6 lg:pr-10 pt-8 pb-4 bg-scale-secondary-100 shadow-sm">
         <slot name="header" />
     </header>
