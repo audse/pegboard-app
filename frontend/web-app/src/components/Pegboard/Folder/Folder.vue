@@ -1,18 +1,29 @@
 <script lang="ts" setup>
 
-import { AddBoard, EditFolder } from '@/components'
+import { ref } from 'vue'
+
+import { AddBoard, FolderModal } from '@/components'
 
 const props = defineProps({
     folder: Object,
 })
+
+const showEditModal = ref(false)
 
 </script>
 <template>
 
 <card bg="scale-secondary-300" class="mb-4">
     <template #header>
-        <h2 class="pt-4">{{ folder.name }}</h2>
-        <h4 class="text-scale-text-300 pb-2">{{ folder.description }}</h4>
+        <toolbar>
+            <div>
+                <h2 class="pt-4">{{ folder.name }}</h2>
+                <h4 class="text-scale-text-300 pb-2">{{ folder.description }}</h4>
+            </div>
+            <template #right>
+                <co-button @click="showEditModal=!showEditModal" icon="options" subtle color="scale-text-500"></co-button>
+            </template>
+        </toolbar>
     </template>
 
     <section class="flex flex-wrap">
@@ -31,9 +42,10 @@ const props = defineProps({
     </section>
 
     <template #footer>
-        <!-- <edit-folder :folder="folder" /> -->
         <add-board :folder="folder" class="pt-4" />
     </template>
+
+    <folder-modal :folder="folder" :show="showEditModal" @hide="showEditModal=false" />
 </card>
 
 </template>

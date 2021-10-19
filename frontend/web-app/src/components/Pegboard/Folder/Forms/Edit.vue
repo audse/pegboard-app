@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-import { reactive } from 'vue'
+import { ref } from 'vue'
 
 import { FolderService } from '@/services'
 
@@ -8,7 +8,7 @@ const props = defineProps({
     folder: Object,
 })
 
-const editFolderForm = reactive({...props.folder})
+const editFolderForm = ref({...props.folder})
 
 const editFolder = async (folderId: string, data:object) => {
     await FolderService.update(folderId, data)
@@ -24,9 +24,11 @@ const archiveFolder = async(folderId:number) => {
 <section class="pt-6">
     <h3>Edit {{ folder.name }}</h3>
     <form @submit.prevent="editFolder(folder.id, editFolderForm)">
-        <label for="name">Folder Name</label>
-        <input v-model="editFolderForm.name" name="name" type="text" />
-        <button type="submit" @click="this.$emit('save')" class="secondary">Save Edit</button>
+
+        <form-text-field label="Name" v-model="editFolderForm.name" required name="name" />
+        <form-textarea-field label="Description" v-model="editFolderForm.description" name="description" />
+
+        <co-button type="submit" @click="this.$emit('save')" color="emphasis" light>Save Edit</co-button>
     </form>
     
     <section class="pt-8">
@@ -35,11 +37,3 @@ const archiveFolder = async(folderId:number) => {
 </section>
 
 </template>
-
-<script lang="ts">
-
-export default {
-    name: 'EditFolder',
-}
-
-</script>
