@@ -55,6 +55,10 @@ form .select-control::after {
     transform: scale(1.025, 1.025);
 }
 
+.checkbox-control-subtle:hover {
+    transform: scale(1.01, 1.01);
+}
+
 .checkmark {
     width: 24pt;
     height: 24pt;

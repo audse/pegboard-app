@@ -6,9 +6,11 @@ import router from '@/router'
 import store from '@/store'
 import '@/assets/css/app.scss'
 
+
 /* Components */
 import { PageLayout } from '@/layouts'
 import * as Component from '@/components/Elements'
+
 
 createApp(App)
 .use(router)
@@ -21,8 +23,11 @@ createApp(App)
 .component('expandable', Component.Expandable)
 .component('form-text-field', Component.FormTextField)
 .component('form-textarea-field', Component.FormTextAreaField)
+.component('form-checkbox-field', Component.FormCheckboxField)
 .component('icon', Component.Icon)
 .component('modal', Component.Modal)
 .component('switch-icon', Component.SwitchIcon)
 .component('toolbar', Component.Toolbar)
+.component('color-picker', Component.ColorPicker)
+.component('color-expandable', Component.ColorExpandable)
 .mount('#app')

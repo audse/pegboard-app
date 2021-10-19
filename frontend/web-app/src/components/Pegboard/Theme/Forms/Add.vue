@@ -4,7 +4,6 @@ import { ref, Ref, watch, onMounted, computed } from 'vue'
 import chroma from 'chroma-js'
 
 import { ExampleTheme, Swatches } from '@/components'
-import { Themes } from '@/pages'
 import { ThemeService } from '@/services'
 
 const name:Ref<string> = ref('')
@@ -17,10 +16,11 @@ const danger:Ref<string> = ref('')
 const scale_secondary:Ref<Array<string>> = ref([])
 const scale_text:Ref<Array<string>> = ref([])
 
-const pickMain = (swatch:string) => {
-    console.log(swatch)
-    main.value = swatch
-}
+const pickMain = (swatch:string) => main.value = swatch
+const pickSecond = (swatch:string) => second.value = swatch
+
+const showAdvanced = ref(false)
+
 const autoColor = () => {
     
     const luminance = chroma(main.value).luminance()
@@ -31,13 +31,20 @@ const autoColor = () => {
     alert.value = luminance>0.5 ? chroma.mix(main.value, '#34c0eb', 0.6, 'lch').darken().hex() : chroma.mix(main.value, '#34c0eb', 0.6, 'lch').brighten().hex()
     danger.value =  luminance>0.5 ? chroma.mix(main.value, '#eba834', 0.6, 'lch').darken().hex() : chroma.mix(main.value, '#eba834', 0.6, 'lch').brighten().hex()
 
+    autoScaleSecondary()
+    autoScaleText()
+}
+
+const autoScaleSecondary = () => {
     scale_secondary.value = chroma
         .scale([main.value, second.value])
         .mode('lab')
         .padding(0.1)
         .correctLightness()
         .colors(6)
-    
+}
+
+const autoScaleText = () => {
     scale_text.value = chroma
         .scale([main.value, text.value])
         .mode('lab')
@@ -47,7 +54,15 @@ const autoColor = () => {
 }
 
 watch(main, () => {
-    if ( main.value.length === 7 ) autoColor()
+    if ( main.value.length === 7 && !showAdvanced.value ) autoColor()
+})
+
+watch(second, () => {
+    if ( second.value.length === 7 ) autoScaleSecondary()
+})
+
+watch(text, () => {
+    if ( text.value.length === 7 ) autoScaleText()
 })
 
 onMounted(autoColor)
@@ -61,13 +76,28 @@ const addTheme = async (data:object) => {
 
 <form>
     <form-text-field v-model="name" name="name" label="Name" required />
-    <form-text-field v-model="main" name="main" label="Main Color" required class="mt-6" />
+
+    <color-expandable v-model="main" name="main" label="Main Color" @pick="pickMain" />
+    
+    <expandable :to-show="showAdvanced">
+        <template #label>
+            <form-checkbox-field v-model="showAdvanced" label="Show Advanced Options" name="show-advanced" subtle />
+        </template>
+        
+        <color-expandable v-model="second" name="second" label="Second Color" @pick="pickSecond" />
+        <color-expandable v-model="text" name="second" label="Text Color" @pick="pickText" />
+
+        <color-expandable v-model="emphasis" name="emphasis" label="Emphasis Color" />
+        <color-expandable v-model="alert" name="alert" label="Alert Color" />
+        <color-expandable v-model="danger" name="danger" label="Danger Color" />
+
+    </expandable>
+
+
     <co-button type="submit" @click.prevent="addTheme({ name, main, second, text, scale_secondary, scale_text, emphasis, alert, danger })">
         Add Theme
     </co-button>
 </form>
-
-<swatches @pick="pickMain" class="w-1/2 mt-6" />
 
 <example-theme :theme="{ name, main, second, text, scale_secondary, scale_text, emphasis, alert, danger }" class="mt-10" />
 

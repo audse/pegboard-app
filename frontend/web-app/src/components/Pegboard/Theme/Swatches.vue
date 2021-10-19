@@ -51,7 +51,7 @@ export default {
 .swatches {
     /* display: flex; */
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns: repeat(v-bind('numColors'), 1fr);
     grid-gap: 4pt;
 }
 
