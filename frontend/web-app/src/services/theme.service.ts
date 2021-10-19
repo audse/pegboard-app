@@ -53,9 +53,7 @@ class ThemeService extends Service {
     }
 
     setTheme (theme:Theme) {
-        // const root = document.documentElement
         const root = document.getElementById('page-root')
-        console.log(root)
 
         try {
             root?.style.setProperty('--main', theme.main)

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 
-import { reactive } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { Board } from '@/types'
@@ -12,7 +12,7 @@ const props = defineProps<{
 
 const router = useRouter()
 
-const editBoardForm = reactive({
+const editBoardForm = ref({
     name: props.board.name,
     description: props.board.description
 })

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import draggable from 'vuedraggable'
 
 import { Board, Page } from '@/types'
 import { EditPage, Note, AddNote, Comments } from '@/components'
@@ -27,9 +28,17 @@ const showEditModal = ref(false)
         </template>
     </toolbar>
 
-    <section v-for="note in page.notes" :key="note.id">
+    <!-- <section v-for="note in notes" :key="note.id">
         <note :note="note" />
-    </section>
+    </section> -->
+
+    <draggable v-model="page.notes" :group="`${page.id}-notes`" item-key="id">
+        <template #item="{ element }">
+            <article class="cursor-pointer">
+                <note :note="element" />
+            </article>
+        </template>
+    </draggable>
     
     <add-note :page="page" :display="board?.default_note_display" class="pb-8" />
 
