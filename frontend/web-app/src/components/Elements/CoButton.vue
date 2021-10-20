@@ -29,7 +29,7 @@ const classList = computed( () => {
 </script>
 <template>
 
-<button v-wave="{initialOpacity:0.3}" :class="[classList,  !this.$slots.default?'button-square':'', 'flex items-center']">
+<button v-wave="{initialOpacity:0.3}" :class="['co-button', classList,  !this.$slots.default?'button-square':'', 'flex items-center']">
     <icon v-if="icon" :icon="icon" md />
     <span :class="['flex items-center', icon?'ml-2':'']" v-if="this.$slots.default"><slot /></span>
 </button>

@@ -31,10 +31,10 @@ const openConnection = () => {
 }
 
 const getConnectionMessage =  (event:{data:string}) => {
-    const data:{action:string,response:object} = JSON.parse(event.data)
+    const data:{action:string,response:any} = JSON.parse(event.data)
     if (data.action === 'retrieve') {
         store.commit('boards/setCurrent', data.response)
-        refreshTheme()
+        if (data.response.theme) refreshTheme(data.response.theme)
     }
 }
 
@@ -53,15 +53,13 @@ watch(route, () => {
         connection.onopen = () => openConnection()
         connection.onmessage = (connectionEvent) => getConnectionMessage(connectionEvent)
 
-        if(board.value.theme) refreshTheme()
+        // if (board.value.theme) refreshTheme()
     }
 })
 
-const refreshTheme = async () => {
-    if (board.value.theme) {
-        const currentTheme = await ThemeService.retrieve(board.value.theme)
-        ThemeService.setTheme(currentTheme)
-    }
+const refreshTheme = async (themeId:number) => {
+    const currentTheme = await ThemeService.retrieve(themeId)
+    ThemeService.setTheme(currentTheme)
 }
 
 onBeforeUnmount( () => {
