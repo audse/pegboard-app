@@ -18,7 +18,7 @@ const displayChoices = [
     { value: 'n', key: 'Note' },
     { value: 'h', key: 'Heading' },
     // { value: 'i', key: 'Image' },
-    // { value: 'c', key: 'Checkbox' },
+    { value: 'c', key: 'Checkbox' },
     // { value: 'a', key: 'Assignee' },
     { value: 'r', key: 'Readme' },
     { value: 's', key: 'Small' },

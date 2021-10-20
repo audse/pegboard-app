@@ -27,6 +27,10 @@ class NoteSerializer ( serializers.ModelSerializer ):
         instance.content = validated_data.get('content', instance.content)
         instance.display = validated_data.get('display', instance.display)
 
+        instance.starred = validated_data.get('starred', instance.starred)
+        instance.pinned = validated_data.get('pinned', instance.pinned)
+        instance.marked_done = validated_data.get('marked_done', instance.marked_done)
+
         if validated_data.get('date_archived'):
             instance.date_archived = validated_data.get('date_archived', instance.date_archived)
 

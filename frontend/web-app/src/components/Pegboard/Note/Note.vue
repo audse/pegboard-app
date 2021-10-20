@@ -14,7 +14,8 @@ import {
     NoteReadme,
     NoteSmall,
     
-    EditNote, NoteModal
+    EditNote,
+    NoteModal
 } from '@/components'
 
 import { ref } from 'vue'
@@ -29,6 +30,7 @@ const showModal = ref(false)
 <template>
 
 <note-checklist v-if="note.display==='l'" :note="note" @show-modal="showModal=true" />
+<note-checkbox v-if="note.display==='c'" :note="note" @click="showModal=true" />
 <note-default v-if="note.display==='n'" :note="note" @click="showModal=true" />
 <note-small v-if="note.display==='s'" :note="note" @click="showModal=true" />
 <note-discussion v-if="note.display==='t'" :note="note" @show-modal="showModal=true" />

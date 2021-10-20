@@ -4,21 +4,19 @@ import { computed } from 'vue'
 
 const props = defineProps<{
     modelValue:boolean,
-    label:string,
+    label?:string,
     name?:string,
     subtle?:boolean,
 }>()
 
 const emits = defineEmits([
-    'update:modelValue'
+    'update:modelValue',
 ])
 
 const value = computed({
     get: () => props.modelValue,
     set: (value:boolean) => emits('update:modelValue', value)
 })
-
-const clicked = () => console.log('clicked')
 
 </script>
 <template>
@@ -28,7 +26,10 @@ const clicked = () => console.log('clicked')
         <input v-wave v-model="value" :name="name" type="checkbox" class="appearance-none" />
         <i class="gg-check icon-md"></i>
     </div>
-    <span class="ml-2">{{ label }}</span>
+    <span class="ml-2">
+        {{ label }}
+        <slot></slot>
+    </span>
 </section>
 
 </template>
