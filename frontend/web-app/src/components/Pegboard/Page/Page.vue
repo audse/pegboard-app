@@ -4,7 +4,7 @@ import { computed, ref } from 'vue'
 import draggable from 'vuedraggable'
 
 import { Board, Page } from '@/types'
-import { EditPage, Note, AddNote, Comments } from '@/components'
+import { PageModal, Checklist, Note, AddNote, Comments } from '@/components'
 
 const props = defineProps<{
     board?:Board,
@@ -28,9 +28,9 @@ const showEditModal = ref(false)
         </template>
     </toolbar>
 
-    <!-- <section v-for="note in notes" :key="note.id">
-        <note :note="note" />
-    </section> -->
+    <section v-for="checklist in page.checklists" :key="checklist.id" class="mx-2 mt-2">
+        <checklist :checklist="checklist" />
+    </section>
 
     <draggable v-model="page.notes" :group="`${page.id}-notes`" item-key="id">
         <template #item="{ element }">
@@ -42,9 +42,7 @@ const showEditModal = ref(false)
     
     <add-note :page="page" :display="board?.default_note_display" class="pb-8" />
 
-    <modal :show="showEditModal" @hide="showEditModal=false">
-        <edit-page :page="page" @save="showEditModal=false" />
-    </modal>
+    <page-modal :show="showEditModal" @hide="showEditModal=false" :page="page" />
 
 </section>
 
