@@ -115,7 +115,7 @@ onBeforeUnmount( () => {
 
     </template>
 
-    <board-modal :board="board" :show="showEditModal" @hide="showEditModal=false" />
+    <board-modal v-if="board.id" :board="board" :show="showEditModal" @hide="showEditModal=false" />
 
     <kanban v-if="view==='kanban'" :board="board" />
     <calendar v-if="view==='calendar'" :board="board" />

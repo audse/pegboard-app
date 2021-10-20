@@ -10,5 +10,6 @@ DISPLAY_CHOICES = [
     ('l', 'l - checklist'), # displays checklist prominently, good for headings
     ('d', 'd - date'), # displays due date/todo date prominently, with colors to indicate soonness
     ('o', 'o - countdown'), # displays due date/todo date prominently, with a countdown to indicate soonness
-    ('t', 't - discussion') # displays comments/live chat on front 
+    ('t', 't - discussion'), # displays comments/live chat on front 
+    ('k', 'k - link'), # allows the card face to be clicked and open a link in a new tab
 ]

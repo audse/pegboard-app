@@ -15,7 +15,7 @@ const emits = defineEmits([
 ])
 
 const displayChoices = [
-    { value: 'n', key: 'Note' },
+    { value: 'n', key: 'Note (Default)' },
     { value: 'h', key: 'Heading' },
     // { value: 'i', key: 'Image' },
     { value: 'c', key: 'Checkbox' },
@@ -23,6 +23,7 @@ const displayChoices = [
     { value: 'r', key: 'Readme' },
     { value: 's', key: 'Small' },
     { value: 'l', key: 'Checklist' },
+    { value: 'k', key: 'Link' },
     // { value: 'd', key: 'Date' },
     // { value: 'o', key: 'Countdown' },
     { value: 't', key: 'Discussion' },

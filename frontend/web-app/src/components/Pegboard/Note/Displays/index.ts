@@ -7,6 +7,7 @@ import NoteDefault from './NoteDefault.vue'
 import NoteDiscussion from './NoteDiscussion.vue'
 import NoteHeading from './NoteHeading.vue'
 import NoteImage from './NoteImage.vue'
+import NoteLink from './NoteLink.vue'
 import NoteReadme from './NoteReadme.vue'
 import NoteSmall from './NoteSmall.vue'
 
@@ -20,6 +21,7 @@ export {
     NoteDiscussion,
     NoteHeading,
     NoteImage,
+    NoteLink,
     NoteReadme,
     NoteSmall
 }

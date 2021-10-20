@@ -39,8 +39,8 @@ const parseDate = (date) => format(parseISO(props.note.date_created), 'MMM d, h:
 </script>
 <template>
 
-<section ref="commentContainer" :class="[heightClass?heightClass:'max-h-48','overflow-x-scroll']">
-    <div ref="commentSection" class="h-full">
+<section ref="commentContainer" :class="['comment-container', heightClass?heightClass:'max-h-48','overflow-x-scroll']">
+    <div ref="commentSection" class="comment-section h-full">
 
         <span v-if="board" class="block mb-2 text-scale-text-300">
             This board was created by
@@ -64,10 +64,20 @@ const parseDate = (date) => format(parseISO(props.note.date_created), 'MMM d, h:
 </section>
 
 </template>
-<script lang="ts">
+<style scoped>
 
-export default {
-    name: 'comments'
+.comment-container {
+    isolation: isolate;
 }
 
-</script>
+.comment-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--main-opacity-100);
+    /* background: linear-gradient(180deg, var(--main-opacity-700) 0%, var(--main-opacity-50) 100%); */
+}
+
+</style>
