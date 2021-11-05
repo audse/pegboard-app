@@ -4,7 +4,7 @@ import { computed } from 'vue'
 
 const props = defineProps<{
     modelValue:string,
-    label:string,
+    label?:string,
     required?:boolean,
     name?:string,
     placeholder?:string,
@@ -25,7 +25,7 @@ const value = computed({
 <template>
 
 <section class="my-2 flex items-start flex-col md:items-center md:flex-row">
-    <label :for="name" class="flex-none block w-24 text-scale-text-900">
+    <label :for="name" class="flex-none block w-24 text-scale-text-900" v-if="label">
         {{ label }}
         <small v-if="required" class="text-danger">Required.</small>
     </label>

@@ -6,7 +6,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import { Board, Theme } from '@/types'
 import { BoardModal, Page, AddPage, Note, AddNote, Checklist, Kanban, Calendar } from '@/components'
-import { ThemeService } from '@/services'
+import { AuthService, ThemeService } from '@/services'
 
 const store = useStore()
 const route = useRoute()
@@ -26,12 +26,14 @@ let connection = new WebSocket(connectionUrl)
 
 const openConnection = () => {
     connection.send(JSON.stringify({
-        action: 'retrieve'
+        action: 'retrieve',
+        user: store.state.auth.currentUser.pk
     }))
 }
 
 const getConnectionMessage =  (event:{data:string}) => {
     const data:{action:string,response:any} = JSON.parse(event.data)
+    console.log(data)
     if (data.action === 'retrieve') {
         store.commit('boards/setCurrent', data.response)
         if (data.response.theme) refreshTheme(data.response.theme)
@@ -53,7 +55,6 @@ watch(route, () => {
         connection.onopen = () => openConnection()
         connection.onmessage = (connectionEvent) => getConnectionMessage(connectionEvent)
 
-        // if (board.value.theme) refreshTheme()
     }
 })
 
@@ -72,11 +73,14 @@ onBeforeUnmount( () => {
 
 <page-layout v-if="board">
     <template #header>
-
+        {{ board }}
         <toolbar no-col>
 
             <h1 class="pb-1">
                 {{ board.name }}
+                <!-- <pop-text-field v-if="board.name" v-model="board.name">
+                    {{ board.name }}
+                </pop-text-field> -->
                 <h2 class="font-light text-xl text-scale-text-700">
                     {{ board.description }}
                 </h2>

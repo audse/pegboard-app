@@ -5,6 +5,7 @@ import Expandable from './Expandable.vue'
 import FormTextField from './FormTextField.vue'
 import FormTextAreaField from './FormTextAreaField.vue'
 import FormCheckboxField from './FormCheckboxField.vue'
+import PopTextField from './PopTextField.vue'
 import Icon from './Icon.vue'
 import Modal from './Modal.vue'
 import SwitchIcon from './SwitchIcon.vue'
@@ -20,6 +21,7 @@ export {
     FormTextField,
     FormTextAreaField,
     FormCheckboxField,
+    PopTextField,
     Icon,
     Modal,
     SwitchIcon,

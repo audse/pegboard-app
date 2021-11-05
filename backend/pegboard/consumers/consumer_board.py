@@ -1,8 +1,11 @@
 import json
+
+from django.db import close_old_connections
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from channels.auth import login
 from rest_framework.authentication import TokenAuthentication
+from django.contrib.auth.models import User
 
 from ..models import Board
 from ..serializers import BoardSerializer, PageSerializer, TagSerializer, ChecklistSerializer
@@ -69,6 +72,6 @@ class BoardConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def retrieve(self):
         try:
-            return BoardSerializer(Board.objects.retrieve(user=self.user, pk=self.board_id)).data
+            return BoardSerializer(Board.objects.retrieve(user=self.user_id, pk=self.board_id)).data
         except Exception as e:
             return str(e)
